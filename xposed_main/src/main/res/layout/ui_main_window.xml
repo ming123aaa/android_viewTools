@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <LinearLayout
+        android:id="@+id/ll_activity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#80000000"
+        android:orientation="vertical"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <TextView
+            android:id="@+id/tv_packageName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="#aa000000"
+            android:gravity="center"
+            android:minHeight="30dp"
+            android:textColor="#fff"
+            android:textIsSelectable="true"
+            android:textSize="15dp" />
+
+        <TextView
+            android:id="@+id/tv_activityName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="#aa000000"
+            android:gravity="center"
+            android:minHeight="30dp"
+            android:textColor="#fff"
+            android:textIsSelectable="true"
+            android:textSize="15dp" />
+
+        <TextView
+            android:id="@+id/tv_viewClick"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="5dp"
+            android:background="#aa000000"
+            android:gravity="center"
+            android:text="点击查看可见View"
+            android:textColor="#fff"
+            android:textSize="15dp" />
+        <TextView
+            android:id="@+id/tv_viewClick_all"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="5dp"
+            android:background="#aa000000"
+            android:gravity="center"
+            android:text="点击查看全部View"
+            android:textColor="#fff"
+            android:textSize="15dp" />
+        <TextView
+            android:id="@+id/tv_getRootView"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="5dp"
+            android:background="#aa000000"
+            android:gravity="center"
+            android:text="从根布局开始"
+            android:textColor="#fff"
+            android:textSize="15dp" />
+
+        <TextView
+            android:id="@+id/tv_close"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="5dp"
+            android:background="#aa000000"
+            android:gravity="center"
+            android:text="关闭"
+            android:textColor="#fff"
+
+            android:textSize="15dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_clickView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:visibility="gone"
+        android:orientation="vertical">
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/ll_getRoot"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:visibility="gone"
+        android:orientation="vertical">
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_viewMsg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:visibility="gone"
+        android:orientation="vertical"/>
+
+
+    <FrameLayout
+        android:id="@+id/fl_touch"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:background="#80000000" />
+
+</FrameLayout>
