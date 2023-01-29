@@ -2,6 +2,7 @@ package com.ohunag.xposed_main;
 
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.Instrumentation;
 import android.content.res.XModuleResources;
 import android.os.Bundle;

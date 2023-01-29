@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.view.View;
 import android.widget.TextView;
 
+import com.ohunag.xposed_main.util.ToastUtil;
 import com.ohunag.xposed_main.viewTree.IViewEdit;
 import com.ohunag.xposed_main.viewTree.IViewEditGroup;
 
@@ -38,6 +39,7 @@ public class TextViewEditGroup implements IViewEditGroup {
         @Override
         public void setValue(Activity activity, View view, String s) {
             ((TextView) view).setText(s);
+            ToastUtil.show(activity,"修改成功");
         }
 
 

@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.ohunag.xposed_main.BuildConfig;
 import com.ohunag.xposed_main.config.MainConfig;
+import com.ohunag.xposed_main.util.ToastUtil;
 import com.ohunag.xposed_main.util.TryCatch;
 import com.ohunag.xposed_main.viewTree.IViewEdit;
 import com.ohunag.xposed_main.viewTree.IViewEditGroup;
@@ -77,7 +78,7 @@ public class ViewEditGroup implements IViewEditGroup {
             String storePath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "Download" + File.separator + MainConfig.packageName;
             File appDir = new File(storePath);
             if (!appDir.exists()) {
-                appDir.mkdir();
+                appDir.mkdirs();
             }
 
             File file = new File(appDir, fileName);
@@ -88,7 +89,7 @@ public class ViewEditGroup implements IViewEditGroup {
             Rect frame = new Rect();
             activity.getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);
             int[] location = new int[2];
-            saveView.getLocationOnScreen(location);
+            saveView.getLocationInWindow(location);
 
             bitmap = Bitmap.createBitmap(bitmap, location[0], location[1], saveView.getWidth(), saveView.getHeight());
             FileOutputStream fileOutputStream = new FileOutputStream(file);
@@ -126,9 +127,11 @@ public class ViewEditGroup implements IViewEditGroup {
         public void setValue(Activity activity,View view, String s) {
             if ("flase".equalsIgnoreCase(s) || "false".equalsIgnoreCase(s)) {
                 view.setClickable(false);
+                ToastUtil.show(activity,"修改成功");
             }
             if ("ture".equalsIgnoreCase(s) || "true".equalsIgnoreCase(s)) {
                 view.setClickable(true);
+                ToastUtil.show(activity,"修改成功");
             }
         }
     }
@@ -154,9 +157,11 @@ public class ViewEditGroup implements IViewEditGroup {
         public void setValue(Activity activity,View view, String s) {
             if ("flase".equalsIgnoreCase(s) || "false".equalsIgnoreCase(s)) {
                 view.setEnabled(false);
+                ToastUtil.show(activity,"修改成功");
             }
             if ("ture".equalsIgnoreCase(s) || "true".equalsIgnoreCase(s)) {
                 view.setEnabled(true);
+                ToastUtil.show(activity,"修改成功");
             }
         }
     }
@@ -189,6 +194,7 @@ public class ViewEditGroup implements IViewEditGroup {
             if ("8".equals(s) || "2".equals(s)) {
                 view.setVisibility(View.GONE);
             }
+            ToastUtil.show(activity,"修改成功");
         }
     }
 }
