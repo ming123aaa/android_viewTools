@@ -181,7 +181,7 @@ public class ViewNode {
             return false;
         }
         for (int i = childNode.size() - 1; i >= 0; i--) {
-            if (childNode.get(i).afterTraversal(foreachCallBack)) {
+            if (childNode.get(i).afterTraversalVisibleView(foreachCallBack)) {
                 return true;
             }
         }
