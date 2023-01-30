@@ -31,6 +31,39 @@ public class ViewEditGroup implements IViewEditGroup {
         data.add(new EnableEdit());
         data.add(new VisibilityEdit());
         data.add(new SaveViewImgEdit());
+        data.add(new AlphaEdit());
+
+    }
+
+
+    public static class AlphaEdit implements IViewEdit{
+
+        @Override
+        public String getValueName() {
+            return "Alpha";
+        }
+
+        @Override
+        public String getHint() {
+            return "num 0~1";
+        }
+
+        @Override
+        public String getValue(View view) {
+            return ""+view.getAlpha();
+        }
+
+        @Override
+        public void setValue(Activity activity, View view, String s) throws IOException {
+            try {
+                float aFloat = Float.valueOf(s);
+                view.setAlpha(aFloat);
+                ToastUtil.show(activity,"修改成功");
+            }catch (Exception e){
+                ToastUtil.show(activity,e.toString());
+            }
+
+        }
     }
 
 
