@@ -52,17 +52,18 @@ public class ViewMsgAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View view=convertView;
         if (view==null){
-            view = LayoutInflater.from(parent.getContext()).inflate(UiHook.xpRes.getLayout(R.layout.item_view_msg), parent, false);
+            view = LayoutInflater.from(parent.getContext()).inflate(UiHook.xpRes.getLayout(R.layout.item_view_msg_xposed), parent, false);
         }
-        TextView tv_type_view_msg=view.findViewById(R.id.tv_type_view_msg);
-        TextView tv_value_view_msg=view.findViewById(R.id.tv_value_view_msg);
+
+        TextView tv_type_view_msg_xposed=view.findViewWithTag("tv_type_view_msg_xposed");
+        TextView tv_value_view_msg_xposed=view.findViewWithTag("tv_value_view_msg_xposed");
         if (position==0){
-            tv_type_view_msg.setText("class");
-            tv_value_view_msg.setText(viewNode.getViewClassName());
+            tv_type_view_msg_xposed.setText("class");
+            tv_value_view_msg_xposed.setText(viewNode.getViewClassName());
         }else {
-            tv_type_view_msg.setText(String.valueOf(getItem(position)));
+            tv_type_view_msg_xposed.setText(String.valueOf(getItem(position)));
             Object object = valueMap.get(getItem(position)).getObject();
-            tv_value_view_msg.setText(String.valueOf(object));
+            tv_value_view_msg_xposed.setText(String.valueOf(object));
         }
         return view;
     }

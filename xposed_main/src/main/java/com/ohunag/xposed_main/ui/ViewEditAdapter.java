@@ -58,31 +58,31 @@ public class ViewEditAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = convertView;
         if (view == null) {
-            view = LayoutInflater.from(parent.getContext()).inflate(UiHook.xpRes.getLayout(R.layout.item_view_edit), parent, false);
+            view = LayoutInflater.from(parent.getContext()).inflate(UiHook.xpRes.getLayout(R.layout.item_view_edit_xposed), parent, false);
         }
-        TextView tv_type_view_edit = view.findViewById(R.id.tv_type_view_edit);
-        EditText tv_value_view_edit = view.findViewById(R.id.tv_value_view_edit);
-        TextView tv_save_view_edit = view.findViewById(R.id.tv_save_view_edit);
-        tv_type_view_edit.setText(iViewEdit.get(position).getValueName());
-        tv_value_view_edit.setText(iViewEdit.get(position).getValue(mView));
-        tv_value_view_edit.setHint(iViewEdit.get(position).getHint());
-        tv_value_view_edit.setOnTouchListener(new View.OnTouchListener() {
+        TextView tv_type_view_edit_xposed = view.findViewWithTag("tv_type_view_edit_xposed");
+        EditText tv_value_view_edit_xposed = view.findViewWithTag("tv_value_view_edit_xposed");
+        TextView tv_save_view_edit_xposed = view.findViewWithTag("tv_save_view_edit_xposed");
+        tv_type_view_edit_xposed.setText(iViewEdit.get(position).getValueName());
+        tv_value_view_edit_xposed.setText(iViewEdit.get(position).getValue(mView));
+        tv_value_view_edit_xposed.setHint(iViewEdit.get(position).getHint());
+        tv_value_view_edit_xposed.setOnTouchListener(new View.OnTouchListener() {
 
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_UP:
-                        InputManagerUtil.showInputMethod(v.getContext(), tv_value_view_edit);
+                        InputManagerUtil.showInputMethod(v.getContext(), tv_value_view_edit_xposed);
                         break;
 
                 }
                 return false;
             }
         });
-        tv_save_view_edit.setOnClickListener(new View.OnClickListener() {
+        tv_save_view_edit_xposed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CharSequence text = tv_value_view_edit.getText();
+                CharSequence text = tv_value_view_edit_xposed.getText();
                 if (text != null) {
                     try {
                         iViewEdit.get(position).setValue(activity,mView, text.toString());

@@ -6,7 +6,7 @@
 
 
     <LinearLayout
-        android:id="@+id/ll_activity"
+        android:tag="ll_activity_xposed"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#80000000"
@@ -15,7 +15,7 @@
         tools:visibility="visible">
 
         <TextView
-            android:id="@+id/tv_packageName"
+            android:tag="tv_packageName_xposed"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
@@ -27,7 +27,7 @@
             android:textSize="15dp" />
 
         <TextView
-            android:id="@+id/tv_activityName"
+            android:tag="tv_activityName_xposed"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
@@ -37,9 +37,20 @@
             android:textColor="#fff"
             android:textIsSelectable="true"
             android:textSize="15dp" />
+        <TextView
+            android:tag="tv_selectView_xposed"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="#aa000000"
+            android:gravity="center"
+            android:minHeight="40dp"
+            android:textColor="#fff"
+            android:text="选中:当前activity"
+            android:textSize="15dp" />
 
         <TextView
-            android:id="@+id/tv_viewClick"
+            android:tag="tv_viewClick_xposed"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginTop="5dp"
@@ -49,7 +60,7 @@
             android:textColor="#fff"
             android:textSize="15dp" />
         <TextView
-            android:id="@+id/tv_viewClick_all"
+            android:tag="tv_viewClick_xposed_all"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginTop="5dp"
@@ -59,7 +70,7 @@
             android:textColor="#fff"
             android:textSize="15dp" />
         <TextView
-            android:id="@+id/tv_getRootView"
+            android:tag="tv_getRootView_xposed"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginTop="5dp"
@@ -70,7 +81,7 @@
             android:textSize="15dp" />
 
         <TextView
-            android:id="@+id/tv_close"
+            android:tag="tv_close_xposed"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginTop="5dp"
@@ -83,7 +94,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/ll_clickView"
+        android:tag="ll_clickView_xposed"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
@@ -91,7 +102,7 @@
         android:orientation="vertical">
     </LinearLayout>
     <LinearLayout
-        android:id="@+id/ll_getRoot"
+        android:tag="ll_getRoot_xposed"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
@@ -100,7 +111,15 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/ll_viewMsg"
+        android:tag="ll_viewMsg_xposed"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:visibility="gone"
+        android:orientation="vertical"/>
+
+    <LinearLayout
+        android:tag="ll_selectView_xposed"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
@@ -109,7 +128,7 @@
 
 
     <FrameLayout
-        android:id="@+id/fl_touch"
+        android:tag="fl_touch_xposed"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"

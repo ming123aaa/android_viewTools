@@ -2,53 +2,46 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#aa000000"
-    android:gravity="center"
-    android:orientation="vertical"
-    android:padding="10dp">
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    tools:background="#000">
 
-    <ScrollView
-        android:id="@+id/scv_viewMsg"
+    <TextView
+        android:tag="tv_viewName_item_RootList_xposed"
         android:layout_width="match_parent"
-        android:layout_height="400dp">
-
-<!--        <com.ohunag.xposed_main.view.MyListView-->
-<!--            android:id="@+id/listView_viewMsg"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content" />-->
-    </ScrollView>
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:gravity="center"
+        android:minHeight="40dp"
+        android:text="fsdf"
+        android:textColor="#fff"
+        android:textSize="18dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:orientation="horizontal">
-
+        android:layout_height="match_parent"
+        android:layout_weight="3">
 
         <TextView
-            android:id="@+id/tv_close_viewMsg"
+            android:tag="tv_show_item_RootList_xposed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-
             android:gravity="center"
             android:minHeight="40dp"
-            android:text="关闭"
+            android:text="预览"
             android:textColor="#fff"
             android:textSize="18dp" />
 
         <TextView
-            android:id="@+id/tv_edit_viewMsg"
+            android:tag="tv_select_item_RootList_xposed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
             android:minHeight="40dp"
-            android:text="编辑"
+            android:text="选择"
             android:textColor="#fff"
-            android:textSize="18dp"
-            android:visibility="gone"
-            tools:visibility="visible" />
+            android:textSize="18dp" />
     </LinearLayout>
 </LinearLayout>

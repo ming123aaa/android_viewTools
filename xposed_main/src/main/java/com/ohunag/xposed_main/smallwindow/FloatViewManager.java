@@ -32,14 +32,17 @@ public class FloatViewManager {
         } else {
             floatViewHelper = new FloatViewHelper(activity);
             floatViewHelper.setListener(v -> {
-                MainWindowUI mainWindowUI=null;
-                if (mainWindowUIMap.containsKey(activity)){
-                     mainWindowUI = mainWindowUIMap.get(activity);
-                }else {
-                    mainWindowUI=new MainWindowUI(activity);
+                MainWindowUI mainWindowUI = null;
+                if (mainWindowUIMap.containsKey(activity)) {
+                    mainWindowUI = mainWindowUIMap.get(activity);
+                } else {
+                    mainWindowUI = new MainWindowUI(activity);
                 }
-                mainWindowUIMap.put(activity,mainWindowUI);
-                if (mainWindowUI!=null) {
+                mainWindowUIMap.put(activity, mainWindowUI);
+                if (mainWindowUI != null) {
+                    if (mainWindowUI.isShow) {
+                        mainWindowUI.hide();
+                    }
                     mainWindowUI.show();
                 }
             });
@@ -53,7 +56,6 @@ public class FloatViewManager {
         if (map.containsKey(activity)) {
             floatViewHelper = map.get(activity);
         } else {
-
             floatViewHelper = new FloatViewHelper(activity);
         }
         map.put(activity, floatViewHelper);
@@ -74,7 +76,7 @@ public class FloatViewManager {
     }
 
     public void onDestroy(Activity activity) {
-        if (mainWindowUIMap.containsKey(activity)){
+        if (mainWindowUIMap.containsKey(activity)) {
             mainWindowUIMap.remove(activity).hide();
         }
         if (map.containsKey(activity)) {

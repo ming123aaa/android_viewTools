@@ -12,7 +12,6 @@ import com.ohunag.xposed_main.R;
 import com.ohunag.xposed_main.UiHook;
 
 
-
 public class FloatViewHelper {
     Context activity;
     SmallWindowView smallWindowView;
@@ -33,12 +32,13 @@ public class FloatViewHelper {
     public void setListener(View.OnClickListener listener) {
         this.listener = listener;
     }
+
     @SuppressLint({"ClickableViewAccessibility", "UseCompatLoadingForDrawables"})
     public void init() {
         smallWindowView = new SmallWindowView(activity);
 
         imageView = new ImageView(activity);
-        if (UiHook.xpRes!=null) {
+        if (UiHook.xpRes != null) {
             imageView.setImageDrawable(UiHook.xpRes.getDrawable(R.mipmap.icon_activity_ui_j_and_xj));
         }
         imageView.setOnTouchListener(new TouchClickListener(new View.OnClickListener() {
@@ -61,18 +61,18 @@ public class FloatViewHelper {
 
     }
 
-    public int[] getXY(){
-        int[] xy=new int[2];
-        xy[0]=layoutParams.x;
-        xy[1]=layoutParams.y;
+    public int[] getXY() {
+        int[] xy = new int[2];
+        xy[0] = layoutParams.x;
+        xy[1] = layoutParams.y;
         return xy;
     }
 
-    public void setXY(int[] xy){
-        layoutParams.x=xy[0];
-        layoutParams.y=xy[1];
-        if (isShow){
-            getWindowManager(activity).updateViewLayout(smallWindowView,layoutParams);
+    public void setXY(int[] xy) {
+        layoutParams.x = xy[0];
+        layoutParams.y = xy[1];
+        if (isShow) {
+            getWindowManager(activity).updateViewLayout(smallWindowView, layoutParams);
         }
     }
 
@@ -87,9 +87,8 @@ public class FloatViewHelper {
         }
     }
 
-    public WindowManager getWindowManager(Context context){
-        WindowManager systemService = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        return systemService;
+    public WindowManager getWindowManager(Context context) {
+        return (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
     }
 
     public void hide() {

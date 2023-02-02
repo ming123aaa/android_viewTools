@@ -4,63 +4,62 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    tools:background="#aa000000"
+    android:background="#aa000000"
     tools:ignore="MissingDefaultResource">
 
 
-
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        >
+
+        android:gravity="center">
+
         <TextView
-            android:id="@+id/tv_type_view_edit"
             android:layout_width="80dp"
+
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentTop="true"
             android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:background="#00000000"
             android:gravity="center"
             android:minHeight="40dp"
-            android:textColor="#fff"
-            android:background="#00000000"
+            android:tag="tv_type_view_edit_xposed"
             android:text=""
+            android:textColor="#fff"
             android:textIsSelectable="true"
             android:textSize="15dp" />
 
         <EditText
-            android:id="@+id/tv_value_view_edit"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentTop="true"
-            android:textColorHint="#aaa"
-            android:layout_toRightOf="@id/tv_type_view_edit"
-            android:layout_toLeftOf="@id/tv_save_view_edit"
+            android:layout_weight="1"
+
             android:gravity="center"
             android:minHeight="40dp"
-            android:textColor="#fff"
+            android:tag="tv_value_view_edit_xposed"
             android:text=""
-            android:background="#000000"
+            android:textColor="#fff"
+            android:textColorHint="#aaa"
             android:textIsSelectable="true"
             android:textSize="15dp" />
 
         <TextView
-            android:id="@+id/tv_save_view_edit"
             android:layout_width="50dp"
+
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:background="#00000000"
             android:gravity="center"
             android:minHeight="40dp"
-            android:textColor="#fff"
+            android:tag="tv_save_view_edit_xposed"
             android:text="修改"
-            android:background="#00000000"
+            android:textColor="#fff"
             android:textIsSelectable="true"
             android:textSize="15dp" />
-    </RelativeLayout>
+    </LinearLayout>
 
 
 </LinearLayout>

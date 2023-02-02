@@ -2,79 +2,86 @@ package com.ohunag.xposed_main.ui;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.graphics.PixelFormat;
-import android.os.IBinder;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.WindowManager;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ohunag.xposed_main.IContext;
 import com.ohunag.xposed_main.R;
 import com.ohunag.xposed_main.UiHook;
+import com.ohunag.xposed_main.util.ToastUtil;
 import com.ohunag.xposed_main.view.DrawRectView;
 import com.ohunag.xposed_main.view.HookRootFrameLayout;
 import com.ohunag.xposed_main.view.MyListView;
 import com.ohunag.xposed_main.viewTree.ViewNode;
 import com.ohunag.xposed_main.viewTree.ViewTreeUtil;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainWindowUI {
-    private ViewGroup rootView;
+    private HookRootFrameLayout rootView;
     private Activity activity;
     private WindowManager.LayoutParams layoutParams;
-    private boolean isShow = false;
+    public boolean isShow = false;
     private boolean isInit = false;
-    private ViewGroup ll_activity;
-    private TextView tv_packageName;
-    private TextView tv_activityName;
-    private TextView tv_viewClick;
-    private TextView tv_viewClick_all;
-    private TextView tv_close;
-    private TextView tv_getRootView;
+    private ViewGroup ll_activity_xposed;
+    private TextView tv_packageName_xposed;
+    private TextView tv_activityName_xposed;
+    private TextView tv_selectView_xposed;
+    private TextView tv_viewClick_xposed;
+    private TextView tv_viewClick_xposed_all;
+    private TextView tv_close_xposed;
+    private TextView tv_getRootView_xposed;
+
+    private WeakReference<View> selectView;//选中的View
 
 
-    private ViewGroup fl_touch;
+    private ViewGroup fl_touch_xposed;
 
-    private ViewGroup ll_clickView;
-    private TextView tv_process_clickView;
-    private TextView tv_openInLayout_clickView;
-    private TextView tv_lastNode_clickView;
-    private TextView tv_nextNode_clickView;
-    private TextView tv_viewName_clickView;
-    private TextView tv_close_clickView;
-    private TextView tv_show_clickView;
+    private ViewGroup ll_clickView_xposed;
+    private TextView tv_process_clickView_xposed;
+    private TextView tv_openInLayout_clickView_xposed;
+    private TextView tv_lastNode_clickView_xposed;
+    private TextView tv_nextNode_clickView_xposed;
+    private TextView tv_viewName_clickView_xposed;
+    private TextView tv_close_xposed_clickView;
+    private TextView tv_show_clickView_xposed;
     private DrawRectView drv_main_view;
 
-    private ViewGroup ll_getRoot;
-    private TextView tv_parentList_viewTree;
-    private TextView tv_parentNode_viewTree;
-    private TextView tv_childNode_viewTree;
-    private ListView listView_viewTree;
-    private TextView tv_close_viewTree;
-    private TextView tv_show_viewTree;
+    private ViewGroup ll_getRoot_xposed;
+    private TextView tv_parentList_viewTree_xposed;
+    private TextView tv_parentNode_viewTree_xposed;
+    private TextView tv_childNode_viewTree_xposed;
+    private ListView listView_viewTree_xposed;
+    private TextView tv_close_xposed_viewTree_xposed;
+    private TextView tv_show_viewTree_xposed;
 
 
-    private ViewGroup ll_viewMsg;
+    private ViewGroup ll_viewMsg_xposed;
     private MyListView listView_viewMsg;
-    private TextView tv_close_viewMsg;
-    private TextView tv_edit_viewMsg;
+    private TextView tv_close_xposed_viewMsg;
+    private TextView tv_edit_viewMsg_xposed;
     private ViewMsgEditDialog viewMsgEditDialog;
 
 
+    private ViewGroup ll_selectView_xposed;
+    private TextView tv_select_activity_selectView_xposed;
+    private ListView listView_selectView_xposed;
+    private TextView tv_close_xposed_selectView;
+
+
     private ViewNode rootViewNode;
-    private List<ViewNode> nodes = new ArrayList<>();
-    private boolean hideViewIsShow=false;//隐藏的View是否展示
+    private final List<ViewNode> nodes = new ArrayList<>();
+    private boolean hideViewIsShow = false;//隐藏的View是否展示
 
     public MainWindowUI(Activity activity) {
         this.activity = activity;
@@ -110,29 +117,33 @@ public class MainWindowUI {
      */
     private void setSate(int sate) {
 
-        ll_activity.setVisibility(View.GONE);
-        ll_clickView.setVisibility(View.GONE);
-        fl_touch.setVisibility(View.GONE);
+        ll_activity_xposed.setVisibility(View.GONE);
+        ll_clickView_xposed.setVisibility(View.GONE);
+        fl_touch_xposed.setVisibility(View.GONE);
         drv_main_view.setVisibility(View.GONE);
-        ll_viewMsg.setVisibility(View.GONE);
-        ll_getRoot.setVisibility(View.GONE);
-        if (sate == 0) {
-            ll_activity.setVisibility(View.VISIBLE);
-        } else if (sate == 1) {
-            fl_touch.setVisibility(View.VISIBLE);
-        } else if (sate == 2) {
-            ll_clickView.setVisibility(View.VISIBLE);
+        ll_viewMsg_xposed.setVisibility(View.GONE);
+        ll_getRoot_xposed.setVisibility(View.GONE);
+        ll_selectView_xposed.setVisibility(View.GONE);
+        if (sate == 0) { //默认状态
+            ll_activity_xposed.setVisibility(View.VISIBLE);
+        } else if (sate == 1) { //点击位置界面
+            fl_touch_xposed.setVisibility(View.VISIBLE);
+        } else if (sate == 2) {// 点击位置的viewNode界面
+            ll_clickView_xposed.setVisibility(View.VISIBLE);
             drv_main_view.setVisibility(View.VISIBLE);
-        } else if (sate == 3) {
-            ll_viewMsg.setVisibility(View.VISIBLE);
+        } else if (sate == 3) {// viewNode信息界面
+            ll_viewMsg_xposed.setVisibility(View.VISIBLE);
             drv_main_view.setVisibility(View.VISIBLE);
-        } else if (sate == 4) {
-            ll_getRoot.setVisibility(View.VISIBLE);
+        } else if (sate == 4) {// viewNode布局界面
+            ll_getRoot_xposed.setVisibility(View.VISIBLE);
             drv_main_view.setVisibility(View.VISIBLE);
+        } else if (sate == 5) { //选择viewRoot
+            ll_selectView_xposed.setVisibility(View.VISIBLE);
         }
     }
 
-       private AlertDialog mainDialog;
+
+
     private void init() {
 
         rootView = new HookRootFrameLayout(activity);
@@ -143,17 +154,17 @@ public class MainWindowUI {
         layoutParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT,
                 WindowManager.LayoutParams.TYPE_APPLICATION,
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, PixelFormat.TRANSLUCENT);
-        layoutParams.softInputMode =  WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE;
+        layoutParams.softInputMode = WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE;
         if (UiHook.xpRes == null) {
             return;
         }
-        ViewGroup mainWindow = (ViewGroup) LayoutInflater.from(activity).inflate(UiHook.xpRes.getLayout(R.layout.ui_main_window), null, false);
+        ViewGroup mainWindow = (ViewGroup) LayoutInflater.from(activity).inflate(UiHook.xpRes.getLayout(R.layout.ui_main_window_xposed), null, false);
         rootView.addView(mainWindow);
-        fl_touch = mainWindow.findViewById(R.id.fl_touch);
+        fl_touch_xposed = mainWindow.findViewWithTag("fl_touch_xposed");
         drv_main_view = new DrawRectView(activity);
         drv_main_view.setBackgroundColor(0x20000000);
         mainWindow.addView(drv_main_view, 0);
-        fl_touch.setOnTouchListener(new View.OnTouchListener() {
+        fl_touch_xposed.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
@@ -171,23 +182,38 @@ public class MainWindowUI {
                 return false;
             }
         });
-        init_ll_activity();
+        init_ll_activity_xposed();
         init_clickView(mainWindow);
-        init_ll_viewMsg(mainWindow);
-        init_ll_getRoot(mainWindow);
+        init_ll_viewMsg_xposed(mainWindow);
+        init_ll_getRoot_xposed(mainWindow);
+        init_ll_selectView_xposed(mainWindow);
     }
 
-    private void init_ll_getRoot(ViewGroup mainWindow) {
-        View inflate = LayoutInflater.from(activity).inflate(UiHook.xpRes.getLayout(R.layout.ui_main_window_view_tree), null, false);
-        ll_getRoot = mainWindow.findViewById(R.id.ll_getRoot);
-        ll_getRoot.addView(inflate);
-        tv_parentList_viewTree = inflate.findViewById(R.id.tv_parentList_viewTree);
-        tv_parentNode_viewTree = inflate.findViewById(R.id.tv_parentNode_viewTree);
-        tv_childNode_viewTree = inflate.findViewById(R.id.tv_childNode_viewTree);
-        listView_viewTree = inflate.findViewById(R.id.listView_viewTree);
-        tv_close_viewTree = inflate.findViewById(R.id.tv_close_viewTree);
-        tv_show_viewTree = inflate.findViewById(R.id.tv_show_viewTree);
-        tv_close_viewTree.setOnClickListener(new View.OnClickListener() {
+    private void init_ll_selectView_xposed(ViewGroup mainWindow) {
+        View inflate = LayoutInflater.from(activity).inflate(UiHook.xpRes.getLayout(R.layout.ui_main_window_select_view_xposed), null, false);
+        ll_selectView_xposed = mainWindow.findViewWithTag("ll_selectView_xposed");
+        ll_selectView_xposed.addView(inflate);
+        tv_select_activity_selectView_xposed = inflate.findViewWithTag("tv_select_activity_selectView_xposed");
+        listView_selectView_xposed = inflate.findViewWithTag("listView_selectView_xposed");
+        tv_close_xposed_selectView = inflate.findViewWithTag("tv_close_xposed_selectView");
+        tv_select_activity_selectView_xposed.setOnClickListener(v -> {
+            selectViewRoot(null);
+            setSate(0);
+        });
+        tv_close_xposed_selectView.setOnClickListener(v -> setSate(0));
+    }
+
+    private void init_ll_getRoot_xposed(ViewGroup mainWindow) {
+        View inflate = LayoutInflater.from(activity).inflate(UiHook.xpRes.getLayout(R.layout.ui_main_window_view_tree_xposed), null, false);
+        ll_getRoot_xposed = mainWindow.findViewWithTag("ll_getRoot_xposed");
+        ll_getRoot_xposed.addView(inflate);
+        tv_parentList_viewTree_xposed = inflate.findViewWithTag("tv_parentList_viewTree_xposed");
+        tv_parentNode_viewTree_xposed = inflate.findViewWithTag("tv_parentNode_viewTree_xposed");
+        tv_childNode_viewTree_xposed = inflate.findViewWithTag("tv_childNode_viewTree_xposed");
+        listView_viewTree_xposed = inflate.findViewWithTag("listView_viewTree_xposed");
+        tv_close_xposed_viewTree_xposed = inflate.findViewWithTag("tv_close_xposed_viewTree_xposed");
+        tv_show_viewTree_xposed = inflate.findViewWithTag("tv_show_viewTree_xposed");
+        tv_close_xposed_viewTree_xposed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 setSate(0);
@@ -196,16 +222,17 @@ public class MainWindowUI {
 
     }
 
-    private void init_ll_viewMsg(ViewGroup mainWindow) {
-        View inflate = LayoutInflater.from(activity).inflate(UiHook.xpRes.getLayout(R.layout.ui_main_window_view_msg), null, false);
-        ll_viewMsg = mainWindow.findViewById(R.id.ll_viewMsg);
-        ll_viewMsg.addView(inflate);
-        ViewGroup srv_viewMsg = ll_viewMsg.findViewById(R.id.scv_viewMsg);
+    private void init_ll_viewMsg_xposed(ViewGroup mainWindow) {
+
+        View inflate = LayoutInflater.from(activity).inflate(UiHook.xpRes.getLayout(R.layout.ui_main_window_view_msg_xposed), null, false);
+        ll_viewMsg_xposed = mainWindow.findViewWithTag("ll_viewMsg_xposed");
+        ll_viewMsg_xposed.addView(inflate);
+        ViewGroup srv_viewMsg = ll_viewMsg_xposed.findViewWithTag("scv_viewMsg_xposed");
         listView_viewMsg = new MyListView(activity);
         srv_viewMsg.addView(listView_viewMsg, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        tv_close_viewMsg = ll_viewMsg.findViewById(R.id.tv_close_viewMsg);
-        tv_edit_viewMsg = ll_viewMsg.findViewById(R.id.tv_edit_viewMsg);
-        tv_close_viewMsg.setOnClickListener(new View.OnClickListener() {
+        tv_close_xposed_viewMsg = ll_viewMsg_xposed.findViewWithTag("tv_close_xposed_viewMsg");
+        tv_edit_viewMsg_xposed = ll_viewMsg_xposed.findViewWithTag("tv_edit_viewMsg_xposed");
+        tv_close_xposed_viewMsg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 hide();
@@ -213,25 +240,52 @@ public class MainWindowUI {
         });
     }
 
-
-    private void set_ll_viewMsg(ViewNode viewNode, View.OnClickListener listener) {
-
-        listView_viewMsg.setAdapter(new ViewMsgAdapter(viewNode));
-        tv_edit_viewMsg.setVisibility(View.VISIBLE);
-        tv_edit_viewMsg.setOnClickListener(new View.OnClickListener() {
+    private void set_ll_selectView_xposed(){
+        ViewRootListAdapter viewRootListAdapter=new ViewRootListAdapter(UiHook.rootViews);
+        listView_selectView_xposed.setAdapter(viewRootListAdapter);
+        viewRootListAdapter.setListener(new ViewRootListAdapter.Listener() {
             @Override
-            public void onClick(View v) {
-                set_ll_viewMsg_edit(viewNode, listener);
+            public void onShow(WeakReference<View> weakReference) {
+                if (weakReference.get()!=null){
+
+                }else {
+                    ToastUtil.show(activity,"当前ViewRoot不存在");
+                    set_ll_selectView_xposed();
+                }
+            }
+
+            @Override
+            public void onSelect(WeakReference<View> weakReference) {
+                if (weakReference.get()!=null){
+                    selectViewRoot(weakReference.get());
+                    setSate(0);
+                }else {
+                    ToastUtil.show(activity,"当前ViewRoot不存在");
+                    set_ll_selectView_xposed();
+                }
+
             }
         });
-        tv_close_viewMsg.setOnClickListener(listener);
+
+    }
+    private void set_ll_viewMsg_xposed(ViewNode viewNode, View.OnClickListener listener) {
+
+        listView_viewMsg.setAdapter(new ViewMsgAdapter(viewNode));
+        tv_edit_viewMsg_xposed.setVisibility(View.VISIBLE);
+        tv_edit_viewMsg_xposed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                set_ll_viewMsg_xposed_edit(viewNode, listener);
+            }
+        });
+        tv_close_xposed_viewMsg.setOnClickListener(listener);
     }
 
-    private void set_ll_viewMsg_edit(ViewNode viewNode, View.OnClickListener listener) {
-        if (viewMsgEditDialog==null){
-            viewMsgEditDialog=new ViewMsgEditDialog(activity);
+    private void set_ll_viewMsg_xposed_edit(ViewNode viewNode, View.OnClickListener listener) {
+        if (viewMsgEditDialog == null) {
+            viewMsgEditDialog = new ViewMsgEditDialog(activity);
         }
-        viewMsgEditDialog.set_ll_viewMsg_edit(viewNode);
+        viewMsgEditDialog.set_ll_viewMsg_xposed_edit(viewNode);
         viewMsgEditDialog.show();
     }
 
@@ -254,7 +308,7 @@ public class MainWindowUI {
             };
             if (!hideViewIsShow) {
                 rootViewNode.afterTraversalVisibleView(foreachCallBack);
-            }else {
+            } else {
                 rootViewNode.afterTraversal(foreachCallBack);
             }
         }
@@ -262,42 +316,51 @@ public class MainWindowUI {
             Toast.makeText(activity, "点击的位置没有找到View", Toast.LENGTH_LONG).show();
             setSate(0);
         } else {
-            set_ll_clickView(0);
+            set_ll_clickView_xposed(0);
             setSate(2);
         }
     }
 
 
-    private void init_ll_activity() {
-        ll_activity = rootView.findViewById(R.id.ll_activity);
-        tv_packageName = rootView.findViewById(R.id.tv_packageName);
-        tv_activityName = rootView.findViewById(R.id.tv_activityName);
-        tv_viewClick = rootView.findViewById(R.id.tv_viewClick);
-        tv_viewClick_all = rootView.findViewById(R.id.tv_viewClick_all);
-        tv_close = rootView.findViewById(R.id.tv_close);
-        tv_getRootView = rootView.findViewById(R.id.tv_getRootView);
-        tv_activityName.setText(activity.getClass().getName());
-        tv_packageName.setText("包名:" + activity.getPackageName());
-        tv_viewClick.setOnClickListener(new View.OnClickListener() {
+    private void init_ll_activity_xposed() {
+        ll_activity_xposed = rootView.findViewWithTag("ll_activity_xposed");
+        tv_packageName_xposed = rootView.findViewWithTag("tv_packageName_xposed");
+        tv_activityName_xposed = rootView.findViewWithTag("tv_activityName_xposed");
+        tv_selectView_xposed = rootView.findViewWithTag("tv_selectView_xposed");
+        tv_viewClick_xposed = rootView.findViewWithTag("tv_viewClick_xposed");
+        tv_viewClick_xposed_all = rootView.findViewWithTag("tv_viewClick_xposed_all");
+        tv_close_xposed = rootView.findViewWithTag("tv_close_xposed");
+        tv_getRootView_xposed = rootView.findViewWithTag("tv_getRootView_xposed");
+        tv_activityName_xposed.setText(activity.getClass().getName());
+        tv_packageName_xposed.setText("包名:" + activity.getPackageName());
+        tv_selectView_xposed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                rootViewNode = ViewTreeUtil.getViewNode(activity);
-                hideViewIsShow=false;
+                set_ll_selectView_xposed();
+                setSate(5);
+            }
+        });
+        tv_viewClick_xposed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                refreshRootViewNode();
+                hideViewIsShow = false;
                 setSate(1);
             }
         });
-        tv_viewClick_all.setOnClickListener(new View.OnClickListener() {
+
+        tv_viewClick_xposed_all.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                rootViewNode = ViewTreeUtil.getViewNode(activity);
-                hideViewIsShow=true;
+                refreshRootViewNode();
+                hideViewIsShow = true;
                 setSate(1);
             }
         });
-        tv_getRootView.setOnClickListener(new View.OnClickListener() {
+        tv_getRootView_xposed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                rootViewNode = ViewTreeUtil.getViewNode(activity);
+                refreshRootViewNode();
                 set_ll_goRoot(rootViewNode, 0, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -307,24 +370,49 @@ public class MainWindowUI {
                 setSate(4);
             }
         });
-        tv_close.setOnClickListener(v -> {
+        tv_close_xposed.setOnClickListener(v -> {
             hide();
         });
     }
 
-    private void init_clickView(ViewGroup mainWindow) {
-        View inflate = LayoutInflater.from(activity).inflate(UiHook.xpRes.getLayout(R.layout.ui_main_window_click_view), null, false);
+    private void refreshRootViewNode() {
+        if (selectView == null) {
+            rootViewNode = ViewTreeUtil.getViewNode(activity);
+        } else {
+            if (selectView.get() != null) {
+                rootViewNode = ViewTreeUtil.getViewNode(selectView.get());
+            } else {
+                ToastUtil.show(activity,"当前ViewRoot不存在,自动选择activity");
+                selectViewRoot(null);
+                rootViewNode = ViewTreeUtil.getViewNode(activity);
+            }
+        }
+    }
 
-        ll_clickView = mainWindow.findViewById(R.id.ll_clickView);
-        ll_clickView.addView(inflate);
-        tv_process_clickView = mainWindow.findViewById(R.id.tv_process_clickView);
-        tv_openInLayout_clickView = mainWindow.findViewById(R.id.tv_openInLayout_clickView);
-        tv_lastNode_clickView = mainWindow.findViewById(R.id.tv_lastNode_clickView);
-        tv_nextNode_clickView = mainWindow.findViewById(R.id.tv_nextNode_clickView);
-        tv_viewName_clickView = mainWindow.findViewById(R.id.tv_viewName_clickView);
-        tv_close_clickView = mainWindow.findViewById(R.id.tv_close_clickView);
-        tv_show_clickView = mainWindow.findViewById(R.id.tv_show_clickView);
-        tv_close_clickView.setOnClickListener(new View.OnClickListener() {
+    private void selectViewRoot(View view) {
+        if (view == null) {
+            tv_selectView_xposed.setText("选中:当前activity");
+            selectView = null;
+        } else {
+            tv_selectView_xposed.setText("选中:" + view.toString());
+        }
+        selectView = new WeakReference<>(view);
+    }
+
+    private void init_clickView(ViewGroup mainWindow) {
+        View inflate = LayoutInflater.from(activity.getApplicationContext()).inflate(UiHook.xpRes.getLayout(R.layout.ui_main_window_click_view_xposed), null, false);
+
+        ll_clickView_xposed = mainWindow.findViewWithTag("ll_clickView_xposed");
+        ll_clickView_xposed.addView(inflate);
+        tv_process_clickView_xposed = inflate.findViewWithTag("tv_process_clickView_xposed");
+        tv_openInLayout_clickView_xposed = inflate.findViewWithTag("tv_openInLayout_clickView_xposed");
+        tv_lastNode_clickView_xposed = inflate.findViewWithTag("tv_lastNode_clickView_xposed");
+        tv_nextNode_clickView_xposed = inflate.findViewWithTag("tv_nextNode_clickView_xposed");
+        tv_viewName_clickView_xposed = inflate.findViewWithTag("tv_viewName_clickView_xposed");
+
+        tv_close_xposed_clickView = inflate.findViewWithTag("tv_close_xposed_clickView");
+        tv_show_clickView_xposed = inflate.findViewWithTag("tv_show_clickView_xposed");
+        tv_close_xposed_clickView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 setSate(0);
@@ -333,16 +421,16 @@ public class MainWindowUI {
     }
 
     @SuppressLint("SetTextI18n")
-    private void set_ll_clickView(int position) {
+    private void set_ll_clickView_xposed(int position) {
         if (position >= nodes.size() || position < 0) {
             return;
         }
         View view = nodes.get(position).getView();
-        tv_process_clickView.setText("进度" + position + "/" + nodes.size() + "  "
+        tv_process_clickView_xposed.setText("进度" + position + "/" + nodes.size() + "  "
                 + ViewTreeUtil.getViewType(view) + " Visibility:" + getVisibility(view.getVisibility())
                 + " Alpha:" + view.getAlpha());
-        tv_viewName_clickView.setText(nodes.get(position).getViewClassName());
-        tv_openInLayout_clickView.setOnClickListener(new View.OnClickListener() {
+        tv_viewName_clickView_xposed.setText(nodes.get(position).getViewClassName());
+        tv_openInLayout_clickView_xposed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (nodes.get(position) != null) {
@@ -351,7 +439,7 @@ public class MainWindowUI {
                         @Override
                         public void onClick(View v) {
                             setSate(2);
-                            set_ll_clickView(position);
+                            set_ll_clickView_xposed(position);
                         }
                     });
                 }
@@ -359,34 +447,34 @@ public class MainWindowUI {
         });
         drv_main_view.clear();
         showViewRect(view);
-        tv_lastNode_clickView.setOnClickListener(new View.OnClickListener() {
+        tv_lastNode_clickView_xposed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int p = position - 1;
                 if (p < 0) {
                     p = nodes.size() - 1;
                 }
-                set_ll_clickView(p);
+                set_ll_clickView_xposed(p);
             }
         });
-        tv_nextNode_clickView.setOnClickListener(new View.OnClickListener() {
+        tv_nextNode_clickView_xposed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int p = position + 1;
                 if (p >= nodes.size()) {
                     p = 0;
                 }
-                set_ll_clickView(p);
+                set_ll_clickView_xposed(p);
             }
         });
-        tv_show_clickView.setOnClickListener(new View.OnClickListener() {
+        tv_show_clickView_xposed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 setSate(3);
-                set_ll_viewMsg(nodes.get(position), new View.OnClickListener() {
+                set_ll_viewMsg_xposed(nodes.get(position), new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        set_ll_clickView(position);
+                        set_ll_clickView_xposed(position);
                         setSate(2);
                     }
                 });
@@ -404,9 +492,9 @@ public class MainWindowUI {
 
     private void set_ll_goRoot(ViewNode viewNode, int selectId, View.OnClickListener listener) {
         ViewTreeAdapter viewTreeAdapter = new ViewTreeAdapter(viewNode, selectId);
-        listView_viewTree.setAdapter(viewTreeAdapter);
+        listView_viewTree_xposed.setAdapter(viewTreeAdapter);
         showViewRect(viewNode.getView());
-        tv_parentList_viewTree.setText(viewNode.getViewNodePath());
+        tv_parentList_viewTree_xposed.setText(viewNode.getViewNodePath());
         viewTreeAdapter.setListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -416,7 +504,7 @@ public class MainWindowUI {
                 }
             }
         });
-        tv_parentNode_viewTree.setOnClickListener(new View.OnClickListener() {
+        tv_parentNode_viewTree_xposed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (viewNode.getParent() != null) {
@@ -425,7 +513,7 @@ public class MainWindowUI {
                 }
             }
         });
-        tv_childNode_viewTree.setOnClickListener(new View.OnClickListener() {
+        tv_childNode_viewTree_xposed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (viewTreeAdapter.getSelectNode() == null || viewTreeAdapter.getSelectNode() == viewNode) {
@@ -434,11 +522,11 @@ public class MainWindowUI {
                 set_ll_goRoot(viewTreeAdapter.getSelectNode(), 0, listener);
             }
         });
-        tv_show_viewTree.setOnClickListener(new View.OnClickListener() {
+        tv_show_viewTree_xposed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 setSate(3);
-                set_ll_viewMsg(viewTreeAdapter.getSelectNode(), new View.OnClickListener() {
+                set_ll_viewMsg_xposed(viewTreeAdapter.getSelectNode(), new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         set_ll_goRoot(viewNode, viewTreeAdapter.getSelectId(), listener);
@@ -447,7 +535,7 @@ public class MainWindowUI {
                 });
             }
         });
-        tv_close_viewTree.setOnClickListener(listener);
+        tv_close_xposed_viewTree_xposed.setOnClickListener(listener);
 
     }
 
@@ -462,14 +550,6 @@ public class MainWindowUI {
         return "UnKnow";
     }
 
-
-    public IBinder getDialogToken() {
-        EditText editText = new EditText(activity);
-        AlertDialog alertDialog = new AlertDialog.Builder(activity).setTitle("asaa")
-                .setView(editText)
-                .create();
-        return alertDialog.getWindow().getDecorView().getWindowToken();
-    }
 
     public WindowManager getWindowManager(Activity context) {
         WindowManager systemService = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);

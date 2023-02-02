@@ -33,13 +33,16 @@ public class ViewTreeUtil {
 
     public static ViewNode getViewNode(Activity activity){
         View decorView = activity.getWindow().getDecorView();
+        return getViewNode(decorView);
+    }
+
+    public static ViewNode getViewNode(View view){
         List<ViewNode.NodeValueIntercept> data=new ArrayList<>();
         data.add(new ViewNodeValueIntercept());
         data.add(new TextViewNodeValueIntercept());
         data.add(new WebViewNodeValueIntercept());
-        return new ViewNode(decorView,data);
+        return new ViewNode(view,data);
     }
-
 
     public static List<IViewEdit> getIViewEdit(View view){
         List<IViewEditGroup> iViewEditGroups=new ArrayList<>();

@@ -7,6 +7,18 @@
     android:gravity="center"
     android:orientation="vertical"
     android:padding="10dp">
+
+    <ScrollView
+        android:tag="scv_viewMsg_xposed"
+        android:layout_width="match_parent"
+        android:layout_height="400dp">
+
+<!--        <com.ohunag.xposed_main.view.MyListView-->
+<!--            android:tag="listView_viewMsg"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content" />-->
+    </ScrollView>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -15,7 +27,7 @@
 
 
         <TextView
-            android:id="@+id/tv_close_viewMsg"
+            android:tag="tv_close_xposed_viewMsg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -27,7 +39,7 @@
             android:textSize="18dp" />
 
         <TextView
-            android:id="@+id/tv_edit_viewMsg"
+            android:tag="tv_edit_viewMsg_xposed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -39,16 +51,4 @@
             android:visibility="gone"
             tools:visibility="visible" />
     </LinearLayout>
-    <ScrollView
-        android:id="@+id/scv_viewMsg"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-<!--        <com.ohunag.xposed_main.view.MyListView-->
-<!--            android:id="@+id/listView_viewMsg"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content" />-->
-    </ScrollView>
-
-
 </LinearLayout>

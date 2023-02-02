@@ -5,15 +5,30 @@
       <map>
         <entry key="..\:/Users/ali213/AndroidStudioProjects/activityUiHook/xposed_main/src/main/res/drawable/btn_backgroud_wight_aaa.xml" value="0.116" />
         <entry key="..\:/Users/ali213/AndroidStudioProjects/activityUiHook/xposed_main/src/main/res/drawable/btn_banground.xml" value="0.116" />
+        <entry key="..\:/Users/ali213/AndroidStudioProjects/activityUiHook/xposed_main/src/main/res/layout-land/ui_main_window_select_view.xml" value="0.14322916666666666" />
+        <entry key="..\:/Users/ali213/AndroidStudioProjects/activityUiHook/xposed_main/src/main/res/layout-land/ui_main_window_select_view_xposed.xml" value="0.2685546875" />
         <entry key="..\:/Users/ali213/AndroidStudioProjects/activityUiHook/xposed_main/src/main/res/layout-land/ui_main_window_view_msg.xml" value="0.1" />
+        <entry key="..\:/Users/ali213/AndroidStudioProjects/activityUiHook/xposed_main/src/main/res/layout-land/ui_main_window_view_msg_xposed.xml" value="0.14322916666666666" />
         <entry key="..\:/Users/ali213/AndroidStudioProjects/activityUiHook/xposed_main/src/main/res/layout-land/ui_main_window_view_tree.xml" value="0.1" />
+        <entry key="..\:/Users/ali213/AndroidStudioProjects/activityUiHook/xposed_main/src/main/res/layout-land/ui_main_window_view_tree_xposed.xml" value="0.14322916666666666" />
         <entry key="..\:/Users/ali213/AndroidStudioProjects/activityUiHook/xposed_main/src/main/res/layout/item_view_edit.xml" value="0.13496376811594202" />
+        <entry key="..\:/Users/ali213/AndroidStudioProjects/activityUiHook/xposed_main/src/main/res/layout/item_view_edit_xposed.xml" value="0.1" />
         <entry key="..\:/Users/ali213/AndroidStudioProjects/activityUiHook/xposed_main/src/main/res/layout/item_view_msg.xml" value="0.22" />
+        <entry key="..\:/Users/ali213/AndroidStudioProjects/activityUiHook/xposed_main/src/main/res/layout/item_view_msg_xposed.xml" value="0.1" />
+        <entry key="..\:/Users/ali213/AndroidStudioProjects/activityUiHook/xposed_main/src/main/res/layout/item_view_root_list.xml" value="0.25" />
+        <entry key="..\:/Users/ali213/AndroidStudioProjects/activityUiHook/xposed_main/src/main/res/layout/item_view_root_list_xposed.xml" value="0.1" />
         <entry key="..\:/Users/ali213/AndroidStudioProjects/activityUiHook/xposed_main/src/main/res/layout/item_view_tree.xml" value="0.1956521739130435" />
+        <entry key="..\:/Users/ali213/AndroidStudioProjects/activityUiHook/xposed_main/src/main/res/layout/item_view_tree_xposed.xml" value="0.12639311043566362" />
         <entry key="..\:/Users/ali213/AndroidStudioProjects/activityUiHook/xposed_main/src/main/res/layout/ui_main_window.xml" value="0.31952662721893493" />
         <entry key="..\:/Users/ali213/AndroidStudioProjects/activityUiHook/xposed_main/src/main/res/layout/ui_main_window_click_view.xml" value="0.1956521739130435" />
+        <entry key="..\:/Users/ali213/AndroidStudioProjects/activityUiHook/xposed_main/src/main/res/layout/ui_main_window_click_view_xposed.xml" value="0.12639311043566362" />
+        <entry key="..\:/Users/ali213/AndroidStudioProjects/activityUiHook/xposed_main/src/main/res/layout/ui_main_window_select_view.xml" value="0.12588652482269502" />
+        <entry key="..\:/Users/ali213/AndroidStudioProjects/activityUiHook/xposed_main/src/main/res/layout/ui_main_window_select_view_xposed.xml" value="0.12639311043566362" />
         <entry key="..\:/Users/ali213/AndroidStudioProjects/activityUiHook/xposed_main/src/main/res/layout/ui_main_window_view_msg.xml" value="0.1956521739130435" />
+        <entry key="..\:/Users/ali213/AndroidStudioProjects/activityUiHook/xposed_main/src/main/res/layout/ui_main_window_view_msg_xposed.xml" value="0.12639311043566362" />
         <entry key="..\:/Users/ali213/AndroidStudioProjects/activityUiHook/xposed_main/src/main/res/layout/ui_main_window_view_tree.xml" value="0.1956521739130435" />
+        <entry key="..\:/Users/ali213/AndroidStudioProjects/activityUiHook/xposed_main/src/main/res/layout/ui_main_window_view_tree_xposed.xml" value="0.12639311043566362" />
+        <entry key="..\:/Users/ali213/AndroidStudioProjects/activityUiHook/xposed_main/src/main/res/layout/ui_main_window_xposed.xml" value="0.12639311043566362" />
       </map>
     </option>
   </component>

@@ -70,10 +70,10 @@ public class ViewTreeAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View view=convertView;
         if (view==null){
-            view = LayoutInflater.from(parent.getContext()).inflate(UiHook.xpRes.getLayout(R.layout.item_view_tree), parent, false);
+            view = LayoutInflater.from(parent.getContext()).inflate(UiHook.xpRes.getLayout(R.layout.item_view_tree_xposed), parent, false);
         }
 
-        TextView textView=view.findViewById(R.id.tv_name_item_viewTree);
+        TextView textView=view.findViewWithTag("tv_name_item_viewTree_xposed");
         ViewNode item = (ViewNode) getItem(position);
         if (position==0){
             textView.setText(item.getViewClassName());
