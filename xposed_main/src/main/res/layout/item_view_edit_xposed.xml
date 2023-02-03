@@ -39,6 +39,7 @@
             android:minHeight="40dp"
             android:tag="tv_value_view_edit_xposed"
             android:text=""
+            android:background="#aa000000"
             android:textColor="#fff"
             android:textColorHint="#aaa"
             android:textIsSelectable="true"
