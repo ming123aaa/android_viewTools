@@ -5,6 +5,7 @@ import android.view.View;
 
 import com.ohunag.xposed_main.ui.MainWindowUI;
 
+import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,7 +24,7 @@ public class FloatViewManager {
 
     Map<Activity, FloatViewHelper> map = new HashMap<>();
     Map<Activity, MainWindowUI> mainWindowUIMap = new HashMap<>();
-
+    private WeakReference<Activity> resumeActivity=null;
 
     public FloatViewHelper attach(Activity activity) {
         FloatViewHelper floatViewHelper = null;
@@ -52,6 +53,7 @@ public class FloatViewManager {
     }
 
     public FloatViewHelper show(Activity activity) {
+        resumeActivity=new WeakReference<>(activity);
         FloatViewHelper floatViewHelper = null;
         if (map.containsKey(activity)) {
             floatViewHelper = map.get(activity);
@@ -64,6 +66,7 @@ public class FloatViewManager {
     }
 
     public FloatViewHelper hide(Activity activity) {
+        resumeActivity=null;
         FloatViewHelper floatViewHelper = null;
         if (map.containsKey(activity)) {
             floatViewHelper = map.get(activity);
@@ -76,14 +79,28 @@ public class FloatViewManager {
     }
 
     public void onDestroy(Activity activity) {
+        resumeActivity=null;
         if (mainWindowUIMap.containsKey(activity)) {
             mainWindowUIMap.remove(activity).hide();
         }
         if (map.containsKey(activity)) {
             map.remove(activity).hide();
         }
+    }
 
-
+    /**
+     * 弹出dialog 会导致floatView不在顶部  需要调用此方法
+     */
+    public void floatViewToTop(){
+        if (resumeActivity!=null&&resumeActivity.get()!=null){
+            if (map.containsKey(resumeActivity.get())) {
+                FloatViewHelper floatViewHelper = map.get(resumeActivity.get());
+                if (floatViewHelper.isShow) {
+                    hide(resumeActivity.get());
+                    show(resumeActivity.get());
+                }
+            }
+        }
     }
 
 }

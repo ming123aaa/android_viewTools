@@ -7,7 +7,14 @@
     android:gravity="center"
     android:orientation="vertical"
     android:padding="10dp">
-
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:minHeight="40dp"
+        android:text="view信息"
+        android:textColor="#fff"
+        android:textSize="18dp" />
     <ScrollView
         android:tag="scv_viewMsg_xposed"
         android:layout_width="match_parent"

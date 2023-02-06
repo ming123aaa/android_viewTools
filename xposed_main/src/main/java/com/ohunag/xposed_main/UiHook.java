@@ -109,6 +109,7 @@ public class UiHook implements IXposedHookLoadPackage, IXposedHookZygoteInit, IX
                                 if (!rootViews.contains(view)) {
                                     rootViews.add(0, view);
                                 }
+//                                FloatViewManager.getInstance().floatViewToTop();
                             }
                             break;
 
