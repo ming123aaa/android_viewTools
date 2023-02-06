@@ -3,20 +3,22 @@ package com.ohunag.xposed_main.ui;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.PixelFormat;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ohunag.xposed_main.IContext;
 import com.ohunag.xposed_main.R;
 import com.ohunag.xposed_main.UiHook;
 import com.ohunag.xposed_main.util.ToastUtil;
+import com.ohunag.xposed_main.util.UiUtil;
 import com.ohunag.xposed_main.view.DrawRectView;
 import com.ohunag.xposed_main.view.HookRootFrameLayout;
 import com.ohunag.xposed_main.view.MyListView;
@@ -70,6 +72,8 @@ public class MainWindowUI {
     private MyListView listView_viewMsg;
     private TextView tv_close_xposed_viewMsg;
     private TextView tv_edit_viewMsg_xposed;
+    private TextView tv_show_xposed_viewMsg;
+
     private ViewMsgEditDialog viewMsgEditDialog;
 
 
@@ -82,6 +86,10 @@ public class MainWindowUI {
     private ViewNode rootViewNode;
     private final List<ViewNode> nodes = new ArrayList<>();
     private boolean hideViewIsShow = false;//隐藏的View是否展示
+
+    private ViewGroup ll_imgView_xposed;
+    private ImageView iv_show;
+    private TextView tv_close_xposed_imgView;
 
     public MainWindowUI(Activity activity) {
         this.activity = activity;
@@ -124,6 +132,7 @@ public class MainWindowUI {
         ll_viewMsg_xposed.setVisibility(View.GONE);
         ll_getRoot_xposed.setVisibility(View.GONE);
         ll_selectView_xposed.setVisibility(View.GONE);
+        ll_imgView_xposed.setVisibility(View.GONE);
         if (sate == 0) { //默认状态
             ll_activity_xposed.setVisibility(View.VISIBLE);
         } else if (sate == 1) { //点击位置界面
@@ -139,9 +148,10 @@ public class MainWindowUI {
             drv_main_view.setVisibility(View.VISIBLE);
         } else if (sate == 5) { //选择viewRoot
             ll_selectView_xposed.setVisibility(View.VISIBLE);
+        } else if (sate == 6) {//显示View预览
+            ll_imgView_xposed.setVisibility(View.VISIBLE);
         }
     }
-
 
 
     private void init() {
@@ -187,6 +197,19 @@ public class MainWindowUI {
         init_ll_viewMsg_xposed(mainWindow);
         init_ll_getRoot_xposed(mainWindow);
         init_ll_selectView_xposed(mainWindow);
+        init_ll_imgView_xposed(mainWindow);
+    }
+
+    private void init_ll_imgView_xposed(ViewGroup mainWindow) {
+        View inflate = LayoutInflater.from(activity).inflate(UiHook.xpRes.getLayout(R.layout.ui_main_window_img_view), null, false);
+        ll_imgView_xposed = mainWindow.findViewWithTag("ll_imgView_xposed");
+        ll_imgView_xposed.addView(inflate);
+        iv_show = inflate.findViewWithTag("iv_show");
+        tv_close_xposed_imgView = inflate.findViewWithTag("tv_close_xposed_imgView");
+        tv_close_xposed_imgView.setOnClickListener(v -> {
+            setSate(0);
+        });
+
     }
 
     private void init_ll_selectView_xposed(ViewGroup mainWindow) {
@@ -232,6 +255,7 @@ public class MainWindowUI {
         srv_viewMsg.addView(listView_viewMsg, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         tv_close_xposed_viewMsg = ll_viewMsg_xposed.findViewWithTag("tv_close_xposed_viewMsg");
         tv_edit_viewMsg_xposed = ll_viewMsg_xposed.findViewWithTag("tv_edit_viewMsg_xposed");
+        tv_show_xposed_viewMsg = ll_viewMsg_xposed.findViewWithTag("tv_show_xposed_viewMsg");
         tv_close_xposed_viewMsg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -240,27 +264,34 @@ public class MainWindowUI {
         });
     }
 
-    private void set_ll_selectView_xposed(){
-        ViewRootListAdapter viewRootListAdapter=new ViewRootListAdapter(UiHook.rootViews);
+    private void set_ll_selectView_xposed() {
+        ViewRootListAdapter viewRootListAdapter = new ViewRootListAdapter(UiHook.rootViews);
         listView_selectView_xposed.setAdapter(viewRootListAdapter);
         viewRootListAdapter.setListener(new ViewRootListAdapter.Listener() {
             @Override
             public void onShow(WeakReference<View> weakReference) {
-                if (weakReference.get()!=null){
-
-                }else {
-                    ToastUtil.show(activity,"当前ViewRoot不存在");
+                if (weakReference.get() != null) {
+                    setSate(6);
+                    set_ll_imgView_xposed(weakReference.get(), new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            setSate(5);
+                            set_ll_selectView_xposed();
+                        }
+                    });
+                } else {
+                    ToastUtil.show(activity, "当前ViewRoot不存在");
                     set_ll_selectView_xposed();
                 }
             }
 
             @Override
             public void onSelect(WeakReference<View> weakReference) {
-                if (weakReference.get()!=null){
+                if (weakReference.get() != null) {
                     selectViewRoot(weakReference.get());
                     setSate(0);
-                }else {
-                    ToastUtil.show(activity,"当前ViewRoot不存在");
+                } else {
+                    ToastUtil.show(activity, "当前ViewRoot不存在");
                     set_ll_selectView_xposed();
                 }
 
@@ -268,20 +299,35 @@ public class MainWindowUI {
         });
 
     }
+
     private void set_ll_viewMsg_xposed(ViewNode viewNode, View.OnClickListener listener) {
 
         listView_viewMsg.setAdapter(new ViewMsgAdapter(viewNode));
         tv_edit_viewMsg_xposed.setVisibility(View.VISIBLE);
+        tv_show_xposed_viewMsg.setVisibility(View.VISIBLE);
         tv_edit_viewMsg_xposed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                set_ll_viewMsg_xposed_edit(viewNode, listener);
+                set_ll_viewMsg_xposed_edit(viewNode);
+            }
+        });
+        tv_show_xposed_viewMsg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setSate(6);
+                set_ll_imgView_xposed(viewNode.getView(), new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        setSate(3);
+                        set_ll_viewMsg_xposed(viewNode, listener);
+                    }
+                });
             }
         });
         tv_close_xposed_viewMsg.setOnClickListener(listener);
     }
 
-    private void set_ll_viewMsg_xposed_edit(ViewNode viewNode, View.OnClickListener listener) {
+    private void set_ll_viewMsg_xposed_edit(ViewNode viewNode) {
         if (viewMsgEditDialog == null) {
             viewMsgEditDialog = new ViewMsgEditDialog(activity);
         }
@@ -289,12 +335,23 @@ public class MainWindowUI {
         viewMsgEditDialog.show();
     }
 
+    private void set_ll_imgView_xposed(View view, View.OnClickListener listener) {
+        iv_show.setImageDrawable(null);
+        if (view!= null) {
+            Bitmap bitmap = UiUtil.viewToBitmap(view);
+            if (bitmap != null) {
+                iv_show.setImageBitmap(bitmap);
+            }
+        }
+        tv_close_xposed_imgView.setOnClickListener(listener);
+    }
+
     private void findTouchView(float x, float y) {
         if (rootViewNode != null) {
             nodes.clear();
             ViewNode.ForeachCallBack foreachCallBack = viewNode -> {
                 if (viewNode.getView() != null) {
-                    int dt = 5;//防抖
+                    int dt = 10;//防止点不准 设置误差距离
                     View view = viewNode.getView();
                     int[] location = new int[2];
                     view.getLocationOnScreen(location);
@@ -382,7 +439,7 @@ public class MainWindowUI {
             if (selectView.get() != null) {
                 rootViewNode = ViewTreeUtil.getViewNode(selectView.get());
             } else {
-                ToastUtil.show(activity,"当前ViewRoot不存在,自动选择activity");
+                ToastUtil.show(activity, "当前ViewRoot不存在,自动选择activity");
                 selectViewRoot(null);
                 rootViewNode = ViewTreeUtil.getViewNode(activity);
             }

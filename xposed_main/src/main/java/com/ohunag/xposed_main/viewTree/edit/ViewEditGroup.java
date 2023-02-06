@@ -15,6 +15,7 @@ import com.ohunag.xposed_main.BuildConfig;
 import com.ohunag.xposed_main.config.MainConfig;
 import com.ohunag.xposed_main.util.ToastUtil;
 import com.ohunag.xposed_main.util.TryCatch;
+import com.ohunag.xposed_main.util.UiUtil;
 import com.ohunag.xposed_main.viewTree.IViewEdit;
 import com.ohunag.xposed_main.viewTree.IViewEditGroup;
 
@@ -107,34 +108,21 @@ public class ViewEditGroup implements IViewEditGroup {
 
 
         private boolean saveImage(Activity activity, View saveView, String fileName) throws IOException {
-            Bitmap bitmap;
             String storePath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "Download" + File.separator + MainConfig.packageName;
             File appDir = new File(storePath);
             if (!appDir.exists()) {
                 appDir.mkdirs();
             }
-
             File file = new File(appDir, fileName);
-            View view = activity.getWindow().getDecorView();
-            view.setDrawingCacheEnabled(true);
-            view.buildDrawingCache();
-            bitmap = view.getDrawingCache();
-            Rect frame = new Rect();
-            activity.getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);
+            Bitmap bitmap= UiUtil.viewToBitmap(saveView);
             int[] location = new int[2];
             saveView.getLocationInWindow(location);
-
-            bitmap = Bitmap.createBitmap(bitmap, location[0], location[1], saveView.getWidth(), saveView.getHeight());
             FileOutputStream fileOutputStream = new FileOutputStream(file);
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
             fileOutputStream.flush();
             fileOutputStream.close();
             Uri uri = Uri.fromFile(file);
             activity.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, uri));
-
-            // 清理缓存
-            view.destroyDrawingCache();
-
             return true;
         }
     }

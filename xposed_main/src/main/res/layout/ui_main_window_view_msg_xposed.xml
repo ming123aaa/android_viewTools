@@ -11,14 +11,30 @@
     <ScrollView
         android:tag="scv_viewMsg_xposed"
         android:layout_width="match_parent"
-        android:layout_height="400dp">
+        android:layout_height="350dp">
 
 <!--        <com.ohunag.xposed_main.view.MyListView-->
 <!--            android:tag="listView_viewMsg"-->
 <!--            android:layout_width="match_parent"-->
 <!--            android:layout_height="wrap_content" />-->
     </ScrollView>
-
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:orientation="horizontal">
+        <TextView
+            android:tag="tv_show_xposed_viewMsg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:minHeight="40dp"
+            android:text="展示"
+            android:visibility="gone"
+            android:textColor="#fff"
+            android:textSize="18dp" />
+    </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

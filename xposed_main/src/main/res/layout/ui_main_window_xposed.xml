@@ -89,7 +89,6 @@
             android:gravity="center"
             android:text="关闭"
             android:textColor="#fff"
-
             android:textSize="15dp" />
     </LinearLayout>
 
@@ -120,6 +119,13 @@
 
     <LinearLayout
         android:tag="ll_selectView_xposed"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:visibility="gone"
+        android:orientation="vertical"/>
+    <LinearLayout
+        android:tag="ll_imgView_xposed"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
