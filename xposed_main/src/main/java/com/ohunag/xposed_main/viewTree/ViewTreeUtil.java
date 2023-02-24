@@ -22,6 +22,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.ohunag.xposed_main.viewTree.edit.ImageViewEditGroup;
 import com.ohunag.xposed_main.viewTree.edit.TextViewEditGroup;
 import com.ohunag.xposed_main.viewTree.edit.ViewEditGroup;
+import com.ohunag.xposed_main.viewTree.edit.WebViewEditGroup;
 import com.ohunag.xposed_main.viewTree.intercept.TextViewNodeValueIntercept;
 import com.ohunag.xposed_main.viewTree.intercept.ViewNodeValueIntercept;
 import com.ohunag.xposed_main.viewTree.intercept.WebViewNodeValueIntercept;
@@ -46,9 +47,10 @@ public class ViewTreeUtil {
 
     public static List<IViewEdit> getIViewEdit(View view){
         List<IViewEditGroup> iViewEditGroups=new ArrayList<>();
+        iViewEditGroups.add(new ImageViewEditGroup());
+        iViewEditGroups.add(new WebViewEditGroup());
         iViewEditGroups.add(new TextViewEditGroup());
         iViewEditGroups.add(new ViewEditGroup());
-        iViewEditGroups.add(new ImageViewEditGroup());
         List<IViewEdit> data=new ArrayList<>();
         for (IViewEditGroup iViewEditGroup : iViewEditGroups) {
             iViewEditGroup.addToList(data,view);

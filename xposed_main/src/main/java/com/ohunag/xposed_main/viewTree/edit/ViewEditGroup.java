@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.ohunag.xposed_main.BuildConfig;
 import com.ohunag.xposed_main.config.MainConfig;
+import com.ohunag.xposed_main.ui.ViewClassTreeDialog;
 import com.ohunag.xposed_main.util.ToastUtil;
 import com.ohunag.xposed_main.util.TryCatch;
 import com.ohunag.xposed_main.util.UiUtil;
@@ -33,9 +34,34 @@ public class ViewEditGroup implements IViewEditGroup {
         data.add(new VisibilityEdit());
         data.add(new SaveViewImgEdit());
         data.add(new AlphaEdit());
+        data.add(new showClassTree());
 
     }
+   public static class showClassTree implements IViewEdit{
 
+       @Override
+       public String getValueName() {
+           return "class";
+       }
+
+       @Override
+       public String getHint() {
+           return "查看class继承关系";
+       }
+
+       @Override
+       public String getValue(View view) {
+           return "";
+       }
+
+       @Override
+       public void setValue(Activity activity, View view, String s) throws IOException {
+           ViewClassTreeDialog viewClassTreeDialog = new ViewClassTreeDialog(activity);
+           viewClassTreeDialog.setClass(view.getClass());
+           viewClassTreeDialog.show();
+           ToastUtil.show(activity,"修改成功");
+       }
+   }
 
     public static class AlphaEdit implements IViewEdit{
 
