@@ -3,15 +3,13 @@ package com.ohunag.xposed_main.viewTree.edit;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Environment;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import com.ohunag.xposed_main.BuildConfig;
 import com.ohunag.xposed_main.config.MainConfig;
 import com.ohunag.xposed_main.ui.ViewClassTreeDialog;
 import com.ohunag.xposed_main.util.ToastUtil;
@@ -21,7 +19,6 @@ import com.ohunag.xposed_main.viewTree.IViewEdit;
 import com.ohunag.xposed_main.viewTree.IViewEditGroup;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
@@ -33,10 +30,151 @@ public class ViewEditGroup implements IViewEditGroup {
         data.add(new EnableEdit());
         data.add(new VisibilityEdit());
         data.add(new SaveViewImgEdit());
+        data.add(new GetForegroundDrawableEdit());
+        data.add(new GetBackgroundDrawableEdit());
         data.add(new AlphaEdit());
         data.add(new showClassTree());
 
     }
+
+    public static class GetBackgroundDrawableEdit implements IViewEdit {
+
+
+        @Override
+        public String getValueName() {
+            return "获取背景图片";
+        }
+
+        @Override
+        public String getHint() {
+            return "输入图片路径";
+        }
+
+        @Override
+        public String getValue(View view) {
+            if (view.getBackground()!=null) {
+                return "";
+            }else {
+                return "不可用";
+            }
+        }
+
+        @Override
+        public void setValue(Activity activity, View view, String s) throws IOException {
+                Drawable drawable = view.getBackground();
+                if (drawable != null) {
+                    TryCatch.run(() -> {
+                        Bitmap bitmap=UiUtil.drawableToBitamp(drawable);
+                        String fileName = s;
+                        if (TextUtils.isEmpty(fileName)) {
+                            fileName = System.currentTimeMillis() + "";
+                        }
+                        fileName = fileName + ".png";
+                        try {
+                            saveImage(activity, bitmap, fileName);
+                            String storePath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "Download" + File.separator + MainConfig.packageName;
+                            Toast.makeText(view.getContext(), "路径:" + storePath, Toast.LENGTH_LONG).show();
+                        } catch (IOException e) {
+                            Toast.makeText(view.getContext(), e.toString(), Toast.LENGTH_LONG).show();
+                        }
+                    }, e -> {
+                        Toast.makeText(view.getContext(), e.toString(), Toast.LENGTH_LONG).show();
+                    });
+                }else {
+                    Toast.makeText(view.getContext(), "drawable为空", Toast.LENGTH_LONG).show();
+                }
+
+        }
+
+        private void saveImage(Activity activity, Bitmap bitmap, String fileName) throws IOException {
+            String storePath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "Download" + File.separator + MainConfig.packageName;
+            File appDir = new File(storePath);
+            if (!appDir.exists()) {
+                appDir.mkdirs();
+            }
+            File file = new File(appDir, fileName);
+            FileOutputStream fileOutputStream = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
+            fileOutputStream.flush();
+            fileOutputStream.close();
+            Uri uri = Uri.fromFile(file);
+            activity.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, uri));
+        }
+    }
+
+    public static class GetForegroundDrawableEdit implements IViewEdit {
+
+
+        @Override
+        public String getValueName() {
+            return "获取前景图片";
+        }
+
+        @Override
+        public String getHint() {
+            return "输入图片路径";
+        }
+
+        @Override
+        public String getValue(View view) {
+            Drawable drawable = null;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                drawable = view.getForeground();
+            }
+            if (drawable!=null) {
+                return "";
+            }else {
+                return "不可用";
+            }
+        }
+
+        @Override
+        public void setValue(Activity activity, View view, String s) throws IOException {
+            Drawable drawable = null;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                drawable = view.getForeground();
+            }
+            if (drawable != null) {
+                Drawable finalDrawable = drawable;
+                TryCatch.run(() -> {
+                        Bitmap bitmap=UiUtil.drawableToBitamp(finalDrawable);
+                        String fileName = s;
+                        if (TextUtils.isEmpty(fileName)) {
+                            fileName = System.currentTimeMillis() + "";
+                        }
+                        fileName = fileName + ".png";
+                        try {
+                            saveImage(activity, bitmap, fileName);
+                            String storePath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "Download" + File.separator + MainConfig.packageName;
+                            Toast.makeText(view.getContext(), "路径:" + storePath, Toast.LENGTH_LONG).show();
+                        } catch (IOException e) {
+                            Toast.makeText(view.getContext(), e.toString(), Toast.LENGTH_LONG).show();
+                        }
+                    }, e -> {
+                        Toast.makeText(view.getContext(), e.toString(), Toast.LENGTH_LONG).show();
+                    });
+                }else {
+                    Toast.makeText(view.getContext(), "drawable为空", Toast.LENGTH_LONG).show();
+                }
+
+        }
+
+        private void saveImage(Activity activity, Bitmap bitmap, String fileName) throws IOException {
+            String storePath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "Download" + File.separator + MainConfig.packageName;
+            File appDir = new File(storePath);
+            if (!appDir.exists()) {
+                appDir.mkdirs();
+            }
+            File file = new File(appDir, fileName);
+            FileOutputStream fileOutputStream = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
+            fileOutputStream.flush();
+            fileOutputStream.close();
+            Uri uri = Uri.fromFile(file);
+            activity.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, uri));
+        }
+    }
+
    public static class showClassTree implements IViewEdit{
 
        @Override
@@ -133,7 +271,7 @@ public class ViewEditGroup implements IViewEditGroup {
         }
 
 
-        private boolean saveImage(Activity activity, View saveView, String fileName) throws IOException {
+        private void saveImage(Activity activity, View saveView, String fileName) throws IOException {
             String storePath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "Download" + File.separator + MainConfig.packageName;
             File appDir = new File(storePath);
             if (!appDir.exists()) {
@@ -141,15 +279,12 @@ public class ViewEditGroup implements IViewEditGroup {
             }
             File file = new File(appDir, fileName);
             Bitmap bitmap= UiUtil.viewToBitmap(saveView);
-            int[] location = new int[2];
-            saveView.getLocationInWindow(location);
             FileOutputStream fileOutputStream = new FileOutputStream(file);
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
             fileOutputStream.flush();
             fileOutputStream.close();
             Uri uri = Uri.fromFile(file);
             activity.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, uri));
-            return true;
         }
     }
 
