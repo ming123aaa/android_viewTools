@@ -1,16 +1,19 @@
 plugins {
-    id 'com.android.library'
+    id 'com.android.application'
 }
 
 android {
-    compileSdk 32
+    namespace 'com.ohuang.noxp_uiihook'
+    compileSdk 33
 
     defaultConfig {
-        minSdk 21
-        targetSdk 32
+        applicationId "com.ohuang.noxp_uiihook"
+        minSdk 24
+        targetSdk 33
+        versionCode 1
+        versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles "consumer-rules.pro"
     }
 
     buildTypes {
@@ -27,7 +30,5 @@ android {
 
 dependencies {
 
-
-
-    api 'com.github.bumptech.glide:glide:4.14.2'
+    implementation project(":noXposed_main")
 }

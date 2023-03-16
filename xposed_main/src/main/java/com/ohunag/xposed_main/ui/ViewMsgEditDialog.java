@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.ohunag.xposed_main.IContext;
 import com.ohunag.xposed_main.R;
 import com.ohunag.xposed_main.UiHook;
 import com.ohunag.xposed_main.view.MyListView;

@@ -19,3 +19,5 @@ rootProject.name = "activityUiHook"
 include ':app'
 include ':xposedUtil'
 include ':xposed_main'
+include ':noXposed_main'
+include ':noxp_uiihook'

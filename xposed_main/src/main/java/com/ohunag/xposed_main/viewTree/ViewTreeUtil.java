@@ -15,10 +15,6 @@ import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.ViewPager;
-import androidx.viewpager2.widget.ViewPager2;
-
 import com.ohunag.xposed_main.viewTree.edit.ImageViewEditGroup;
 import com.ohunag.xposed_main.viewTree.edit.TextViewEditGroup;
 import com.ohunag.xposed_main.viewTree.edit.ViewEditGroup;

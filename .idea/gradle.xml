@@ -12,6 +12,8 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/noXposed_main" />
+            <option value="$PROJECT_DIR$/noxp_uiihook" />
             <option value="$PROJECT_DIR$/xposedUtil" />
             <option value="$PROJECT_DIR$/xposed_main" />
           </set>

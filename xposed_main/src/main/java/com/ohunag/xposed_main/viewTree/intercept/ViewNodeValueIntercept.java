@@ -2,11 +2,7 @@ package com.ohunag.xposed_main.viewTree.intercept;
 
 import android.content.res.Resources;
 import android.view.View;
-import android.widget.TextView;
 
-import androidx.appcompat.widget.ViewUtils;
-
-import com.ohunag.xposed_main.UiHook;
 import com.ohunag.xposed_main.util.RefInvoke;
 import com.ohunag.xposed_main.viewTree.NodeValue;
 import com.ohunag.xposed_main.viewTree.ViewNode;

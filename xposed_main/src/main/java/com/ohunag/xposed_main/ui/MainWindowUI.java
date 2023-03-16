@@ -265,7 +265,7 @@ public class MainWindowUI {
     }
 
     private void set_ll_selectView_xposed() {
-        ViewRootListAdapter viewRootListAdapter = new ViewRootListAdapter(UiHook.rootViews);
+        ViewRootListAdapter viewRootListAdapter = new ViewRootListAdapter(UiHook.getRootViews());
         listView_selectView_xposed.setAdapter(viewRootListAdapter);
         viewRootListAdapter.setListener(new ViewRootListAdapter.Listener() {
             @Override
