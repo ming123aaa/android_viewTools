@@ -11,10 +11,7 @@
 activityUIHook-app-1.0.0.aar、activityUIHook-1.0.0.aar
 还需要glide  'com.github.bumptech.glide:glide:4.14.2'
 
-依赖完成后在application初始化
-UiHookManager.getInstance().init(this);
-
-或者采取jitpack依赖
+或者采取jitpack仓库依赖
 
 ```groovy
     allprojects {
@@ -23,15 +20,20 @@ UiHookManager.getInstance().init(this);
     }
 }
 dependencies {
-    implementation 'com.gitee.a3077932030.xposed_activity-hook:activityUIHook:1.0.1'
+    implementation 'com.gitee.a3077932030.xposed_activity-hook:activityUIHook-app:1.0.1'
 }
 ```
+
+依赖完成后在application初始化
+UiHookManager.getInstance().init(this);
+
+
 
 ### xposed版本
 
 是一个xposed模块需要配合xposed使用
 
-## 版本
+## 项目说明
 
 app 运行的是xposed的版本
 
@@ -45,11 +47,11 @@ noXposed_main 是aar版本 使用noxp_uihook模块进行运行测试
 
 运行gradle插件的publish 生成的aar会在repositories文件下
 
-## 注意点
+## 项目代码修改时注意点
 
-### 模块资源请使用 XModuleResources加载
+### xp模块资源请使用 XModuleResources加载
 
-加载模块里面的资源需要使用 XModuleResources
+加载xp模块里面的资源需要使用 XModuleResources
 
 ### 自定义View及第三方View不要写在xml里面
 

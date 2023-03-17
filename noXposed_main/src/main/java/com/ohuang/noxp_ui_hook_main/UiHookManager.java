@@ -117,7 +117,7 @@ public class UiHookManager {
 
             @Override
             public void onActivitySaveInstanceState(@NonNull Activity activity, @NonNull Bundle outState) {
-
+                FloatViewManager.getInstance().onDestroy(activity);
             }
 
             @Override
