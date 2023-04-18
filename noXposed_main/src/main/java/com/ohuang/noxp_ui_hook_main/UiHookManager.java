@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.ohunag.xposed_main.UiHook;
+import com.ohunag.xposed_main.config.MainConfig;
 import com.ohunag.xposed_main.smallwindow.FloatViewManager;
 import com.ohunag.xposed_main.smallwindow.SmallWindowView;
 import com.ohunag.xposed_main.util.RefInvoke;
@@ -45,6 +46,7 @@ public class UiHookManager {
     public void init(Application application) {
         if (this.mApplication == null && application != null) {
             mApplication = application;
+            MainConfig.packageName=application.getPackageName();
             UiHook.init(mApplication.getResources(), new UiHook.ViewListManager() {
                 @Override
                 public List<View> getViews() {
@@ -117,7 +119,7 @@ public class UiHookManager {
 
             @Override
             public void onActivitySaveInstanceState(@NonNull Activity activity, @NonNull Bundle outState) {
-                FloatViewManager.getInstance().onDestroy(activity);
+
             }
 
             @Override

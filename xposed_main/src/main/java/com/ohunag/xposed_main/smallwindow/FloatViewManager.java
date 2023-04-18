@@ -26,6 +26,8 @@ public class FloatViewManager {
     Map<Activity, MainWindowUI> mainWindowUIMap = new HashMap<>();
     private WeakReference<Activity> resumeActivity=null;
 
+    int[] xy=new int[2];
+
     public FloatViewHelper attach(Activity activity) {
         FloatViewHelper floatViewHelper = null;
         if (map.containsKey(activity)) {
@@ -62,6 +64,7 @@ public class FloatViewManager {
         }
         map.put(activity, floatViewHelper);
         floatViewHelper.show();
+        floatViewHelper.setXY(xy);
         return floatViewHelper;
     }
 
@@ -74,7 +77,9 @@ public class FloatViewManager {
             floatViewHelper = new FloatViewHelper(activity);
         }
         map.put(activity, floatViewHelper);
+        xy=floatViewHelper.getXY();
         floatViewHelper.hide();
+
         return floatViewHelper;
     }
 

@@ -6,6 +6,8 @@ import java.lang.reflect.Method;
 
 public class RefInvoke {
 
+
+    public static boolean isLog=false;
     public static  Object invokeStaticMethod(String class_name, String method_name, Class[] pareTyple, Object[] pareVaules){
         return invokeStaticMethod(ClassLoader.getSystemClassLoader(),class_name,method_name,pareTyple,pareVaules);
     }
@@ -39,8 +41,9 @@ public class RefInvoke {
             method.setAccessible(true);
             return method.invoke(obj, pareVaules);
         } catch (SecurityException | IllegalArgumentException | IllegalAccessException | NoSuchMethodException | InvocationTargetException | ClassNotFoundException e) {
-
-            e.printStackTrace();
+           if (isLog) {
+               e.printStackTrace();
+           }
         }
 
         return null;
@@ -57,8 +60,9 @@ public class RefInvoke {
             field.setAccessible(true);
             return field.get(obj);
         } catch (SecurityException | NoSuchFieldException | IllegalArgumentException | IllegalAccessException | ClassNotFoundException e) {
-
-            e.printStackTrace();
+            if (isLog) {
+                e.printStackTrace();
+            }
         }
         return null;
 
@@ -75,8 +79,9 @@ public class RefInvoke {
             field.setAccessible(true);
             return field.get(null);
         } catch (SecurityException | NoSuchFieldException | IllegalArgumentException | IllegalAccessException | ClassNotFoundException e) {
-
-            e.printStackTrace();
+            if (isLog) {
+                e.printStackTrace();
+            }
         }
         return null;
 
@@ -93,8 +98,9 @@ public class RefInvoke {
             field.setAccessible(true);
             field.set(obj, filedVaule);
         } catch (SecurityException | ClassNotFoundException | IllegalAccessException | IllegalArgumentException | NoSuchFieldException e) {
-
-            e.printStackTrace();
+           if (isLog) {
+               e.printStackTrace();
+           }
         }
     }
 
@@ -109,7 +115,9 @@ public class RefInvoke {
             field.setAccessible(true);
             field.set(null, filedVaule);
         } catch (SecurityException | NoSuchFieldException | IllegalArgumentException | IllegalAccessException | ClassNotFoundException e) {
-            e.printStackTrace();
+          if (isLog) {
+              e.printStackTrace();
+          }
         }
     }
 
