@@ -9,6 +9,13 @@ import java.util.Map;
 
 public interface IViewEdit {
 
+    default String editButtonName(){
+        return "修改";
+    }
+
+    default boolean isEnable(View view){
+        return true;
+    }
     String getValueName();
 
     String getHint();

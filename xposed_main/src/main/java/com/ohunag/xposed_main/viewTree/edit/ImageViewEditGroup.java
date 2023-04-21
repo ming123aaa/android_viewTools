@@ -37,6 +37,10 @@ public class ImageViewEditGroup implements IViewEditGroup {
 
     public static class SetImgEdit implements IViewEdit {
 
+        @Override
+        public String editButtonName() {
+            return "设置";
+        }
 
         @Override
         public String getValueName() {
@@ -69,7 +73,10 @@ public class ImageViewEditGroup implements IViewEditGroup {
     }
 
     public static class GetDrawableEdit implements IViewEdit {
-
+        @Override
+        public String editButtonName() {
+            return "保存";
+        }
 
         @Override
         public String getValueName() {

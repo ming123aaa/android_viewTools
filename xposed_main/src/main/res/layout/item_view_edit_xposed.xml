@@ -47,7 +47,6 @@
 
         <TextView
             android:layout_width="50dp"
-
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"

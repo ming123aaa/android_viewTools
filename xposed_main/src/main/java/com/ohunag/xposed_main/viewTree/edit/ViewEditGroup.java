@@ -34,11 +34,43 @@ public class ViewEditGroup implements IViewEditGroup {
         data.add(new GetBackgroundDrawableEdit());
         data.add(new AlphaEdit());
         data.add(new showClassTree());
+        data.add(new ClickViewEdit());
 
+    }
+
+    public static class ClickViewEdit implements IViewEdit {
+        @Override
+        public String editButtonName() {
+            return "点击";
+        }
+
+        @Override
+        public String getValueName() {
+            return "模拟点击";
+        }
+
+        @Override
+        public String getHint() {
+            return "performClick";
+        }
+
+        @Override
+        public String getValue(View view) {
+            return "view.performClick()";
+        }
+
+        @Override
+        public void setValue(Activity activity, View view, String s) throws IOException {
+            view.performClick();
+        }
     }
 
     public static class GetBackgroundDrawableEdit implements IViewEdit {
 
+        @Override
+        public String editButtonName() {
+            return "保存";
+        }
 
         @Override
         public String getValueName() {
@@ -51,38 +83,43 @@ public class ViewEditGroup implements IViewEditGroup {
         }
 
         @Override
+        public boolean isEnable(View view) {
+            return view.getBackground() != null;
+        }
+
+        @Override
         public String getValue(View view) {
-            if (view.getBackground()!=null) {
+            if (view.getBackground() != null) {
                 return "";
-            }else {
+            } else {
                 return "不可用";
             }
         }
 
         @Override
         public void setValue(Activity activity, View view, String s) throws IOException {
-                Drawable drawable = view.getBackground();
-                if (drawable != null) {
-                    TryCatch.run(() -> {
-                        Bitmap bitmap=UiUtil.drawableToBitamp(drawable);
-                        String fileName = s;
-                        if (TextUtils.isEmpty(fileName)) {
-                            fileName = System.currentTimeMillis() + "";
-                        }
-                        fileName = fileName + ".png";
-                        try {
-                            saveImage(activity, bitmap, fileName);
-                            String storePath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "Download" + File.separator + MainConfig.packageName;
-                            Toast.makeText(view.getContext(), "路径:" + storePath, Toast.LENGTH_LONG).show();
-                        } catch (IOException e) {
-                            Toast.makeText(view.getContext(), e.toString(), Toast.LENGTH_LONG).show();
-                        }
-                    }, e -> {
+            Drawable drawable = view.getBackground();
+            if (drawable != null) {
+                TryCatch.run(() -> {
+                    Bitmap bitmap = UiUtil.drawableToBitamp(drawable);
+                    String fileName = s;
+                    if (TextUtils.isEmpty(fileName)) {
+                        fileName = System.currentTimeMillis() + "";
+                    }
+                    fileName = fileName + ".png";
+                    try {
+                        saveImage(activity, bitmap, fileName);
+                        String storePath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "Download" + File.separator + MainConfig.packageName;
+                        Toast.makeText(view.getContext(), "路径:" + storePath, Toast.LENGTH_LONG).show();
+                    } catch (IOException e) {
                         Toast.makeText(view.getContext(), e.toString(), Toast.LENGTH_LONG).show();
-                    });
-                }else {
-                    Toast.makeText(view.getContext(), "drawable为空", Toast.LENGTH_LONG).show();
-                }
+                    }
+                }, e -> {
+                    Toast.makeText(view.getContext(), e.toString(), Toast.LENGTH_LONG).show();
+                });
+            } else {
+                Toast.makeText(view.getContext(), "drawable为空", Toast.LENGTH_LONG).show();
+            }
 
         }
 
@@ -103,7 +140,10 @@ public class ViewEditGroup implements IViewEditGroup {
     }
 
     public static class GetForegroundDrawableEdit implements IViewEdit {
-
+        @Override
+        public String editButtonName() {
+            return "保存";
+        }
 
         @Override
         public String getValueName() {
@@ -116,14 +156,23 @@ public class ViewEditGroup implements IViewEditGroup {
         }
 
         @Override
+        public boolean isEnable(View view) {
+            Drawable drawable = null;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                drawable = view.getForeground();
+            }
+            return drawable != null;
+        }
+
+        @Override
         public String getValue(View view) {
             Drawable drawable = null;
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
                 drawable = view.getForeground();
             }
-            if (drawable!=null) {
+            if (drawable != null) {
                 return "";
-            }else {
+            } else {
                 return "不可用";
             }
         }
@@ -137,25 +186,25 @@ public class ViewEditGroup implements IViewEditGroup {
             if (drawable != null) {
                 Drawable finalDrawable = drawable;
                 TryCatch.run(() -> {
-                        Bitmap bitmap=UiUtil.drawableToBitamp(finalDrawable);
-                        String fileName = s;
-                        if (TextUtils.isEmpty(fileName)) {
-                            fileName = System.currentTimeMillis() + "";
-                        }
-                        fileName = fileName + ".png";
-                        try {
-                            saveImage(activity, bitmap, fileName);
-                            String storePath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "Download" + File.separator + MainConfig.packageName;
-                            Toast.makeText(view.getContext(), "路径:" + storePath, Toast.LENGTH_LONG).show();
-                        } catch (IOException e) {
-                            Toast.makeText(view.getContext(), e.toString(), Toast.LENGTH_LONG).show();
-                        }
-                    }, e -> {
+                    Bitmap bitmap = UiUtil.drawableToBitamp(finalDrawable);
+                    String fileName = s;
+                    if (TextUtils.isEmpty(fileName)) {
+                        fileName = System.currentTimeMillis() + "";
+                    }
+                    fileName = fileName + ".png";
+                    try {
+                        saveImage(activity, bitmap, fileName);
+                        String storePath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "Download" + File.separator + MainConfig.packageName;
+                        Toast.makeText(view.getContext(), "路径:" + storePath, Toast.LENGTH_LONG).show();
+                    } catch (IOException e) {
                         Toast.makeText(view.getContext(), e.toString(), Toast.LENGTH_LONG).show();
-                    });
-                }else {
-                    Toast.makeText(view.getContext(), "drawable为空", Toast.LENGTH_LONG).show();
-                }
+                    }
+                }, e -> {
+                    Toast.makeText(view.getContext(), e.toString(), Toast.LENGTH_LONG).show();
+                });
+            } else {
+                Toast.makeText(view.getContext(), "drawable为空", Toast.LENGTH_LONG).show();
+            }
 
         }
 
@@ -175,33 +224,37 @@ public class ViewEditGroup implements IViewEditGroup {
         }
     }
 
-   public static class showClassTree implements IViewEdit{
+    public static class showClassTree implements IViewEdit {
+        @Override
+        public String editButtonName() {
+            return "查看";
+        }
 
-       @Override
-       public String getValueName() {
-           return "class";
-       }
+        @Override
+        public String getValueName() {
+            return "class";
+        }
 
-       @Override
-       public String getHint() {
-           return "查看class继承关系";
-       }
+        @Override
+        public String getHint() {
+            return "查看class继承关系";
+        }
 
-       @Override
-       public String getValue(View view) {
-           return "";
-       }
+        @Override
+        public String getValue(View view) {
+            return "";
+        }
 
-       @Override
-       public void setValue(Activity activity, View view, String s) throws IOException {
-           ViewClassTreeDialog viewClassTreeDialog = new ViewClassTreeDialog(activity);
-           viewClassTreeDialog.setClass(view.getClass());
-           viewClassTreeDialog.show();
-           ToastUtil.show(activity,"修改成功");
-       }
-   }
+        @Override
+        public void setValue(Activity activity, View view, String s) throws IOException {
+            ViewClassTreeDialog viewClassTreeDialog = new ViewClassTreeDialog(activity);
+            viewClassTreeDialog.setClass(view.getClass());
+            viewClassTreeDialog.show();
+            ToastUtil.show(activity, "修改成功");
+        }
+    }
 
-    public static class AlphaEdit implements IViewEdit{
+    public static class AlphaEdit implements IViewEdit {
 
         @Override
         public String getValueName() {
@@ -215,7 +268,7 @@ public class ViewEditGroup implements IViewEditGroup {
 
         @Override
         public String getValue(View view) {
-            return ""+view.getAlpha();
+            return "" + view.getAlpha();
         }
 
         @Override
@@ -223,9 +276,9 @@ public class ViewEditGroup implements IViewEditGroup {
             try {
                 float aFloat = Float.valueOf(s);
                 view.setAlpha(aFloat);
-                ToastUtil.show(activity,"修改成功");
-            }catch (Exception e){
-                ToastUtil.show(activity,e.toString());
+                ToastUtil.show(activity, "修改成功");
+            } catch (Exception e) {
+                ToastUtil.show(activity, e.toString());
             }
 
         }
@@ -234,6 +287,10 @@ public class ViewEditGroup implements IViewEditGroup {
 
     public static class SaveViewImgEdit implements IViewEdit {
 
+        @Override
+        public String editButtonName() {
+            return "保存";
+        }
 
         @Override
         public String getValueName() {
@@ -251,22 +308,22 @@ public class ViewEditGroup implements IViewEditGroup {
         }
 
         @Override
-        public void setValue(Activity activity,View view, String s) {
+        public void setValue(Activity activity, View view, String s) {
             TryCatch.run(() -> {
-                String fileName=s;
-                if (TextUtils.isEmpty(fileName)){
-                    fileName=System.currentTimeMillis()+"";
+                String fileName = s;
+                if (TextUtils.isEmpty(fileName)) {
+                    fileName = System.currentTimeMillis() + "";
                 }
-                fileName=fileName+".png";
+                fileName = fileName + ".png";
                 try {
                     saveImage(activity, view, fileName);
                     String storePath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "Download" + File.separator + MainConfig.packageName;
-                    Toast.makeText(view.getContext(),"路径:"+storePath,Toast.LENGTH_LONG).show();
+                    Toast.makeText(view.getContext(), "路径:" + storePath, Toast.LENGTH_LONG).show();
                 } catch (IOException e) {
-                    Toast.makeText(view.getContext(),e.toString(),Toast.LENGTH_LONG).show();
+                    Toast.makeText(view.getContext(), e.toString(), Toast.LENGTH_LONG).show();
                 }
             }, e -> {
-                Toast.makeText(view.getContext(),e.toString(),Toast.LENGTH_LONG).show();
+                Toast.makeText(view.getContext(), e.toString(), Toast.LENGTH_LONG).show();
             });
         }
 
@@ -278,7 +335,7 @@ public class ViewEditGroup implements IViewEditGroup {
                 appDir.mkdirs();
             }
             File file = new File(appDir, fileName);
-            Bitmap bitmap= UiUtil.viewToBitmap(saveView);
+            Bitmap bitmap = UiUtil.viewToBitmap(saveView);
             FileOutputStream fileOutputStream = new FileOutputStream(file);
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
             fileOutputStream.flush();
@@ -297,7 +354,7 @@ public class ViewEditGroup implements IViewEditGroup {
 
         @Override
         public String getHint() {
-            return "ture 或者 false";
+            return "true 或者 false";
         }
 
         @Override
@@ -306,14 +363,14 @@ public class ViewEditGroup implements IViewEditGroup {
         }
 
         @Override
-        public void setValue(Activity activity,View view, String s) {
+        public void setValue(Activity activity, View view, String s) {
             if ("flase".equalsIgnoreCase(s) || "false".equalsIgnoreCase(s)) {
                 view.setClickable(false);
-                ToastUtil.show(activity,"修改成功");
+                ToastUtil.show(activity, "修改成功");
             }
             if ("ture".equalsIgnoreCase(s) || "true".equalsIgnoreCase(s)) {
                 view.setClickable(true);
-                ToastUtil.show(activity,"修改成功");
+                ToastUtil.show(activity, "修改成功");
             }
         }
     }
@@ -327,7 +384,7 @@ public class ViewEditGroup implements IViewEditGroup {
 
         @Override
         public String getHint() {
-            return "ture 或者 false";
+            return "true 或者 false";
         }
 
         @Override
@@ -336,14 +393,14 @@ public class ViewEditGroup implements IViewEditGroup {
         }
 
         @Override
-        public void setValue(Activity activity,View view, String s) {
+        public void setValue(Activity activity, View view, String s) {
             if ("flase".equalsIgnoreCase(s) || "false".equalsIgnoreCase(s)) {
                 view.setEnabled(false);
-                ToastUtil.show(activity,"修改成功");
+                ToastUtil.show(activity, "修改成功");
             }
             if ("ture".equalsIgnoreCase(s) || "true".equalsIgnoreCase(s)) {
                 view.setEnabled(true);
-                ToastUtil.show(activity,"修改成功");
+                ToastUtil.show(activity, "修改成功");
             }
         }
     }
@@ -366,7 +423,7 @@ public class ViewEditGroup implements IViewEditGroup {
         }
 
         @Override
-        public void setValue(Activity activity,View view, String s) {
+        public void setValue(Activity activity, View view, String s) {
             if ("0".equals(s)) {
                 view.setVisibility(View.VISIBLE);
             }
@@ -376,7 +433,7 @@ public class ViewEditGroup implements IViewEditGroup {
             if ("8".equals(s) || "2".equals(s)) {
                 view.setVisibility(View.GONE);
             }
-            ToastUtil.show(activity,"修改成功");
+            ToastUtil.show(activity, "修改成功");
         }
     }
 }

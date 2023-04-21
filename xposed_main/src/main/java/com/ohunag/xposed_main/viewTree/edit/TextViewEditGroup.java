@@ -48,6 +48,10 @@ public class TextViewEditGroup implements IViewEditGroup {
     }
 
     public static class TextCopyViewEdit implements IViewEdit {
+        @Override
+        public String editButtonName() {
+            return "复制";
+        }
 
         @Override
         public String getValueName() {
