@@ -8,14 +8,15 @@ import android.widget.TextView;
 
 import com.ohunag.xposed_main.R;
 import com.ohunag.xposed_main.UiHook;
+import com.ohunag.xposed_main.bean.ViewRootMsg;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
 
 public class ViewRootListAdapter extends BaseAdapter {
-    private List<View> mData;
+    private List<ViewRootMsg> mData;
     private Listener listener;
-    public ViewRootListAdapter(List<View> data) {
+    public ViewRootListAdapter(List<ViewRootMsg> data) {
         mData = data;
     }
 
@@ -51,9 +52,9 @@ public class ViewRootListAdapter extends BaseAdapter {
         TextView tv_viewName_item_RootList_xposed=view.findViewWithTag("tv_viewName_item_RootList_xposed");
         TextView tv_show_item_RootList_xposed=view.findViewWithTag("tv_show_item_RootList_xposed");
         TextView tv_select_item_RootList_xposed=view.findViewWithTag("tv_select_item_RootList_xposed");
-        WeakReference<View> weakReference=new WeakReference<>(mData.get(position));
+        WeakReference<View> weakReference=new WeakReference<>(mData.get(position).getView());
         if (weakReference.get()!=null){
-            tv_viewName_item_RootList_xposed.setText(weakReference.get().toString());
+            tv_viewName_item_RootList_xposed.setText(mData.get(position).getViewName());
         }
         tv_show_item_RootList_xposed.setOnClickListener(new View.OnClickListener() {
             @Override

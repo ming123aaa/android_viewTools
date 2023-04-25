@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.ohunag.xposed_main.R;
 import com.ohunag.xposed_main.UiHook;
+import com.ohunag.xposed_main.bean.ViewRootMsg;
 import com.ohunag.xposed_main.util.ToastUtil;
 import com.ohunag.xposed_main.util.UiUtil;
 import com.ohunag.xposed_main.view.DrawRectView;
@@ -265,7 +266,15 @@ public class MainWindowUI {
     }
 
     private void set_ll_selectView_xposed() {
-        ViewRootListAdapter viewRootListAdapter = new ViewRootListAdapter(UiHook.getRootViews());
+        List<ViewRootMsg> viewRootMsgs=new ArrayList<>();
+        ViewTreeUtil.getFragmentViewRootMsg(activity,viewRootMsgs);
+        List<View> rootViews = UiHook.getRootViews();
+        for (View view : rootViews) {
+            if (view!=null) {
+                viewRootMsgs.add(new ViewRootMsg(view.toString(), view));
+            }
+        }
+        ViewRootListAdapter viewRootListAdapter = new ViewRootListAdapter(viewRootMsgs);
         listView_selectView_xposed.setAdapter(viewRootListAdapter);
         viewRootListAdapter.setListener(new ViewRootListAdapter.Listener() {
             @Override
@@ -448,10 +457,10 @@ public class MainWindowUI {
 
     private void selectViewRoot(View view) {
         if (view == null) {
-            tv_selectView_xposed.setText("选中:当前activity");
+            tv_selectView_xposed.setText("选择根View:当前activity");
             selectView = null;
         } else {
-            tv_selectView_xposed.setText("选中:" + view.toString());
+            tv_selectView_xposed.setText("选择根View:" + view.toString());
         }
         selectView = new WeakReference<>(view);
     }

@@ -3,7 +3,6 @@ package com.ohunag.xposed_main.viewTree.edit;
 import android.app.Activity;
 import android.view.View;
 import android.webkit.WebView;
-import android.widget.TextView;
 
 import com.ohunag.xposed_main.util.ToastUtil;
 import com.ohunag.xposed_main.viewTree.IViewEdit;

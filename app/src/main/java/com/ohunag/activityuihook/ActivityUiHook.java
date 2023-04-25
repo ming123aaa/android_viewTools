@@ -47,6 +47,7 @@ public class ActivityUiHook implements IXposedHookLoadPackage, IXposedHookZygote
         Log.e(TAG, "handleLoadPackage: pkg=" + packageName + " processName=" + processName);
         if (!isHook) {
             isHook = true;
+            UiHook.classLoader=lpparam.classLoader;
             new Hook(Instrumentation.class.getName(), lpparam.classLoader) {
 
                 @Override
@@ -158,7 +159,7 @@ public class ActivityUiHook implements IXposedHookLoadPackage, IXposedHookZygote
             public List<View> getViews() {
                 return rootViews;
             }
-        });
+        }, UiHook.Type.XPOSED);
         Log.d(TAG, "initZygote: " + modulePath);
     }
 }

@@ -2,11 +2,9 @@ package com.ohuang.noxp_ui_hook_main;
 
 import android.app.Activity;
 import android.app.Application;
-import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,13 +16,8 @@ import com.ohunag.xposed_main.smallwindow.SmallWindowView;
 import com.ohunag.xposed_main.util.RefInvoke;
 import com.ohunag.xposed_main.view.HookRootFrameLayout;
 
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 public class UiHookManager {
     public static final String TAG = "UiHookManager";
@@ -52,7 +45,7 @@ public class UiHookManager {
                 public List<View> getViews() {
                     return getHookAllRootView();
                 }
-            });
+            }, UiHook.Type.APP);
             registerActivityCallBack();
 
         }

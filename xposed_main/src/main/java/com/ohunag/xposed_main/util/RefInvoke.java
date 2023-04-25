@@ -121,4 +121,39 @@ public class RefInvoke {
         }
     }
 
+    public static boolean matchClass(Class<?> aclass,String className,ClassLoader classLoader){
+        Class<?> iClass=null;
+        try {
+            iClass = classLoader.loadClass(className);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        if (iClass==null){
+            return false;
+        }
+        if (!iClass.isInterface()) {
+
+            Class<?> thisClass = aclass;
+            while (thisClass != null) {
+                if (thisClass.getName().equals(className)) {
+                    return true;
+                }
+                thisClass = thisClass.getSuperclass();
+            }
+        }else {
+
+            Class<?> thisClass = aclass;
+            while (thisClass != null) {
+                for (Class<?> anInterface : thisClass.getInterfaces()) {
+                    if (anInterface.getName().equals(className)) {
+                        return true;
+                    }
+                }
+                thisClass = thisClass.getSuperclass();
+            }
+
+        }
+        return false;
+    }
+
 }
