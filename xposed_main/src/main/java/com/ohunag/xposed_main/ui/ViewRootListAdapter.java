@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.ohunag.xposed_main.R;
 import com.ohunag.xposed_main.UiHook;
 import com.ohunag.xposed_main.bean.ViewRootMsg;
+import com.ohunag.xposed_main.viewTree.ViewTreeUtil;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
@@ -55,7 +56,7 @@ public class ViewRootListAdapter extends BaseAdapter {
         WeakReference<View> weakReference=new WeakReference<>(mData.get(position).getView());
         if (weakReference.get()!=null){
             tv_viewName_item_RootList_xposed.setText(mData.get(position).getViewName());
-            if (weakReference.get().getVisibility()==View.VISIBLE){
+            if (ViewTreeUtil.viewVisibility(weakReference.get())){
                 tv_viewName_item_RootList_xposed.setTextColor(0xffff0000);
             }else {
                 tv_viewName_item_RootList_xposed.setTextColor(0xffffffff);

@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.ohunag.xposed_main.R;
 import com.ohunag.xposed_main.UiHook;
 import com.ohunag.xposed_main.viewTree.ViewNode;
+import com.ohunag.xposed_main.viewTree.ViewTreeUtil;
 
 public class ViewTreeAdapter extends BaseAdapter {
     private ViewNode viewNode;
@@ -83,8 +84,11 @@ public class ViewTreeAdapter extends BaseAdapter {
         if (position==selectId){
             textView.setTextColor(0xffff0000);
             textView.setBackground(UiHook.xpRes.getDrawable(R.drawable.btn_backgroud_wight_aaa));
-        }else {
+        }else if (ViewTreeUtil.viewVisibility(item.getView())){
             textView.setTextColor(0xffffffff);
+            textView.setBackgroundColor(0x00000000);
+        }else {
+            textView.setTextColor(0xff0080ff);
             textView.setBackgroundColor(0x00000000);
         }
         textView.setOnClickListener(new View.OnClickListener() {

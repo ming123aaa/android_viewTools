@@ -148,6 +148,13 @@ public class ViewNode {
         return viewNodePath + " > [" + i + "]" + viewClassName;
     }
 
+    public void getViewNodePath(List<ViewNode> viewNodes){
+        if (parent!=null){
+            parent.getViewNodePath(viewNodes);
+        }
+        viewNodes.add(this);
+    }
+
 
     /**
      * 从前面开始遍历

@@ -5,12 +5,16 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.PixelFormat;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -61,7 +65,9 @@ public class MainWindowUI {
     private DrawRectView drv_main_view;
 
     private ViewGroup ll_getRoot_xposed;
-    private TextView tv_parentList_viewTree_xposed;
+
+    private HorizontalScrollView hs_parentList_viewTree_xposed;
+    private LinearLayout ll_parentList_viewTree_xposed;
     private TextView tv_parentNode_viewTree_xposed;
     private TextView tv_childNode_viewTree_xposed;
     private ListView listView_viewTree_xposed;
@@ -231,7 +237,8 @@ public class MainWindowUI {
         View inflate = LayoutInflater.from(activity).inflate(UiHook.xpRes.getLayout(R.layout.ui_main_window_view_tree_xposed), null, false);
         ll_getRoot_xposed = mainWindow.findViewWithTag("ll_getRoot_xposed");
         ll_getRoot_xposed.addView(inflate);
-        tv_parentList_viewTree_xposed = inflate.findViewWithTag("tv_parentList_viewTree_xposed");
+        ll_parentList_viewTree_xposed = inflate.findViewWithTag("ll_parentList_viewTree_xposed");
+        hs_parentList_viewTree_xposed = inflate.findViewWithTag("hs_parentList_viewTree_xposed");
         tv_parentNode_viewTree_xposed = inflate.findViewWithTag("tv_parentNode_viewTree_xposed");
         tv_childNode_viewTree_xposed = inflate.findViewWithTag("tv_childNode_viewTree_xposed");
         listView_viewTree_xposed = inflate.findViewWithTag("listView_viewTree_xposed");
@@ -559,7 +566,31 @@ public class MainWindowUI {
         ViewTreeAdapter viewTreeAdapter = new ViewTreeAdapter(viewNode, selectId);
         listView_viewTree_xposed.setAdapter(viewTreeAdapter);
         showViewRect(viewNode.getView());
-        tv_parentList_viewTree_xposed.setText(viewNode.getViewNodePath());
+        List<ViewNode> viewNodesPath=new ArrayList<>();
+        viewNode.getViewNodePath(viewNodesPath);
+        ll_parentList_viewTree_xposed.removeAllViews();
+        for (ViewNode node : viewNodesPath) {
+            TextView textView=new TextView(activity);
+            textView.setText("["+node.inParentIndex()+"]" + node.getViewClassName()+">");
+            textView.setTextColor(0xffffffff);
+            textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP,18);
+            textView.setGravity(Gravity.CENTER_VERTICAL);
+            textView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    set_ll_goRoot(node, 0, listener);
+                    setSate(4);
+                }
+            });
+            ll_parentList_viewTree_xposed.addView(textView,new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        }
+        ll_parentList_viewTree_xposed.post(new Runnable() {
+            @Override
+            public void run() {
+                hs_parentList_viewTree_xposed.scrollTo(ll_parentList_viewTree_xposed.getWidth(),0);
+            }
+        });
+
         viewTreeAdapter.setListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

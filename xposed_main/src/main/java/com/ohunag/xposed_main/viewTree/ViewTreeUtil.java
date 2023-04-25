@@ -168,4 +168,17 @@ public class ViewTreeUtil {
             }
         }
     }
+
+    public static boolean viewVisibility(View view){
+        if (view==null){
+            return false;
+        }
+        if (view.getVisibility()==View.VISIBLE){
+            if (view.getParent() instanceof View){
+                return viewVisibility((View) view.getParent());
+            }
+            return true;
+        }
+        return false;
+    }
 }

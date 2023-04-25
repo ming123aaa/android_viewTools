@@ -39,18 +39,16 @@
     </LinearLayout>
 
     <HorizontalScrollView
+        android:tag="hs_parentList_viewTree_xposed"
         android:layout_width="match_parent"
         android:layout_height="40dp">
 
-        <TextView
-            android:tag="tv_parentList_viewTree_xposed"
+        <LinearLayout
+            android:tag="ll_parentList_viewTree_xposed"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="left|center_vertical"
-            android:text=""
-            android:textColor="#fff"
-            android:textSize="18dp" />
+            android:orientation="horizontal"
+             />
     </HorizontalScrollView>
 
     <LinearLayout
