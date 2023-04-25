@@ -1,6 +1,7 @@
 package com.ohunag.xposed_main.viewTree;
 
 import android.app.Activity;
+import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
@@ -25,6 +26,7 @@ import com.ohunag.xposed_main.viewTree.edit.ImageViewEditGroup;
 import com.ohunag.xposed_main.viewTree.edit.TextViewEditGroup;
 import com.ohunag.xposed_main.viewTree.edit.ViewEditGroup;
 import com.ohunag.xposed_main.viewTree.edit.WebViewEditGroup;
+import com.ohunag.xposed_main.viewTree.intercept.FragmentNodeValueIntercept;
 import com.ohunag.xposed_main.viewTree.intercept.TextViewNodeValueIntercept;
 import com.ohunag.xposed_main.viewTree.intercept.ViewNodeValueIntercept;
 import com.ohunag.xposed_main.viewTree.intercept.WebViewNodeValueIntercept;
@@ -35,28 +37,40 @@ import java.util.List;
 
 public class ViewTreeUtil {
 
-    public static ViewNode getViewNode(Activity activity){
+    public static ViewNode getViewNode(Activity activity) {
         View decorView = activity.getWindow().getDecorView();
-        return getViewNode(decorView);
+        return getViewNode(decorView,activity);
     }
 
-    public static ViewNode getViewNode(View view){
-        List<ViewNode.NodeValueIntercept> data=new ArrayList<>();
+    public static ViewNode getViewNode(View view,Context context) {
+        if (context==null) {
+            context = view.getContext();
+        }
+        List<ViewNode.NodeValueIntercept> data = new ArrayList<>();
+        if (context instanceof Activity) {
+            List<ViewRootMsg> viewRootMsgList = new ArrayList<>();
+            getFragmentViewRootMsg((Activity) context, viewRootMsgList);
+            if (viewRootMsgList.size() > 0) {
+                data.add(new FragmentNodeValueIntercept(viewRootMsgList));
+            }
+        }
         data.add(new ViewNodeValueIntercept());
         data.add(new TextViewNodeValueIntercept());
         data.add(new WebViewNodeValueIntercept());
-        return new ViewNode(view,data);
+        ViewNode viewNode = new ViewNode(view);
+        viewNode.init(data);
+        return viewNode;
     }
 
-    public static List<IViewEdit> getIViewEdit(View view){
-        List<IViewEditGroup> iViewEditGroups=new ArrayList<>();
+    public static List<IViewEdit> getIViewEdit(View view) {
+        List<IViewEditGroup> iViewEditGroups = new ArrayList<>();
         iViewEditGroups.add(new ImageViewEditGroup());
         iViewEditGroups.add(new WebViewEditGroup());
         iViewEditGroups.add(new TextViewEditGroup());
         iViewEditGroups.add(new ViewEditGroup());
-        List<IViewEdit> data=new ArrayList<>();
+        List<IViewEdit> data = new ArrayList<>();
         for (IViewEditGroup iViewEditGroup : iViewEditGroups) {
-            iViewEditGroup.addToList(data,view);
+            iViewEditGroup.addToList(data, view);
         }
         return data;
     }
@@ -65,7 +79,7 @@ public class ViewTreeUtil {
         if (view == null) {
             return "null";
         }
-        if(view instanceof EditText){
+        if (view instanceof EditText) {
             return "EditText";
         }
         if (view instanceof Button) {
@@ -106,51 +120,51 @@ public class ViewTreeUtil {
         return "View";
     }
 
-    public static void getFragmentViewRootMsg(Activity activity,List<ViewRootMsg> viewRootMsgs){
-        if (viewRootMsgs==null||activity==null){
+    public static void getFragmentViewRootMsg(Activity activity, List<ViewRootMsg> viewRootMsgs) {
+        if (viewRootMsgs == null || activity == null) {
             return;
         }
-        if (UiHook.type== UiHook.Type.APP){
-            if (activity instanceof FragmentActivity){
-                  traversalFragment(((FragmentActivity) activity).getSupportFragmentManager(),viewRootMsgs);
+        if (UiHook.type == UiHook.Type.APP) {
+            if (activity instanceof FragmentActivity) {
+                traversalFragment(((FragmentActivity) activity).getSupportFragmentManager(), viewRootMsgs);
             }
-        } else if (UiHook.type== UiHook.Type.XPOSED) {
-            if (RefInvoke.matchClass(activity.getClass(),"androidx.fragment.app.FragmentActivity",UiHook.classLoader)) {
-                xposedTraversalFragment(RefInvoke.invokeMethod(UiHook.classLoader,"androidx.fragment.app.FragmentActivity"
-                        ,"getSupportFragmentManager",activity,new Class[]{},new Object[]{}),viewRootMsgs);
+        } else if (UiHook.type == UiHook.Type.XPOSED) {
+            if (RefInvoke.matchClass(activity.getClass(), "androidx.fragment.app.FragmentActivity", UiHook.classLoader)) {
+                xposedTraversalFragment(RefInvoke.invokeMethod(UiHook.classLoader, "androidx.fragment.app.FragmentActivity"
+                        , "getSupportFragmentManager", activity, new Class[]{}, new Object[]{}), viewRootMsgs);
             }
         }
     }
 
-    private static void xposedTraversalFragment(Object fragmentManager,List<ViewRootMsg> viewRootMsgs){
-        if (fragmentManager==null||viewRootMsgs==null){
+    private static void xposedTraversalFragment(Object fragmentManager, List<ViewRootMsg> viewRootMsgs) {
+        if (fragmentManager == null || viewRootMsgs == null) {
             return;
         }
-        List<Object> fragments = (List<Object>) RefInvoke.invokeMethod(UiHook.classLoader,"androidx.fragment.app.FragmentManager"
-                ,"getFragments",fragmentManager,new Class[]{},new Object[]{});
+        List<Object> fragments = (List<Object>) RefInvoke.invokeMethod(UiHook.classLoader, "androidx.fragment.app.FragmentManager"
+                , "getFragments", fragmentManager, new Class[]{}, new Object[]{});
         for (Object fragment : fragments) {
 
-            if (fragment!=null){
-                View view= (View) RefInvoke.invokeMethod(UiHook.classLoader,"androidx.fragment.app.Fragment"
-                        ,"getView",fragment,new Class[]{},new Object[]{});
-                if (view!=null) {
-                    viewRootMsgs.add(new ViewRootMsg(fragment.getClass().toString(),view));
-                    xposedTraversalFragment( RefInvoke.invokeMethod(UiHook.classLoader,"androidx.fragment.app.Fragment"
-                            ,"getChildFragmentManager",fragmentManager,new Class[]{},new Object[]{}), viewRootMsgs);
+            if (fragment != null) {
+                View view = (View) RefInvoke.invokeMethod(UiHook.classLoader, "androidx.fragment.app.Fragment"
+                        , "getView", fragment, new Class[]{}, new Object[]{});
+                if (view != null) {
+                    viewRootMsgs.add(new ViewRootMsg(fragment.getClass().getName(), view));
+                    xposedTraversalFragment(RefInvoke.invokeMethod(UiHook.classLoader, "androidx.fragment.app.Fragment"
+                            , "getChildFragmentManager", fragmentManager, new Class[]{}, new Object[]{}), viewRootMsgs);
                 }
             }
         }
     }
 
-    private static void traversalFragment(FragmentManager fragmentManager,List<ViewRootMsg> viewRootMsgs){
-        if (fragmentManager==null||viewRootMsgs==null){
+    private static void traversalFragment(FragmentManager fragmentManager, List<ViewRootMsg> viewRootMsgs) {
+        if (fragmentManager == null || viewRootMsgs == null) {
             return;
         }
         List<Fragment> fragments = fragmentManager.getFragments();
         for (Fragment fragment : fragments) {
-            if (fragment!=null&&fragment.getView()!=null){
-                viewRootMsgs.add(new ViewRootMsg(fragment.getClass().toString(),fragment.getView()));
-                traversalFragment(fragment.getChildFragmentManager(),viewRootMsgs);
+            if (fragment != null && fragment.getView() != null) {
+                viewRootMsgs.add(new ViewRootMsg(fragment.getClass().getName(), fragment.getView()));
+                traversalFragment(fragment.getChildFragmentManager(), viewRootMsgs);
             }
         }
     }

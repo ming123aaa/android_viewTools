@@ -285,7 +285,6 @@ public class MainWindowUI {
                         @Override
                         public void onClick(View v) {
                             setSate(5);
-                            set_ll_selectView_xposed();
                         }
                     });
                 } else {
@@ -446,7 +445,7 @@ public class MainWindowUI {
             rootViewNode = ViewTreeUtil.getViewNode(activity);
         } else {
             if (selectView.get() != null) {
-                rootViewNode = ViewTreeUtil.getViewNode(selectView.get());
+                rootViewNode = ViewTreeUtil.getViewNode(selectView.get(),null);
             } else {
                 ToastUtil.show(activity, "当前ViewRoot不存在,自动选择activity");
                 selectViewRoot(null);

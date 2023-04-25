@@ -135,7 +135,7 @@ public class ActivityUiHook implements IXposedHookLoadPackage, IXposedHookZygote
         for (int i = 0; i < rootViews.size(); i++) {
             stringBuildr.append("[" + i + "]").append(rootViews.get(i).toString()).append(",");
         }
-        Log.d(TAG, "logViewRoots: " + stringBuildr.toString());
+
     }
 
     public boolean shouldHookView(View view) {

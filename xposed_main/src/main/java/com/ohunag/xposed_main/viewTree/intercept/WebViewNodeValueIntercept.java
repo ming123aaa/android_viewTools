@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class WebViewNodeValueIntercept implements ViewNode.NodeValueIntercept {
     @Override
-    public boolean onIntercept(Map<String, NodeValue> map, View view) {
+    public boolean onIntercept(Map<String, NodeValue> map, View view,ViewNode viewNode) {
         if (view instanceof WebView){
             String url = ((WebView) view).getUrl();
             if (url!=null){

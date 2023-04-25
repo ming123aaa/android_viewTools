@@ -12,7 +12,7 @@ import java.util.Map;
 
 public class ViewNodeValueIntercept implements ViewNode.NodeValueIntercept {
     @Override
-    public boolean onIntercept(Map<String, NodeValue> map, View view) {
+    public boolean onIntercept(Map<String, NodeValue> map, View view,ViewNode viewNode) {
         if (view == null) {
             return false;
         }

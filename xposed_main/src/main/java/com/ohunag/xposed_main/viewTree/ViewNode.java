@@ -3,6 +3,7 @@ package com.ohunag.xposed_main.viewTree;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.ohunag.xposed_main.bean.ViewRootMsg;
 import com.ohunag.xposed_main.view.HookRootFrameLayout;
 
 import java.util.ArrayList;
@@ -28,17 +29,23 @@ public class ViewNode {
     public ViewNode() {
     }
 
-    public ViewNode(View view, List<NodeValueIntercept> nodeValueIntercepts) {
+    public ViewNode(View view ) {
         this.view = view;
-        this.nodeValueIntercepts = nodeValueIntercepts;
         viewClassName = view.getClass().getName();
-        initValueMap();
         initChild();
+    }
+
+    public void init(List<NodeValueIntercept> nodeValueIntercepts){
+        this.nodeValueIntercepts = nodeValueIntercepts;
+        initValueMap();
+        for (ViewNode viewNode : childNode) {
+            viewNode.init(nodeValueIntercepts);
+        }
     }
 
     private void initValueMap() {
         for (int i = 0; i < nodeValueIntercepts.size(); i++) {
-            nodeValueIntercepts.get(i).onIntercept(valueMap, view);
+            nodeValueIntercepts.get(i).onIntercept(valueMap, view,this);
         }
     }
 
@@ -48,7 +55,7 @@ public class ViewNode {
             for (int i = 0; i < childCount; i++) {
                 View childAt = ((ViewGroup) view).getChildAt(i);
                 if (childAt != null && !(childAt instanceof HookRootFrameLayout)) {
-                    ViewNode viewNode = new ViewNode(childAt, nodeValueIntercepts);
+                    ViewNode viewNode = new ViewNode(childAt);
                     addChildNode(viewNode);
                 }
             }
@@ -189,6 +196,23 @@ public class ViewNode {
         return foreachCallBack.onIntercept(this);
     }
 
+    public ViewRootMsg hasViewRootMsg(List<ViewRootMsg> viewRootMsgs){
+        if (viewRootMsgs==null){
+            return null;
+        }
+        for (ViewRootMsg viewRootMsg : viewRootMsgs) {
+            if (viewRootMsg!=null&&viewRootMsg.getView()!=null){
+                if (viewRootMsg.getView()==view){
+                    return viewRootMsg;
+                }
+            }
+        }
+        if (parent!=null){
+            return parent.hasViewRootMsg(viewRootMsgs);
+        }
+        return null;
+    }
+
     public interface ForeachCallBack {
         /**
          * @param viewNode
@@ -203,6 +227,6 @@ public class ViewNode {
          * @param
          * @return ture  拦截不继续遍历
          */
-        boolean onIntercept(Map<String, NodeValue> map, View view);
+        boolean onIntercept(Map<String, NodeValue> map, View view,ViewNode viewNode);
     }
 }

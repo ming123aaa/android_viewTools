@@ -11,7 +11,7 @@ import java.util.Map;
 
 public class TextViewNodeValueIntercept implements ViewNode.NodeValueIntercept {
     @Override
-    public boolean onIntercept(Map<String, NodeValue> map, View view) {
+    public boolean onIntercept(Map<String, NodeValue> map, View view,ViewNode viewNode) {
         if (view instanceof TextView){
             TextView textView=((TextView) view);
             CharSequence text =textView.getText();

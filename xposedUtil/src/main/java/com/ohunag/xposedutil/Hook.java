@@ -29,7 +29,6 @@ public abstract class Hook extends IHook {
     protected boolean beforeMethod(MethodHookParam param) {
         Member method = param.method;
         Object thisObject = param.thisObject;
-        log( "beforeMethod: thisObject=" + thisObject + "  method=" + method+" param="+ Arrays.toString(param.args));
 
         return false;
     }
