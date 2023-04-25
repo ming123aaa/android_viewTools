@@ -179,7 +179,7 @@ public class MainWindowUI {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
+                    case MotionEvent.ACTION_UP:
                         if (rootViewNode == null) {
                             setSate(0);
                             Toast.makeText(activity, "获取不到View", Toast.LENGTH_LONG).show();
@@ -190,7 +190,7 @@ public class MainWindowUI {
                         }
                         break;
                 }
-                return false;
+                return true;
             }
         });
         init_ll_activity_xposed();

@@ -69,7 +69,7 @@ public class UiHookManager {
         //android.view.WindowManagerGlobal  -> public static WindowManagerGlobal getInstance()
 
         Object getInstance = RefInvoke.invokeStaticMethod("android.view.WindowManagerGlobal", "getInstance", new Class[]{}, new Object[]{});
-        
+
         //   private final ArrayList<View> mViews = new ArrayList<View>();
         List<View> mViews = (List<View>) RefInvoke.getFieldOjbect("android.view.WindowManagerGlobal", getInstance, "mViews");
 
