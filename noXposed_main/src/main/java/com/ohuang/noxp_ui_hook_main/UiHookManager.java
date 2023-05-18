@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.ohunag.xposed_main.UiHook;
+import com.ohunag.xposed_main.bean.ViewRootMsg;
 import com.ohunag.xposed_main.config.MainConfig;
 import com.ohunag.xposed_main.smallwindow.FloatViewManager;
 import com.ohunag.xposed_main.smallwindow.SmallWindowView;
@@ -44,6 +45,11 @@ public class UiHookManager {
                 @Override
                 public List<View> getViews() {
                     return getHookAllRootView();
+                }
+
+                @Override
+                public List<ViewRootMsg> getDialog() {
+                    return null;
                 }
             }, UiHook.Type.APP);
             registerActivityCallBack();

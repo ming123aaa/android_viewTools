@@ -14,6 +14,7 @@
         android:gravity="center"
         android:minHeight="40dp"
         android:text="fsdf"
+        android:textIsSelectable="true"
         android:textColor="#fff"
         android:textSize="18dp" />
 

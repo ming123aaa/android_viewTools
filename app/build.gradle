@@ -38,4 +38,5 @@ dependencies {
     compileOnly 'de.robv.android.xposed:api:82'
     implementation project(":xposedUtil")
     implementation project(":xposed_main")
+    api 'com.google.code.gson:gson:2.10'
 }

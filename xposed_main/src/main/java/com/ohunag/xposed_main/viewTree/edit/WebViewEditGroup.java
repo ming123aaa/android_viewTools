@@ -14,8 +14,9 @@ import java.util.List;
 public class WebViewEditGroup implements IViewEditGroup {
     @Override
     public void addToList(List<IViewEdit> data, View view) {
-        if (view instanceof WebView){
+        if (view instanceof WebView) {
             data.add(new UrlEdit());
+            data.add(new DebugEnableEdit());
         }
     }
 
@@ -38,6 +39,7 @@ public class WebViewEditGroup implements IViewEditGroup {
             }
             return "";
         }
+
         @Override
         public void setValue(Activity activity, View view, String s) throws IOException {
             try {
@@ -49,6 +51,34 @@ public class WebViewEditGroup implements IViewEditGroup {
                 ToastUtil.show(activity, e.toString());
             }
 
+        }
+    }
+
+    public static class DebugEnableEdit implements IViewEdit {
+
+
+        @Override
+        public String getValueName() {
+            return "webViewDebug";
+        }
+
+        @Override
+        public String getHint() {
+            return "1为debug模式 ";
+        }
+
+        @Override
+        public String getValue(View view) {
+            return "";
+        }
+
+        @Override
+        public void setValue(Activity activity, View view, String s) throws IOException {
+            if ("1".equals(s)) {
+                WebView.setWebContentsDebuggingEnabled(true);
+            }else {
+                WebView.setWebContentsDebuggingEnabled(false);
+            }
         }
     }
 }

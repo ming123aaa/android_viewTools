@@ -4,6 +4,9 @@ package com.ohunag.xposed_main;
 import android.content.res.Resources;
 import android.view.View;
 
+import com.ohunag.xposed_main.bean.ViewRootMsg;
+
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -27,6 +30,16 @@ public class UiHook {
         return rootViews;
     }
 
+    public static List<ViewRootMsg> getDialogs(){
+        if (viewListManager != null) {
+            List<ViewRootMsg> views = viewListManager.getDialog();
+            if (views != null) {
+                return views;
+            }
+        }
+        return new ArrayList<>();
+    }
+
 
     public static void init(Resources xpRes, ViewListManager viewListManager, Type type) {
         UiHook.xpRes = xpRes;
@@ -36,6 +49,8 @@ public class UiHook {
 
     public interface ViewListManager {
         List<View> getViews();
+
+        List<ViewRootMsg> getDialog();
     }
 
     public enum Type {

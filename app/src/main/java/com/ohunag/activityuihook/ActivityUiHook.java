@@ -2,6 +2,7 @@ package com.ohunag.activityuihook;
 
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.Instrumentation;
 import android.content.res.XModuleResources;
 import android.os.Bundle;
@@ -10,13 +11,16 @@ import android.view.View;
 
 
 import com.ohunag.xposed_main.UiHook;
+import com.ohunag.xposed_main.bean.ViewRootMsg;
 import com.ohunag.xposed_main.smallwindow.FloatViewManager;
 import com.ohunag.xposed_main.smallwindow.SmallWindowView;
 import com.ohunag.xposed_main.view.HookRootFrameLayout;
 import com.ohunag.xposedutil.Hook;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.IXposedHookZygoteInit;
@@ -29,6 +33,8 @@ public class ActivityUiHook implements IXposedHookLoadPackage, IXposedHookZygote
     public static XModuleResources xpRes;
     private static String modulePath;
     public static final List<View> rootViews = new LinkedList<>();
+
+    public static final List<Dialog> dialogs = new ArrayList<>();
 
     @Override
     public void handleInitPackageResources(XC_InitPackageResources.InitPackageResourcesParam resparam) throws Throwable {
@@ -47,7 +53,7 @@ public class ActivityUiHook implements IXposedHookLoadPackage, IXposedHookZygote
         Log.e(TAG, "handleLoadPackage: pkg=" + packageName + " processName=" + processName);
         if (!isHook) {
             isHook = true;
-            UiHook.classLoader=lpparam.classLoader;
+            UiHook.classLoader = lpparam.classLoader;
             new Hook(Instrumentation.class.getName(), lpparam.classLoader) {
 
                 @Override
@@ -124,7 +130,34 @@ public class ActivityUiHook implements IXposedHookLoadPackage, IXposedHookZygote
                 }
             }.hook();
 
+            new Hook(Dialog.class.getName(), lpparam.classLoader) {
 
+
+                @Override
+                public void hook() {
+                    hookAllMethod("show");
+                    hookAllMethod("hide");
+                    hookAllMethod("dismiss");
+                }
+
+
+                @Override
+                protected boolean beforeMethod(MethodHookParam param) {
+                    switch (param.method.getName()) {
+                        case "show":
+                            if (!dialogs.contains(param.thisObject)) {
+                                dialogs.add((Dialog) param.thisObject);
+                            }
+                            break;
+                        case "hide":
+                        case "dismiss":
+                            dialogs.remove(param.thisObject);
+                            break;
+
+                    }
+                    return super.beforeMethod(param);
+                }
+            }.hook();
 
 
         }
@@ -158,6 +191,18 @@ public class ActivityUiHook implements IXposedHookLoadPackage, IXposedHookZygote
             @Override
             public List<View> getViews() {
                 return rootViews;
+            }
+
+            @Override
+            public List<ViewRootMsg> getDialog() {
+                List<ViewRootMsg> data=new ArrayList<>();
+                for (int i = 0; i < dialogs.size(); i++) {
+                    Dialog dialog = dialogs.get(i);
+                    if (dialog!=null) {
+                        data.add(new ViewRootMsg(dialog.getClass().getName()+"[dialog]",dialog.getWindow().getDecorView()));
+                    }
+                }
+                return data;
             }
         }, UiHook.Type.XPOSED);
         Log.d(TAG, "initZygote: " + modulePath);

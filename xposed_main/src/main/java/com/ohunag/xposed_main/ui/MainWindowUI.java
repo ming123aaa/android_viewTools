@@ -281,6 +281,7 @@ public class MainWindowUI {
                 viewRootMsgs.add(new ViewRootMsg(view.toString(), view));
             }
         }
+        viewRootMsgs.addAll(UiHook.getDialogs());
         ViewRootListAdapter viewRootListAdapter = new ViewRootListAdapter(viewRootMsgs);
         listView_selectView_xposed.setAdapter(viewRootListAdapter);
         viewRootListAdapter.setListener(new ViewRootListAdapter.Listener() {
@@ -467,8 +468,8 @@ public class MainWindowUI {
             selectView = null;
         } else {
             tv_selectView_xposed.setText("选择根View:" + view.toString());
+            selectView = new WeakReference<>(view);
         }
-        selectView = new WeakReference<>(view);
     }
 
     private void init_clickView(ViewGroup mainWindow) {
