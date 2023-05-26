@@ -40,11 +40,11 @@ public class ViewTreeUtil {
 
     public static ViewNode getViewNode(Activity activity) {
         View decorView = activity.getWindow().getDecorView();
-        return getViewNode(decorView,activity);
+        return getViewNode(decorView, activity);
     }
 
-    public static ViewNode getViewNode(View view,Context context) {
-        if (context==null) {
+    public static ViewNode getViewNode(View view, Context context) {
+        if (context == null) {
             context = view.getContext();
         }
         List<ViewNode.NodeValueIntercept> data = new ArrayList<>();
@@ -144,15 +144,17 @@ public class ViewTreeUtil {
         }
         List<Object> fragments = (List<Object>) RefInvoke.invokeMethod(UiHook.classLoader, "androidx.fragment.app.FragmentManager"
                 , "getFragments", fragmentManager, new Class[]{}, new Object[]{});
-        for (Object fragment : fragments) {
+        if (fragments != null) {
+            for (Object fragment : fragments) {
 
-            if (fragment != null) {
-                View view = (View) RefInvoke.invokeMethod(UiHook.classLoader, "androidx.fragment.app.Fragment"
-                        , "getView", fragment, new Class[]{}, new Object[]{});
-                if (view != null) {
-                    viewRootMsgs.add(new ViewRootMsg(fragment.getClass().getName(), view));
-                    xposedTraversalFragment(RefInvoke.invokeMethod(UiHook.classLoader, "androidx.fragment.app.Fragment"
-                            , "getChildFragmentManager", fragmentManager, new Class[]{}, new Object[]{}), viewRootMsgs);
+                if (fragment != null) {
+                    View view = (View) RefInvoke.invokeMethod(UiHook.classLoader, "androidx.fragment.app.Fragment"
+                            , "getView", fragment, new Class[]{}, new Object[]{});
+                    if (view != null) {
+                        viewRootMsgs.add(new ViewRootMsg(fragment.getClass().getName(), view));
+                        xposedTraversalFragment(RefInvoke.invokeMethod(UiHook.classLoader, "androidx.fragment.app.Fragment"
+                                , "getChildFragmentManager", fragmentManager, new Class[]{}, new Object[]{}), viewRootMsgs);
+                    }
                 }
             }
         }
@@ -163,20 +165,22 @@ public class ViewTreeUtil {
             return;
         }
         List<Fragment> fragments = fragmentManager.getFragments();
-        for (Fragment fragment : fragments) {
-            if (fragment != null && fragment.getView() != null) {
-                viewRootMsgs.add(new ViewRootMsg(fragment.getClass().getName(), fragment.getView()));
-                traversalFragment(fragment.getChildFragmentManager(), viewRootMsgs);
+        if (fragments != null) {
+            for (Fragment fragment : fragments) {
+                if (fragment != null && fragment.getView() != null) {
+                    viewRootMsgs.add(new ViewRootMsg(fragment.getClass().getName(), fragment.getView()));
+                    traversalFragment(fragment.getChildFragmentManager(), viewRootMsgs);
+                }
             }
         }
     }
 
-    public static boolean viewVisibility(View view){
-        if (view==null){
+    public static boolean viewVisibility(View view) {
+        if (view == null) {
             return false;
         }
-        if (view.getVisibility()==View.VISIBLE){
-            if (view.getParent() instanceof View){
+        if (view.getVisibility() == View.VISIBLE) {
+            if (view.getParent() instanceof View) {
                 return viewVisibility((View) view.getParent());
             }
             return true;
