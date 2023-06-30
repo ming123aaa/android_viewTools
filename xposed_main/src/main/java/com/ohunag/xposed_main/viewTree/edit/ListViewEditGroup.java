@@ -2,15 +2,11 @@ package com.ohunag.xposed_main.viewTree.edit;
 
 import android.app.Activity;
 import android.view.View;
-import android.widget.BaseAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ohunag.xposed_main.ui.ObjectToJsonDialog;
-import com.ohunag.xposed_main.util.StringUtil;
-import com.ohunag.xposed_main.util.ToastUtil;
+import com.ohunag.xposed_main.ui.ObjectMsgDailog;
 import com.ohunag.xposed_main.viewTree.IViewEdit;
 import com.ohunag.xposed_main.viewTree.IViewEditGroup;
 
@@ -26,6 +22,10 @@ public class ListViewEditGroup implements IViewEditGroup {
 
 
     public static class AdapterEdit implements IViewEdit {
+        @Override
+        public String editButtonName() {
+            return "获取数据";
+        }
 
         @Override
         public String getValueName() {
@@ -52,7 +52,7 @@ public class ListViewEditGroup implements IViewEditGroup {
             if (view instanceof ListView) {
                 ListAdapter adapter = ((ListView) view).getAdapter();
                 if (adapter!=null) {
-                    ObjectToJsonDialog objectToJsonDialog = new ObjectToJsonDialog(activity);
+                    ObjectMsgDailog objectToJsonDialog = new ObjectMsgDailog(activity);
                     objectToJsonDialog.setObject(adapter, ListAdapter.class.getName());
                     objectToJsonDialog.show();
                     Toast.makeText(activity, "展示", Toast.LENGTH_SHORT).show();

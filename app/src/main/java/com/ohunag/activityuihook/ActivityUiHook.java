@@ -199,7 +199,7 @@ public class ActivityUiHook implements IXposedHookLoadPackage, IXposedHookZygote
                 for (int i = 0; i < dialogs.size(); i++) {
                     Dialog dialog = dialogs.get(i);
                     if (dialog!=null) {
-                        data.add(new ViewRootMsg(dialog.getClass().getName()+"[dialog]",dialog.getWindow().getDecorView()));
+                        data.add(new ViewRootMsg(dialog.getClass().getName()+"[dialog]",dialog.getWindow().getDecorView(),dialog));
                     }
                 }
                 return data;

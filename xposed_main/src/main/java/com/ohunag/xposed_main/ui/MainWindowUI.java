@@ -50,6 +50,7 @@ public class MainWindowUI {
     private TextView tv_getRootView_xposed;
 
     private WeakReference<View> selectView;//选中的View
+    private ViewRootMsg viewRootMsg;//选中的View信息
 
 
     private ViewGroup fl_touch_xposed;
@@ -150,7 +151,7 @@ public class MainWindowUI {
         } else if (sate == 3) {// viewNode信息界面
             ll_viewMsg_xposed.setVisibility(View.VISIBLE);
             drv_main_view.setVisibility(View.VISIBLE);
-        } else if (sate == 4) {// viewNode布局界面
+        } else if (sate == 4) {// viewNode查看布局界面
             ll_getRoot_xposed.setVisibility(View.VISIBLE);
             drv_main_view.setVisibility(View.VISIBLE);
         } else if (sate == 5) { //选择viewRoot
@@ -227,7 +228,7 @@ public class MainWindowUI {
         listView_selectView_xposed = inflate.findViewWithTag("listView_selectView_xposed");
         tv_close_xposed_selectView = inflate.findViewWithTag("tv_close_xposed_selectView");
         tv_select_activity_selectView_xposed.setOnClickListener(v -> {
-            selectViewRoot(null);
+            selectViewRoot(null,null);
             setSate(0);
         });
         tv_close_xposed_selectView.setOnClickListener(v -> setSate(0));
@@ -278,7 +279,7 @@ public class MainWindowUI {
         List<View> rootViews = UiHook.getRootViews();
         for (View view : rootViews) {
             if (view!=null) {
-                viewRootMsgs.add(new ViewRootMsg(view.toString(), view));
+                viewRootMsgs.add(new ViewRootMsg(view.toString(), view,view));
             }
         }
         viewRootMsgs.addAll(UiHook.getDialogs());
@@ -302,9 +303,9 @@ public class MainWindowUI {
             }
 
             @Override
-            public void onSelect(WeakReference<View> weakReference) {
-                if (weakReference.get() != null) {
-                    selectViewRoot(weakReference.get());
+            public void onSelect(ViewRootMsg weakReference) {
+                if (weakReference.getView() != null) {
+                    selectViewRoot(weakReference.getView(),weakReference);
                     setSate(0);
                 } else {
                     ToastUtil.show(activity, "当前ViewRoot不存在");
@@ -354,7 +355,7 @@ public class MainWindowUI {
     private void set_ll_imgView_xposed(View view, View.OnClickListener listener) {
         iv_show.setImageDrawable(null);
         if (view!= null) {
-            Bitmap bitmap = UiUtil.viewToBitmap(view);
+            Bitmap bitmap = UiUtil.getDownscaledBitmapForView(view);
             if (bitmap != null) {
                 iv_show.setImageBitmap(bitmap);
             }
@@ -394,7 +395,9 @@ public class MainWindowUI {
         }
     }
 
-
+    /**
+     * 一开始的按钮
+     */
     private void init_ll_activity_xposed() {
         ll_activity_xposed = rootView.findViewWithTag("ll_activity_xposed");
         tv_packageName_xposed = rootView.findViewWithTag("tv_packageName_xposed");
@@ -406,6 +409,20 @@ public class MainWindowUI {
         tv_getRootView_xposed = rootView.findViewWithTag("tv_getRootView_xposed");
         tv_activityName_xposed.setText(activity.getClass().getName());
         tv_packageName_xposed.setText("包名:" + activity.getPackageName());
+        tv_activityName_xposed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(viewRootMsg!=null&&viewRootMsg.getObjectWeakReference()!=null){
+                    ObjectMsgDailog objectMsgDailog = new ObjectMsgDailog(activity);
+                    objectMsgDailog.setObject(viewRootMsg.getObjectWeakReference());
+                    objectMsgDailog.show();
+                }else {
+                    ObjectMsgDailog objectMsgDailog = new ObjectMsgDailog(activity);
+                    objectMsgDailog.setObject(activity);
+                    objectMsgDailog.show();
+                }
+            }
+        });
         tv_selectView_xposed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -456,19 +473,33 @@ public class MainWindowUI {
                 rootViewNode = ViewTreeUtil.getViewNode(selectView.get(),null);
             } else {
                 ToastUtil.show(activity, "当前ViewRoot不存在,自动选择activity");
-                selectViewRoot(null);
+                selectViewRoot(null,null);
                 rootViewNode = ViewTreeUtil.getViewNode(activity);
             }
         }
     }
 
-    private void selectViewRoot(View view) {
+    /**
+     * 设置根view
+     * @param view
+     * @param vr
+     */
+    private void selectViewRoot(View view,ViewRootMsg vr) {
         if (view == null) {
             tv_selectView_xposed.setText("选择根View:当前activity");
             selectView = null;
+            viewRootMsg=null;
+            tv_activityName_xposed.setText(activity.getClass().getName());
         } else {
             tv_selectView_xposed.setText("选择根View:" + view.toString());
             selectView = new WeakReference<>(view);
+            if (vr!=null) {
+                viewRootMsg = vr;
+                tv_activityName_xposed.setText(vr.getViewName());
+            }else {
+                viewRootMsg=null;
+                tv_activityName_xposed.setText(activity.getClass().getName());
+            }
         }
     }
 

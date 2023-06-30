@@ -11,10 +11,12 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.ohunag.xposed_main.config.MainConfig;
+import com.ohunag.xposed_main.ui.ObjectMsgDailog;
 import com.ohunag.xposed_main.ui.ViewClassTreeDialog;
 import com.ohunag.xposed_main.util.ToastUtil;
 import com.ohunag.xposed_main.util.TryCatch;
 import com.ohunag.xposed_main.util.UiUtil;
+import com.ohunag.xposed_main.view.ViewListenerUtil;
 import com.ohunag.xposed_main.viewTree.IViewEdit;
 import com.ohunag.xposed_main.viewTree.IViewEditGroup;
 
@@ -35,8 +37,311 @@ public class ViewEditGroup implements IViewEditGroup {
         data.add(new AlphaEdit());
         data.add(new showClassTree());
         data.add(new ClickViewEdit());
+        data.add(new ViewMsgEdit());
+        data.add(new ClickListenerEdit());
+        data.add(new OnTouchListenerEdit());
+        data.add(new OnLongClickListenerEdit());
+        data.add(new OnKeyListenerEdit());
+        data.add(new OnContextClickListenerEdit());
+        data.add(new OnCreateContextMenuListenerEdit());
 
     }
+
+    public static class ClickListenerEdit implements IViewEdit{
+        @Override
+        public String editButtonName() {
+            return "查看";
+        }
+
+        @Override
+        public boolean isEnable(View view) {
+            Object listener = ViewListenerUtil.getOnClickListener(view);
+            return listener != null;
+        }
+
+        @Override
+        public String getValueName() {
+            return "OnClickListener";
+        }
+
+        @Override
+        public String getHint() {
+            return "无需输入";
+        }
+
+        @Override
+        public String getValue(View view) {
+            Object listener = ViewListenerUtil.getOnClickListener(view);
+            if (listener!=null){
+                return listener.getClass().getName();
+            }
+            return "";
+        }
+
+        @Override
+        public void setValue(Activity activity, View view, String s) throws IOException {
+            Object listener = ViewListenerUtil.getOnClickListener(view);
+            if (listener!=null){
+                ObjectMsgDailog objectMsgDailog = new ObjectMsgDailog(activity);
+                objectMsgDailog.setObject(listener);
+                objectMsgDailog.show();
+            }else {
+                ToastUtil.show(activity,"没有设置listener");
+            }
+        }
+    }
+    public static class OnTouchListenerEdit implements IViewEdit{
+        @Override
+        public String editButtonName() {
+            return "查看";
+        }
+
+        @Override
+        public boolean isEnable(View view) {
+            Object listener = ViewListenerUtil.getOnTouchListener(view);
+            return listener != null;
+        }
+
+        @Override
+        public String getValueName() {
+            return "OnTouchListener";
+        }
+
+        @Override
+        public String getHint() {
+            return "无需输入";
+        }
+
+        @Override
+        public String getValue(View view) {
+            Object listener = ViewListenerUtil.getOnTouchListener(view);
+            if (listener!=null){
+                return listener.getClass().getName();
+            }
+            return "";
+        }
+
+        @Override
+        public void setValue(Activity activity, View view, String s) throws IOException {
+            Object listener = ViewListenerUtil.getOnTouchListener(view);
+            if (listener!=null){
+                ObjectMsgDailog objectMsgDailog = new ObjectMsgDailog(activity);
+                objectMsgDailog.setObject(listener);
+                objectMsgDailog.show();
+            }else {
+                ToastUtil.show(activity,"没有设置listener");
+            }
+        }
+    }
+
+    public static class OnLongClickListenerEdit implements IViewEdit{
+        @Override
+        public String editButtonName() {
+            return "查看";
+        }
+
+        @Override
+        public boolean isEnable(View view) {
+            Object listener = ViewListenerUtil.getOnLongClickListener(view);
+            return listener != null;
+        }
+
+        @Override
+        public String getValueName() {
+            return "OnLongClickListener";
+        }
+
+        @Override
+        public String getHint() {
+            return "无需输入";
+        }
+
+        @Override
+        public String getValue(View view) {
+            Object listener = ViewListenerUtil.getOnLongClickListener(view);
+            if (listener!=null){
+                return listener.getClass().getName();
+            }
+            return "";
+        }
+
+        @Override
+        public void setValue(Activity activity, View view, String s) throws IOException {
+            Object listener = ViewListenerUtil.getOnLongClickListener(view);
+            if (listener!=null){
+                ObjectMsgDailog objectMsgDailog = new ObjectMsgDailog(activity);
+                objectMsgDailog.setObject(listener);
+                objectMsgDailog.show();
+            }else {
+                ToastUtil.show(activity,"没有设置listener");
+            }
+        }
+    }
+
+
+    public static class OnKeyListenerEdit implements IViewEdit{
+        @Override
+        public String editButtonName() {
+            return "查看";
+        }
+
+        @Override
+        public boolean isEnable(View view) {
+            Object listener = ViewListenerUtil.getOnKeyListener(view);
+            return listener != null;
+        }
+
+        @Override
+        public String getValueName() {
+            return "OnKeyListener";
+        }
+
+        @Override
+        public String getHint() {
+            return "无需输入";
+        }
+
+        @Override
+        public String getValue(View view) {
+            Object listener = ViewListenerUtil.getOnKeyListener(view);
+            if (listener!=null){
+                return listener.getClass().getName();
+            }
+            return "";
+        }
+
+        @Override
+        public void setValue(Activity activity, View view, String s) throws IOException {
+            Object listener = ViewListenerUtil.getOnKeyListener(view);
+            if (listener!=null){
+                ObjectMsgDailog objectMsgDailog = new ObjectMsgDailog(activity);
+                objectMsgDailog.setObject(listener);
+                objectMsgDailog.show();
+            }else {
+                ToastUtil.show(activity,"没有设置listener");
+            }
+        }
+    }
+
+    public static class OnContextClickListenerEdit implements IViewEdit{
+        @Override
+        public String editButtonName() {
+            return "查看";
+        }
+
+        @Override
+        public boolean isEnable(View view) {
+            Object listener = ViewListenerUtil.getOnContextClickListener(view);
+            return listener != null;
+        }
+
+        @Override
+        public String getValueName() {
+            return "OnContextClickListener";
+        }
+
+        @Override
+        public String getHint() {
+            return "无需输入";
+        }
+
+        @Override
+        public String getValue(View view) {
+            Object listener = ViewListenerUtil.getOnContextClickListener(view);
+            if (listener!=null){
+                return listener.getClass().getName();
+            }
+            return "";
+        }
+
+        @Override
+        public void setValue(Activity activity, View view, String s) throws IOException {
+            Object listener = ViewListenerUtil.getOnContextClickListener(view);
+            if (listener!=null){
+                ObjectMsgDailog objectMsgDailog = new ObjectMsgDailog(activity);
+                objectMsgDailog.setObject(listener);
+                objectMsgDailog.show();
+            }else {
+                ToastUtil.show(activity,"没有设置listener");
+            }
+        }
+    }
+
+
+    public static class OnCreateContextMenuListenerEdit implements IViewEdit{
+        @Override
+        public String editButtonName() {
+            return "查看";
+        }
+
+        @Override
+        public boolean isEnable(View view) {
+            Object listener = ViewListenerUtil.getOnCreateContextMenuListener(view);
+            return listener != null;
+        }
+
+        @Override
+        public String getValueName() {
+            return "OnCreateContextMenuListener";
+        }
+
+        @Override
+        public String getHint() {
+            return "无需输入";
+        }
+
+        @Override
+        public String getValue(View view) {
+            Object listener = ViewListenerUtil.getOnCreateContextMenuListener(view);
+            if (listener!=null){
+                return listener.getClass().getName();
+            }
+            return "";
+        }
+
+        @Override
+        public void setValue(Activity activity, View view, String s) throws IOException {
+            Object listener = ViewListenerUtil.getOnCreateContextMenuListener(view);
+            if (listener!=null){
+                ObjectMsgDailog objectMsgDailog = new ObjectMsgDailog(activity);
+                objectMsgDailog.setObject(listener);
+                objectMsgDailog.show();
+            }else {
+                ToastUtil.show(activity,"没有设置listener");
+            }
+        }
+    }
+    public static class ViewMsgEdit implements IViewEdit{
+
+        @Override
+        public String editButtonName() {
+            return "查看";
+        }
+
+        @Override
+        public String getValueName() {
+            return "ViewMsg";
+        }
+
+        @Override
+        public String getHint() {
+            return "无需输入";
+        }
+
+        @Override
+        public String getValue(View view) {
+            return view.getClass().getName();
+        }
+
+        @Override
+        public void setValue(Activity activity, View view, String s) throws IOException {
+                ObjectMsgDailog objectMsgDailog = new ObjectMsgDailog(activity);
+                objectMsgDailog.setObject(view);
+                objectMsgDailog.show();
+        }
+    }
+
+
 
     public static class ClickViewEdit implements IViewEdit {
         @Override
@@ -335,7 +640,7 @@ public class ViewEditGroup implements IViewEditGroup {
                 appDir.mkdirs();
             }
             File file = new File(appDir, fileName);
-            Bitmap bitmap = UiUtil.viewToBitmap(saveView);
+            Bitmap bitmap = UiUtil.getDownscaledBitmapForView(saveView);
             FileOutputStream fileOutputStream = new FileOutputStream(file);
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
             fileOutputStream.flush();

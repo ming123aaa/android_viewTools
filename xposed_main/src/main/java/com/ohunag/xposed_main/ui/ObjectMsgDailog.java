@@ -3,7 +3,6 @@ package com.ohunag.xposed_main.ui;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,22 +11,24 @@ import android.widget.TextView;
 
 import com.ohunag.xposed_main.R;
 import com.ohunag.xposed_main.UiHook;
+import com.ohunag.xposed_main.bean.FiedMsg;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ObjectToJsonDialog {
-    public static final String TAG="ObjectToJsonDialog";
+public class ObjectMsgDailog {
     private Dialog dialog;
     private Activity activity;
     private ViewGroup dialog_show_view_class_tree_xposed;
     private TextView tv_close_xposed_class;
+    private TextView tv_title;
     private ListView list_close_xposed_class;
-    public ObjectToJsonDialog(Activity activity) {
+    public ObjectMsgDailog(Activity activity) {
         this.activity=activity;
         dialog_show_view_class_tree_xposed = (ViewGroup) LayoutInflater.from(activity).inflate(UiHook.xpRes.getLayout(R.layout.dialog_show_view_class_tree_xposed), null, false);
         tv_close_xposed_class = dialog_show_view_class_tree_xposed.findViewWithTag("tv_close_xposed_class");
+        tv_title = dialog_show_view_class_tree_xposed.findViewWithTag("tv_title");
         tv_close_xposed_class.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -43,28 +44,33 @@ public class ObjectToJsonDialog {
 
     }
 
+    public void setObject(Object object){
+        List<FiedMsg> declared = getDeclared(object, Object.class.getName());
+        list_close_xposed_class.setAdapter(new ObjectMsgAdapter(declared,activity));
+        tv_title.setText(object.getClass().getName());
+    }
     public void setObject(Object object,String superClass){
-        List<Object> declared = getDeclared(object, superClass);
-        list_close_xposed_class.setAdapter(new ObjectToJsonAdapter(declared,activity));
+        List<FiedMsg> declared = getDeclared(object, superClass);
+        list_close_xposed_class.setAdapter(new ObjectMsgAdapter(declared,activity));
+        tv_title.setText(object.getClass().getName());
     }
 
-    public List<Object> getDeclared(Object object,String superClass){
-        List<Object> data=new ArrayList<>();
+    public List<FiedMsg> getDeclared(Object object,String superClass){
+        List<FiedMsg> data=new ArrayList<>();
         Class<?> aClass = object.getClass();
         while (aClass!=null&&!aClass.getName().equals(superClass)&&aClass!=Object.class) {
             Field[] declaredFields = aClass.getDeclaredFields();
             for (int i = 0; i < declaredFields.length; i++) {
                 Field field=declaredFields[i];
                 field.setAccessible(true);
-
                 try {
                     Object o = field.get(object);
-
                     if (o!=null){
-                        data.add(o);
+                        FiedMsg fiedMsg = new FiedMsg(o, field.getName());
+                        data.add(fiedMsg);
                     }
                 } catch (IllegalAccessException e) {
-                  e.printStackTrace();
+                    e.printStackTrace();
                 }
             }
             aClass=aClass.getSuperclass();

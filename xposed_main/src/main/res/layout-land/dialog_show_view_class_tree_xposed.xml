@@ -4,7 +4,15 @@
     android:layout_height="wrap_content"
     android:background="#aa000000"
     android:orientation="vertical">
-
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:minHeight="40dp"
+        android:text="class信息"
+        android:textColor="#fff"
+        android:textSize="18dp"
+        android:tag="tv_title"/>
     <ListView
         android:layout_width="match_parent"
         android:layout_height="200dp"

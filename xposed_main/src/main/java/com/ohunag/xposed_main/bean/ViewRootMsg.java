@@ -8,9 +8,12 @@ public class ViewRootMsg {
     private String viewName;
     private WeakReference<View> view;
 
-    public ViewRootMsg(String viewName, View view) {
+    private WeakReference<Object> objectWeakReference;
+
+    public ViewRootMsg(String viewName, View view,Object object) {
         this.viewName = viewName;
         this.view = new WeakReference<>(view);
+        this.objectWeakReference=new WeakReference<>(object);
     }
 
     public String getViewName() {
@@ -25,7 +28,7 @@ public class ViewRootMsg {
         return view.get();
     }
 
-
-
-
+    public Object getObjectWeakReference() {
+        return objectWeakReference.get();
+    }
 }

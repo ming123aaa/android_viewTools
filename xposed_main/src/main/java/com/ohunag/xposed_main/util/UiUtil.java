@@ -3,6 +3,7 @@ package com.ohunag.xposed_main.util;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
@@ -52,6 +53,40 @@ public class UiUtil {
 
 
         return bitmap;
+    }
+
+    public static Bitmap getDownscaledBitmapForView(View view) {
+        View screenView = view;
+        Bitmap bitmap = Bitmap.createBitmap(screenView.getWidth(), screenView.getHeight(), Bitmap.Config.ARGB_8888);//准备图片
+        Canvas canvas = new Canvas(bitmap);//将bitmap作为绘制画布
+        try {
+            screenView.draw(canvas);//讲View特定的区域绘制到这个canvas（bitmap）上去，
+        }catch (Exception e){
+            return null;
+        }
+
+        return bitmap;//得到最新的画布
+    }
+    public static Bitmap getDownscaledBitmapForView(View view, Rect crop, float downscaleFactor) {
+
+        View screenView = view;
+
+        int width = (int) (crop.width() * downscaleFactor);
+        int height = (int) (crop.height() * downscaleFactor);
+        float dx = -crop.left * downscaleFactor;
+        float dy = -crop.top * downscaleFactor;
+
+        if (width * height <= 0) {
+            return null;
+        }
+        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);//准备图片
+        Canvas canvas = new Canvas(bitmap);//将bitmap作为绘制画布
+        Matrix matrix = new Matrix();
+        matrix.preScale(downscaleFactor, downscaleFactor);
+        matrix.postTranslate(dx, dy);
+        canvas.setMatrix(matrix);//设置matrix
+        screenView.draw(canvas);//讲View特定的区域绘制到这个canvas（bitmap）上去，
+        return bitmap;//得到最新的画布
     }
 
     public static Bitmap drawableToBitamp(Drawable drawable)

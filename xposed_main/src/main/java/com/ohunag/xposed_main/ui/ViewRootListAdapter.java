@@ -62,6 +62,7 @@ public class ViewRootListAdapter extends BaseAdapter {
                 tv_viewName_item_RootList_xposed.setTextColor(0xffffffff);
             }
         }
+        ViewRootMsg viewRootMsg = mData.get(position);
         tv_show_item_RootList_xposed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,7 +76,7 @@ public class ViewRootListAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 if (listener!=null){
-                    listener.onSelect(weakReference);
+                    listener.onSelect(viewRootMsg);
                 }
             }
         });
@@ -86,7 +87,7 @@ public class ViewRootListAdapter extends BaseAdapter {
 
     public interface Listener{
         void onShow(WeakReference<View> weakReference);
-        void onSelect(WeakReference<View> weakReference);
+        void onSelect(ViewRootMsg weakReference);
 
     }
 }

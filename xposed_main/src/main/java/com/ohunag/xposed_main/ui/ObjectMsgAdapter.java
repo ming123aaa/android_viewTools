@@ -13,30 +13,21 @@ import android.widget.Toast;
 
 import com.ohunag.xposed_main.R;
 import com.ohunag.xposed_main.UiHook;
+import com.ohunag.xposed_main.bean.FiedMsg;
 import com.ohunag.xposed_main.config.MainConfig;
 import com.ohunag.xposed_main.util.FileUtils;
-import com.ohunag.xposed_main.util.GlideUtil;
 import com.ohunag.xposed_main.util.GsonUtil;
 import com.ohunag.xposed_main.util.InputManagerUtil;
-import com.ohunag.xposed_main.viewTree.IViewEdit;
-import com.ohunag.xposed_main.viewTree.NodeValue;
-import com.ohunag.xposed_main.viewTree.ViewNode;
-import com.ohunag.xposed_main.viewTree.ViewTreeUtil;
 
-import org.json.JSONObject;
-
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-public class ObjectToJsonAdapter extends BaseAdapter {
-
-    private List<Object> data = new ArrayList<>();
+public class ObjectMsgAdapter extends BaseAdapter {
+    private List<FiedMsg> data = new ArrayList<>();
     private Activity activity;
 
-    public ObjectToJsonAdapter(List<Object> objects, Activity activity) {
+    public ObjectMsgAdapter(List<FiedMsg> objects, Activity activity) {
         this.activity = activity;
         data.addAll(objects);
 
@@ -63,32 +54,28 @@ public class ObjectToJsonAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = convertView;
         if (view == null) {
-            view = LayoutInflater.from(parent.getContext()).inflate(UiHook.xpRes.getLayout(R.layout.item_view_edit_xposed), parent, false);
+            view = LayoutInflater.from(parent.getContext()).inflate(UiHook.xpRes.getLayout(R.layout.item_view_show_msg_xposed), parent, false);
         }
+        FiedMsg fiedMsg = data.get(position);
         TextView tv_type_view_edit_xposed = view.findViewWithTag("tv_type_view_edit_xposed");
-        EditText tv_value_view_edit_xposed = view.findViewWithTag("tv_value_view_edit_xposed");
+        TextView tv_value_view_edit_xposed = view.findViewWithTag("tv_value_view_edit_xposed");
         TextView tv_save_view_edit_xposed = view.findViewWithTag("tv_save_view_edit_xposed");
-        tv_type_view_edit_xposed.setText(data.get(position).getClass().getSimpleName());
-        tv_value_view_edit_xposed.setText(data.get(position).toString());
+        tv_type_view_edit_xposed.setText(fiedMsg.object.getClass().getName());
+        tv_value_view_edit_xposed.setText("name="+fiedMsg.type+"\n value="+fiedMsg.object.toString());
 
-        tv_value_view_edit_xposed.setOnTouchListener(new View.OnTouchListener() {
-
+        tv_type_view_edit_xposed.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_UP:
-                        InputManagerUtil.showInputMethod(v.getContext(), tv_value_view_edit_xposed);
-                        break;
-                }
-                return false;
+            public void onClick(View v) {
+                ViewClassTreeDialog viewClassTreeDialog = new ViewClassTreeDialog(activity);
+                viewClassTreeDialog.setClass(fiedMsg.object.getClass());
+                viewClassTreeDialog.show();
             }
         });
 
-        tv_save_view_edit_xposed.setOnClickListener(new View.OnClickListener() {
+        tv_value_view_edit_xposed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                String s = GsonUtil.toJson(UiHook.classLoader, data.get(position));
+                String s = GsonUtil.toJson(UiHook.classLoader, fiedMsg.object);
                 String path=MainConfig.saveFilePath+"/"+System.currentTimeMillis()+".txt";
                 try {
                     FileUtils.writeText(path,s);
@@ -96,7 +83,15 @@ public class ObjectToJsonAdapter extends BaseAdapter {
                 } catch (IOException e) {
 
                 }
+            }
+        });
 
+        tv_save_view_edit_xposed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ObjectMsgDailog objectMsgDailog = new ObjectMsgDailog(activity);
+                objectMsgDailog.setObject(fiedMsg.object);
+                objectMsgDailog.show();
             }
         });
 

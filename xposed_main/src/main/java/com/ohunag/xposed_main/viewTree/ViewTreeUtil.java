@@ -151,7 +151,7 @@ public class ViewTreeUtil {
                     View view = (View) RefInvoke.invokeMethod(UiHook.classLoader, "androidx.fragment.app.Fragment"
                             , "getView", fragment, new Class[]{}, new Object[]{});
                     if (view != null) {
-                        viewRootMsgs.add(new ViewRootMsg(fragment.getClass().getName(), view));
+                        viewRootMsgs.add(new ViewRootMsg(fragment.getClass().getName(), view,fragment));
                         xposedTraversalFragment(RefInvoke.invokeMethod(UiHook.classLoader, "androidx.fragment.app.Fragment"
                                 , "getChildFragmentManager", fragmentManager, new Class[]{}, new Object[]{}), viewRootMsgs);
                     }
@@ -168,7 +168,7 @@ public class ViewTreeUtil {
         if (fragments != null) {
             for (Fragment fragment : fragments) {
                 if (fragment != null && fragment.getView() != null) {
-                    viewRootMsgs.add(new ViewRootMsg(fragment.getClass().getName(), fragment.getView()));
+                    viewRootMsgs.add(new ViewRootMsg(fragment.getClass().getName(), fragment.getView(),fragment));
                     traversalFragment(fragment.getChildFragmentManager(), viewRootMsgs);
                 }
             }
