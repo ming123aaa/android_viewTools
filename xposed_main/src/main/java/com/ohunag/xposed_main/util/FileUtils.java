@@ -195,6 +195,10 @@ public class FileUtils {
 
     public static void writeText(String path, String content) throws IOException {
         File file = new File(path);
+        File parentFile = file.getParentFile();
+        if (parentFile!=null&&!parentFile.exists()){
+            parentFile.mkdirs();
+        }
         FileOutputStream fileOutputStream = new FileOutputStream(file);
         fileOutputStream.write(content.getBytes(StandardCharsets.UTF_8));
         fileOutputStream.close();

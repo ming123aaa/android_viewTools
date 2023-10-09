@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.ohunag.xposed_main.config.MainConfig;
+import com.ohunag.xposed_main.ui.ObjectMsgDailog;
 import com.ohunag.xposed_main.util.GlideUtil;
 import com.ohunag.xposed_main.util.ToastUtil;
 import com.ohunag.xposed_main.util.TryCatch;
@@ -33,6 +34,7 @@ public class ImageViewEditGroup implements IViewEditGroup {
             data.add(new ImageViewEditGroup.GetDrawableEdit());
         }
     }
+
 
 
     public static class SetImgEdit implements IViewEdit {
@@ -112,7 +114,7 @@ public class ImageViewEditGroup implements IViewEditGroup {
                         fileName = fileName + ".png";
                         try {
                             saveImage(activity, bitmap, fileName);
-                            String storePath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "Download" + File.separator + MainConfig.packageName;
+                            String storePath = MainConfig.saveFilePath;
                             Toast.makeText(view.getContext(), "路径:" + storePath, Toast.LENGTH_LONG).show();
                         } catch (IOException e) {
                             Toast.makeText(view.getContext(), e.toString(), Toast.LENGTH_LONG).show();
@@ -127,7 +129,7 @@ public class ImageViewEditGroup implements IViewEditGroup {
         }
 
         private void saveImage(Activity activity, Bitmap bitmap, String fileName) throws IOException {
-            String storePath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "Download" + File.separator + MainConfig.packageName;
+            String storePath = MainConfig.saveFilePath;
             File appDir = new File(storePath);
             if (!appDir.exists()) {
                 appDir.mkdirs();

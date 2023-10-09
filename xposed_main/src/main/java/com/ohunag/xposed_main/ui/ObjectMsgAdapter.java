@@ -81,11 +81,11 @@ public class ObjectMsgAdapter extends BaseAdapter {
                     FileUtils.writeText(path,s);
                     Toast.makeText(activity,"保存到"+path,Toast.LENGTH_LONG).show();
                 } catch (IOException e) {
-
+                    Toast.makeText(activity,e.toString(),Toast.LENGTH_LONG).show();
                 }
             }
         });
-
+        tv_save_view_edit_xposed.setText("查看");
         tv_save_view_edit_xposed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
