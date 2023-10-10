@@ -35,9 +35,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-
             android:background="#aa000000"
             android:gravity="center"
+            android:maxLength="5000"
             android:minHeight="40dp"
             android:tag="tv_value_view_edit_xposed"
             android:text=""
@@ -62,9 +62,9 @@
     </LinearLayout>
 
     <View
-        android:layout_marginTop="3dp"
         android:layout_width="match_parent"
         android:layout_height="1dp"
+        android:layout_marginTop="3dp"
         android:background="#fff" />
 
 </LinearLayout>
