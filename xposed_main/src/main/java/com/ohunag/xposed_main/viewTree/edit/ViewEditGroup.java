@@ -47,7 +47,7 @@ public class ViewEditGroup implements IViewEditGroup {
 
     }
 
-    public static class ClickListenerEdit implements IViewEdit{
+    public static class ClickListenerEdit implements IViewEdit {
         @Override
         public String editButtonName() {
             return "查看";
@@ -72,7 +72,7 @@ public class ViewEditGroup implements IViewEditGroup {
         @Override
         public String getValue(View view) {
             Object listener = ViewListenerUtil.getOnClickListener(view);
-            if (listener!=null){
+            if (listener != null) {
                 return listener.getClass().getName();
             }
             return "";
@@ -81,16 +81,17 @@ public class ViewEditGroup implements IViewEditGroup {
         @Override
         public void setValue(Activity activity, View view, String s) throws IOException {
             Object listener = ViewListenerUtil.getOnClickListener(view);
-            if (listener!=null){
+            if (listener != null) {
                 ObjectMsgDailog objectMsgDailog = new ObjectMsgDailog(activity);
                 objectMsgDailog.setObject(listener);
                 objectMsgDailog.show();
-            }else {
-                ToastUtil.show(activity,"没有设置listener");
+            } else {
+                ToastUtil.show(activity, "没有设置listener");
             }
         }
     }
-    public static class OnTouchListenerEdit implements IViewEdit{
+
+    public static class OnTouchListenerEdit implements IViewEdit {
         @Override
         public String editButtonName() {
             return "查看";
@@ -115,7 +116,7 @@ public class ViewEditGroup implements IViewEditGroup {
         @Override
         public String getValue(View view) {
             Object listener = ViewListenerUtil.getOnTouchListener(view);
-            if (listener!=null){
+            if (listener != null) {
                 return listener.getClass().getName();
             }
             return "";
@@ -124,17 +125,17 @@ public class ViewEditGroup implements IViewEditGroup {
         @Override
         public void setValue(Activity activity, View view, String s) throws IOException {
             Object listener = ViewListenerUtil.getOnTouchListener(view);
-            if (listener!=null){
+            if (listener != null) {
                 ObjectMsgDailog objectMsgDailog = new ObjectMsgDailog(activity);
                 objectMsgDailog.setObject(listener);
                 objectMsgDailog.show();
-            }else {
-                ToastUtil.show(activity,"没有设置listener");
+            } else {
+                ToastUtil.show(activity, "没有设置listener");
             }
         }
     }
 
-    public static class OnLongClickListenerEdit implements IViewEdit{
+    public static class OnLongClickListenerEdit implements IViewEdit {
         @Override
         public String editButtonName() {
             return "查看";
@@ -159,7 +160,7 @@ public class ViewEditGroup implements IViewEditGroup {
         @Override
         public String getValue(View view) {
             Object listener = ViewListenerUtil.getOnLongClickListener(view);
-            if (listener!=null){
+            if (listener != null) {
                 return listener.getClass().getName();
             }
             return "";
@@ -168,18 +169,18 @@ public class ViewEditGroup implements IViewEditGroup {
         @Override
         public void setValue(Activity activity, View view, String s) throws IOException {
             Object listener = ViewListenerUtil.getOnLongClickListener(view);
-            if (listener!=null){
+            if (listener != null) {
                 ObjectMsgDailog objectMsgDailog = new ObjectMsgDailog(activity);
                 objectMsgDailog.setObject(listener);
                 objectMsgDailog.show();
-            }else {
-                ToastUtil.show(activity,"没有设置listener");
+            } else {
+                ToastUtil.show(activity, "没有设置listener");
             }
         }
     }
 
 
-    public static class OnKeyListenerEdit implements IViewEdit{
+    public static class OnKeyListenerEdit implements IViewEdit {
         @Override
         public String editButtonName() {
             return "查看";
@@ -204,7 +205,7 @@ public class ViewEditGroup implements IViewEditGroup {
         @Override
         public String getValue(View view) {
             Object listener = ViewListenerUtil.getOnKeyListener(view);
-            if (listener!=null){
+            if (listener != null) {
                 return listener.getClass().getName();
             }
             return "";
@@ -213,17 +214,17 @@ public class ViewEditGroup implements IViewEditGroup {
         @Override
         public void setValue(Activity activity, View view, String s) throws IOException {
             Object listener = ViewListenerUtil.getOnKeyListener(view);
-            if (listener!=null){
+            if (listener != null) {
                 ObjectMsgDailog objectMsgDailog = new ObjectMsgDailog(activity);
                 objectMsgDailog.setObject(listener);
                 objectMsgDailog.show();
-            }else {
-                ToastUtil.show(activity,"没有设置listener");
+            } else {
+                ToastUtil.show(activity, "没有设置listener");
             }
         }
     }
 
-    public static class OnContextClickListenerEdit implements IViewEdit{
+    public static class OnContextClickListenerEdit implements IViewEdit {
         @Override
         public String editButtonName() {
             return "查看";
@@ -248,7 +249,7 @@ public class ViewEditGroup implements IViewEditGroup {
         @Override
         public String getValue(View view) {
             Object listener = ViewListenerUtil.getOnContextClickListener(view);
-            if (listener!=null){
+            if (listener != null) {
                 return listener.getClass().getName();
             }
             return "";
@@ -257,18 +258,18 @@ public class ViewEditGroup implements IViewEditGroup {
         @Override
         public void setValue(Activity activity, View view, String s) throws IOException {
             Object listener = ViewListenerUtil.getOnContextClickListener(view);
-            if (listener!=null){
+            if (listener != null) {
                 ObjectMsgDailog objectMsgDailog = new ObjectMsgDailog(activity);
                 objectMsgDailog.setObject(listener);
                 objectMsgDailog.show();
-            }else {
-                ToastUtil.show(activity,"没有设置listener");
+            } else {
+                ToastUtil.show(activity, "没有设置listener");
             }
         }
     }
 
 
-    public static class OnCreateContextMenuListenerEdit implements IViewEdit{
+    public static class OnCreateContextMenuListenerEdit implements IViewEdit {
         @Override
         public String editButtonName() {
             return "查看";
@@ -293,7 +294,7 @@ public class ViewEditGroup implements IViewEditGroup {
         @Override
         public String getValue(View view) {
             Object listener = ViewListenerUtil.getOnCreateContextMenuListener(view);
-            if (listener!=null){
+            if (listener != null) {
                 return listener.getClass().getName();
             }
             return "";
@@ -302,16 +303,17 @@ public class ViewEditGroup implements IViewEditGroup {
         @Override
         public void setValue(Activity activity, View view, String s) throws IOException {
             Object listener = ViewListenerUtil.getOnCreateContextMenuListener(view);
-            if (listener!=null){
+            if (listener != null) {
                 ObjectMsgDailog objectMsgDailog = new ObjectMsgDailog(activity);
                 objectMsgDailog.setObject(listener);
                 objectMsgDailog.show();
-            }else {
-                ToastUtil.show(activity,"没有设置listener");
+            } else {
+                ToastUtil.show(activity, "没有设置listener");
             }
         }
     }
-    public static class ViewMsgEdit implements IViewEdit{
+
+    public static class ViewMsgEdit implements IViewEdit {
 
         @Override
         public String editButtonName() {
@@ -335,12 +337,11 @@ public class ViewEditGroup implements IViewEditGroup {
 
         @Override
         public void setValue(Activity activity, View view, String s) throws IOException {
-                ObjectMsgDailog objectMsgDailog = new ObjectMsgDailog(activity);
-                objectMsgDailog.setObject(view);
-                objectMsgDailog.show();
+            ObjectMsgDailog objectMsgDailog = new ObjectMsgDailog(activity);
+            objectMsgDailog.setObject(view);
+            objectMsgDailog.show();
         }
     }
-
 
 
     public static class ClickViewEdit implements IViewEdit {
@@ -642,11 +643,13 @@ public class ViewEditGroup implements IViewEditGroup {
             File file = new File(appDir, fileName);
             Bitmap bitmap = UiUtil.getDownscaledBitmapForView(saveView);
             FileOutputStream fileOutputStream = new FileOutputStream(file);
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
-            fileOutputStream.flush();
-            fileOutputStream.close();
-            Uri uri = Uri.fromFile(file);
-            activity.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, uri));
+            if (bitmap != null) {
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
+                fileOutputStream.flush();
+                fileOutputStream.close();
+                Uri uri = Uri.fromFile(file);
+                activity.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, uri));
+            }
         }
     }
 

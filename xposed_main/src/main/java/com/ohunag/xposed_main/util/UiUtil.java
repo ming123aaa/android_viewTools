@@ -16,6 +16,7 @@ public class UiUtil {
 
     /**
      * 从整个Activity开始截取
+     *
      * @param activity
      * @param saveView
      * @return
@@ -41,10 +42,11 @@ public class UiUtil {
 
     /**
      * 单独截取某个View
+     *
      * @param saveView
      * @return
      */
-    public static Bitmap viewToBitmap( View saveView) {
+    public static Bitmap viewToBitmap(View saveView) {
         Bitmap bitmap;
 
         saveView.setDrawingCacheEnabled(true);
@@ -56,17 +58,19 @@ public class UiUtil {
     }
 
     public static Bitmap getDownscaledBitmapForView(View view) {
-        View screenView = view;
-        Bitmap bitmap = Bitmap.createBitmap(screenView.getWidth(), screenView.getHeight(), Bitmap.Config.ARGB_8888);//准备图片
-        Canvas canvas = new Canvas(bitmap);//将bitmap作为绘制画布
         try {
+            View screenView = view;
+            Bitmap bitmap = Bitmap.createBitmap(screenView.getWidth(), screenView.getHeight(), Bitmap.Config.ARGB_8888);//准备图片
+            Canvas canvas = new Canvas(bitmap);//将bitmap作为绘制画布
             screenView.draw(canvas);//讲View特定的区域绘制到这个canvas（bitmap）上去，
-        }catch (Exception e){
-            return null;
+            return bitmap;
+        } catch (Exception e) {
+
         }
 
-        return bitmap;//得到最新的画布
+        return null;//得到最新的画布
     }
+
     public static Bitmap getDownscaledBitmapForView(View view, Rect crop, float downscaleFactor) {
 
         View screenView = view;
@@ -89,8 +93,7 @@ public class UiUtil {
         return bitmap;//得到最新的画布
     }
 
-    public static Bitmap drawableToBitamp(Drawable drawable)
-    {
+    public static Bitmap drawableToBitamp(Drawable drawable) {
         //声明将要创建的bitmap
         Bitmap bitmap = null;
         //获取图片宽度
@@ -100,7 +103,7 @@ public class UiUtil {
         //图片位深，PixelFormat.OPAQUE代表没有透明度，RGB_565就是没有透明度的位深，否则就用ARGB_8888。详细见下面图片编码知识。
         Bitmap.Config config = drawable.getOpacity() != PixelFormat.OPAQUE ? Bitmap.Config.ARGB_8888 : Bitmap.Config.RGB_565;
         //创建一个空的Bitmap
-        bitmap = Bitmap.createBitmap(width,height,config);
+        bitmap = Bitmap.createBitmap(width, height, config);
         //在bitmap上创建一个画布
         Canvas canvas = new Canvas(bitmap);
         //设置画布的范围
