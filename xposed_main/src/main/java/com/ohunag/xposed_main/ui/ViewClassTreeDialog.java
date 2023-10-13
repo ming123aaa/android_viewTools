@@ -6,6 +6,8 @@ import android.app.Dialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -38,7 +40,6 @@ public class ViewClassTreeDialog {
                 .setView(dialog_show_view_class_tree_xposed)
                 .setCancelable(false)
                 .create();
-
     }
 
     public void setClass(Class clzz){

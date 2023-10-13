@@ -12,7 +12,7 @@
     <HorizontalScrollView
         android:tag="hs_parentList_viewTree_xposed"
         android:layout_width="match_parent"
-        android:layout_height="40dp">
+        android:layout_height="30dp">
 
         <LinearLayout
             android:tag="ll_parentList_viewTree_xposed"
@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:minHeight="40dp"
+            android:minHeight="30dp"
             android:text="查看父布局"
             android:textColor="#fff"
             android:textSize="18dp" />
@@ -44,17 +44,11 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:minHeight="40dp"
+            android:minHeight="30dp"
             android:text="查看子布局"
             android:textColor="#fff"
             android:textSize="18dp" />
     </LinearLayout>
-
-    <ListView
-        android:tag="listView_viewTree_xposed"
-        android:layout_width="match_parent"
-        android:layout_height="300dp" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -68,7 +62,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:minHeight="40dp"
+            android:minHeight="30dp"
             android:text="关闭"
             android:textColor="#fff"
             android:textSize="18dp" />
@@ -79,9 +73,18 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:minHeight="40dp"
+            android:minHeight="30dp"
             android:text="查看"
             android:textColor="#fff"
             android:textSize="18dp" />
     </LinearLayout>
+
+    <ListView
+        android:tag="listView_viewTree_xposed"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        />
+
+
 </LinearLayout>

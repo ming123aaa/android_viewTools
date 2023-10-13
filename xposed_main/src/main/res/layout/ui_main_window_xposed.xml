@@ -44,7 +44,7 @@
             android:layout_marginTop="5dp"
             android:background="#aa000000"
             android:gravity="center"
-            android:minHeight="40dp"
+            android:minHeight="30dp"
             android:textColor="#fff"
             android:text="选中:当前activity"
             android:textSize="15dp" />
@@ -52,7 +52,7 @@
         <TextView
             android:tag="tv_viewClick_xposed"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="30dp"
             android:layout_marginTop="5dp"
             android:background="#aa000000"
             android:gravity="center"
@@ -62,7 +62,7 @@
         <TextView
             android:tag="tv_viewClick_xposed_all"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="30dp"
             android:layout_marginTop="5dp"
             android:background="#aa000000"
             android:gravity="center"
@@ -72,7 +72,7 @@
         <TextView
             android:tag="tv_getRootView_xposed"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="30dp"
             android:layout_marginTop="5dp"
             android:background="#aa000000"
             android:gravity="center"
@@ -83,7 +83,7 @@
         <TextView
             android:tag="tv_close_xposed"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="30dp"
             android:layout_marginTop="5dp"
             android:background="#aa000000"
             android:gravity="center"

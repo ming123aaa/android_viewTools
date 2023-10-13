@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="2"
         android:gravity="center"
-        android:minHeight="40dp"
+        android:minHeight="30dp"
         android:text="fsdf"
         android:textIsSelectable="true"
         android:textColor="#fff"
@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:minHeight="40dp"
+            android:minHeight="30dp"
             android:text="预览"
             android:textColor="#fff"
             android:textSize="18dp" />
@@ -40,7 +40,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:minHeight="40dp"
+            android:minHeight="30dp"
             android:text="选择"
             android:textColor="#fff"
             android:textSize="18dp" />

@@ -4,74 +4,67 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#aa000000"
-    android:gravity="center"
     android:orientation="vertical"
     android:padding="10dp">
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:minHeight="40dp"
+        android:minHeight="30dp"
         android:text="view信息"
         android:textColor="#fff"
         android:textSize="18dp" />
-    <ScrollView
-        android:tag="scv_viewMsg_xposed"
-        android:layout_width="match_parent"
-        android:layout_height="350dp">
 
-<!--        <com.ohunag.xposed_main.view.MyListView-->
-<!--            android:tag="listView_viewMsg"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content" />-->
-    </ScrollView>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:minHeight="30dp"
+        android:tag="tv_show_xposed_viewMsg"
+        android:text="展示"
+        android:textColor="#fff"
+        android:textSize="18dp"
+        android:visibility="gone" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
         android:orientation="horizontal">
+
+
         <TextView
-            android:tag="tv_show_xposed_viewMsg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:minHeight="40dp"
-            android:text="展示"
-            android:visibility="gone"
-            android:textColor="#fff"
-            android:textSize="18dp" />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:orientation="horizontal">
-
-
-        <TextView
+            android:minHeight="30dp"
             android:tag="tv_close_xposed_viewMsg"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-
-            android:gravity="center"
-            android:minHeight="40dp"
             android:text="关闭"
             android:textColor="#fff"
             android:textSize="18dp" />
 
         <TextView
-            android:tag="tv_edit_viewMsg_xposed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:minHeight="40dp"
+            android:minHeight="30dp"
+            android:tag="tv_edit_viewMsg_xposed"
             android:text="编辑"
             android:textColor="#fff"
             android:textSize="18dp"
             android:visibility="gone"
             tools:visibility="visible" />
     </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:tag="scv_viewMsg_xposed">
+
+
+    </ScrollView>
+
+
 </LinearLayout>

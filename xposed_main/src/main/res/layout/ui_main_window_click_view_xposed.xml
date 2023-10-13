@@ -7,13 +7,45 @@
     android:orientation="vertical"
     android:padding="10dp">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:minHeight="30dp"
+            android:tag="tv_close_xposed_clickView"
+            android:text="关闭"
+            android:textColor="#fff"
+
+            android:textSize="15dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:minHeight="30dp"
+            android:tag="tv_show_clickView_xposed"
+            android:text="查看"
+            android:textColor="#fff"
+
+            android:textSize="15dp" />
+    </LinearLayout>
+
     <TextView
-        android:tag="tv_process_clickView_xposed"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:gravity="center"
         android:minHeight="30dp"
+        android:tag="tv_process_clickView_xposed"
         android:textColor="#fff"
         android:textIsSelectable="true"
         android:textSize="15dp" />
@@ -24,38 +56,39 @@
         android:orientation="horizontal">
 
         <TextView
-            android:tag="tv_lastNode_clickView_xposed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:layout_weight="1"
             android:gravity="center"
             android:minHeight="30dp"
+            android:tag="tv_lastNode_clickView_xposed"
             android:text="上一个"
             android:textColor="#fff"
 
             android:textSize="15dp" />
+
         <TextView
-            android:tag="tv_openInLayout_clickView_xposed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:layout_weight="1"
             android:gravity="center"
             android:minHeight="30dp"
+            android:tag="tv_openInLayout_clickView_xposed"
             android:text="查看布局"
             android:textColor="#fff"
 
             android:textSize="15dp" />
 
         <TextView
-            android:tag="tv_nextNode_clickView_xposed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:layout_weight="1"
             android:gravity="center"
             android:minHeight="30dp"
+            android:tag="tv_nextNode_clickView_xposed"
             android:text="下一个"
             android:textColor="#fff"
 
@@ -63,46 +96,15 @@
     </LinearLayout>
 
     <TextView
-        android:tag="tv_viewName_clickView_xposed"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:gravity="center"
         android:minHeight="30dp"
+        android:tag="tv_viewName_clickView_xposed"
         android:textColor="#fff"
         android:textIsSelectable="true"
         android:textSize="15dp" />
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:tag="tv_close_xposed_clickView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:minHeight="30dp"
-            android:text="关闭"
-            android:textColor="#fff"
-
-            android:textSize="15dp" />
-
-        <TextView
-            android:tag="tv_show_clickView_xposed"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:minHeight="30dp"
-            android:text="查看"
-            android:textColor="#fff"
-
-            android:textSize="15dp" />
-    </LinearLayout>
 </LinearLayout>

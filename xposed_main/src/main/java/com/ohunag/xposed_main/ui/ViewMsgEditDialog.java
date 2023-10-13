@@ -6,6 +6,8 @@ import android.app.Dialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.ohunag.xposed_main.R;
@@ -41,6 +43,7 @@ public class ViewMsgEditDialog {
                 .setView(ll_viewMsg_xposed)
                 .setCancelable(false)
                 .create();
+
     }
 
 
