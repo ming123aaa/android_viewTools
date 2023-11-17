@@ -8,6 +8,8 @@ import android.net.Uri;
 import android.os.Environment;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.Toast;
 
 import com.ohunag.xposed_main.config.MainConfig;
@@ -31,6 +33,8 @@ public class ViewEditGroup implements IViewEditGroup {
         data.add(new ClickableEdit());
         data.add(new EnableEdit());
         data.add(new VisibilityEdit());
+        data.add(new WidthEdit());
+        data.add(new HeightEdit());
         data.add(new SaveViewImgEdit());
         data.add(new GetForegroundDrawableEdit());
         data.add(new GetBackgroundDrawableEdit());
@@ -44,6 +48,85 @@ public class ViewEditGroup implements IViewEditGroup {
         data.add(new OnKeyListenerEdit());
         data.add(new OnContextClickListenerEdit());
         data.add(new OnCreateContextMenuListenerEdit());
+
+    }
+
+    public static class WidthEdit implements IViewEdit {
+        @Override
+        public String getValueName() {
+            return "设置宽度";
+        }
+
+        @Override
+        public String getHint() {
+            return "-1 MATCH -2 WRAP";
+        }
+
+        @Override
+        public String getValue(View view) {
+            return view.getWidth() + "";
+        }
+
+        @Override
+        public void setValue(Activity activity, View view, String s) throws IOException {
+            try {
+                ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
+                if (layoutParams!=null) {
+                    Integer integer = Integer.valueOf(s);
+                    if (integer==-1){
+                        layoutParams.width=ViewGroup.LayoutParams.MATCH_PARENT;
+                    }else if (integer==-2){
+                        layoutParams.width=ViewGroup.LayoutParams.WRAP_CONTENT;
+                    }else  if (integer<0){
+                        layoutParams.width=0;
+                    }else {
+                        layoutParams.width=integer;
+                    }
+                    view.setLayoutParams(layoutParams);
+                }
+            } catch (Exception e) {
+               ToastUtil.show(activity,e.toString());
+            }
+        }
+    }
+
+    public static class HeightEdit implements   IViewEdit{
+        @Override
+        public String getValueName() {
+            return "设置高度";
+        }
+
+        @Override
+        public String getHint() {
+            return "-1 MATCH -2 WRAP";
+        }
+
+        @Override
+        public String getValue(View view) {
+            return view.getHeight() + "";
+        }
+
+        @Override
+        public void setValue(Activity activity, View view, String s) throws IOException {
+            try {
+                ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
+                if (layoutParams!=null) {
+                    Integer integer = Integer.valueOf(s);
+                    if (integer==-1){
+                        layoutParams.height=ViewGroup.LayoutParams.MATCH_PARENT;
+                    }else if (integer==-2){
+                        layoutParams.height=ViewGroup.LayoutParams.WRAP_CONTENT;
+                    }else  if (integer<0){
+                        layoutParams.height=0;
+                    }else {
+                        layoutParams.height=integer;
+                    }
+                    view.setLayoutParams(layoutParams);
+                }
+            } catch (Exception e) {
+                ToastUtil.show(activity,e.toString());
+            }
+        }
 
     }
 
