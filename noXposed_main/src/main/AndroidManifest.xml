@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <application>
+<!--        <provider-->
+<!--            android:name="com.ohuang.noxp_ui_hook_main.UiHookInitContentProvider"-->
+<!--            android:authorities="${applicationId}.ohuang.noxp_ui_hook_main.UiHookInitContentProvider"-->
+<!--            android:enabled="true"-->
+<!--            android:exported="true" />-->
+    </application>
 </manifest>

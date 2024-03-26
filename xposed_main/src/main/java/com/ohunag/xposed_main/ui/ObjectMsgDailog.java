@@ -187,7 +187,7 @@ public class ObjectMsgDailog {
     private void showMethod(List<String> data) {
         if (object != null && superClass != null) {
             if (methodList == null) {
-                methodList = getNoParameterMethod(object);
+                methodList = getNoParameterMethod(object,superClass);
             }
             ArrayList<Method> methods = new ArrayList<>();
             for (int i = 0; i < methodList.size(); i++) {
@@ -205,7 +205,7 @@ public class ObjectMsgDailog {
     private void showMethod() {
         if (object != null && superClass != null) {
             if (methodList == null) {
-                methodList = getNoParameterMethod(object);
+                methodList = getNoParameterMethod(object,superClass);
             }
             list_close_xposed_class.setAdapter(new MethodMsgAdapter(methodList, activity, object));
             tv_title.setText(object.getClass().getName());
@@ -226,18 +226,23 @@ public class ObjectMsgDailog {
      *
      * @return
      */
-    public List<Method> getNoParameterMethod(Object object) {
+    public List<Method> getNoParameterMethod(Object object, String superClass) {
         List<Method> data = new ArrayList<>();
         Class<?> aClass = object.getClass();
-        Method[] declaredMethods = aClass.getMethods();
-        for (int i = 0; i < declaredMethods.length; i++) {
-            Method declaredMethod = declaredMethods[i];
-            Class<?> returnType = declaredMethod.getReturnType();
-            int parameterCount = declaredMethod.getParameterTypes().length;
-            if (parameterCount == 0) {
-                data.add(declaredMethod);
+
+        while (aClass != null && !aClass.getName().equals(superClass) && aClass != Object.class) {
+            Method[] declaredMethods = aClass.getDeclaredMethods();
+            for (Method declaredMethod : declaredMethods) {
+                Class<?> returnType = declaredMethod.getReturnType();
+                int parameterCount = declaredMethod.getParameterTypes().length;
+                if (parameterCount == 0) {
+                    declaredMethod.setAccessible(true);
+                    data.add(declaredMethod);
+                }
             }
+            aClass = aClass.getSuperclass();
         }
+
 
 
         return data;

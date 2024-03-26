@@ -37,7 +37,7 @@ public class UiHookManager {
     private Application mApplication;
 
 
-    public void init(Application application) {
+    public synchronized void init(Application application) {
         if (this.mApplication == null && application != null) {
             mApplication = application;
             MainConfig.packageName=application.getPackageName();
