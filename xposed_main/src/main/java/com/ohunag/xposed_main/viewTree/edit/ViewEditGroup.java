@@ -498,7 +498,7 @@ public class ViewEditGroup implements IViewEditGroup {
                     fileName = fileName + ".png";
                     try {
                         saveImage(activity, bitmap, fileName);
-                        String storePath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "Download" + File.separator + MainConfig.packageName;
+                        String storePath = MainConfig.getSavePath();
                         Toast.makeText(view.getContext(), "路径:" + storePath, Toast.LENGTH_LONG).show();
                     } catch (IOException e) {
                         Toast.makeText(view.getContext(), e.toString(), Toast.LENGTH_LONG).show();
@@ -513,7 +513,7 @@ public class ViewEditGroup implements IViewEditGroup {
         }
 
         private void saveImage(Activity activity, Bitmap bitmap, String fileName) throws IOException {
-            String storePath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "Download" + File.separator + MainConfig.packageName;
+            String storePath = MainConfig.getSavePath();
             File appDir = new File(storePath);
             if (!appDir.exists()) {
                 appDir.mkdirs();
@@ -583,7 +583,7 @@ public class ViewEditGroup implements IViewEditGroup {
                     fileName = fileName + ".png";
                     try {
                         saveImage(activity, bitmap, fileName);
-                        String storePath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "Download" + File.separator + MainConfig.packageName;
+                        String storePath = MainConfig.getSavePath();
                         Toast.makeText(view.getContext(), "路径:" + storePath, Toast.LENGTH_LONG).show();
                     } catch (IOException e) {
                         Toast.makeText(view.getContext(), e.toString(), Toast.LENGTH_LONG).show();
@@ -598,7 +598,7 @@ public class ViewEditGroup implements IViewEditGroup {
         }
 
         private void saveImage(Activity activity, Bitmap bitmap, String fileName) throws IOException {
-            String storePath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "Download" + File.separator + MainConfig.packageName;
+            String storePath = MainConfig.getSavePath();
             File appDir = new File(storePath);
             if (!appDir.exists()) {
                 appDir.mkdirs();
@@ -706,7 +706,7 @@ public class ViewEditGroup implements IViewEditGroup {
                 fileName = fileName + ".png";
                 try {
                     saveImage(activity, view, fileName);
-                    String storePath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "Download" + File.separator + MainConfig.packageName;
+                    String storePath = MainConfig.getSavePath();
                     Toast.makeText(view.getContext(), "路径:" + storePath, Toast.LENGTH_LONG).show();
                 } catch (IOException e) {
                     Toast.makeText(view.getContext(), e.toString(), Toast.LENGTH_LONG).show();
@@ -718,7 +718,7 @@ public class ViewEditGroup implements IViewEditGroup {
 
 
         private void saveImage(Activity activity, View saveView, String fileName) throws IOException {
-            String storePath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "Download" + File.separator + MainConfig.packageName;
+            String storePath = MainConfig.getSavePath();
             File appDir = new File(storePath);
             if (!appDir.exists()) {
                 appDir.mkdirs();

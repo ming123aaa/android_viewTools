@@ -6,7 +6,11 @@ import java.io.File;
 
 public class MainConfig {
 
-    public static String packageName="com.ohunag.activityuihook";
+    public static String packageName = "com.ohunag.activityuihook";
+    public static final String dirFile = "activityuihook";
 
-    public static String saveFilePath= Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "Download" + File.separator + MainConfig.packageName;
+
+    public static String getSavePath() {
+        return Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "Download" + File.separator + dirFile + File.separator + MainConfig.packageName;
+    }
 }

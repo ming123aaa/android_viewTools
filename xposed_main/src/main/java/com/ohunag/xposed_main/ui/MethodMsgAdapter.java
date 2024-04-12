@@ -78,7 +78,7 @@ public class MethodMsgAdapter extends BaseAdapter {
                     Object invoke = fiedMsg.invoke(object);
                     if (invoke != null) {
                         String s = GsonUtil.toJson(UiHook.classLoader, invoke);
-                        String path = MainConfig.saveFilePath + "/" + System.currentTimeMillis() + ".txt";
+                        String path = MainConfig.getSavePath() + "/" + System.currentTimeMillis() + ".txt";
                         FileUtils.writeText(path, s);
                         Toast.makeText(activity, "保存到" + path, Toast.LENGTH_LONG).show();
                     } else {

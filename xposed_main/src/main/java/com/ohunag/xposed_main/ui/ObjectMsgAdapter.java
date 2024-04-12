@@ -76,7 +76,7 @@ public class ObjectMsgAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 String s = GsonUtil.toJson(UiHook.classLoader, fiedMsg.object);
-                String path=MainConfig.saveFilePath+"/"+System.currentTimeMillis()+".txt";
+                String path=MainConfig.getSavePath()+"/"+System.currentTimeMillis()+".txt";
                 try {
                     FileUtils.writeText(path,s);
                     Toast.makeText(activity,"保存到"+path,Toast.LENGTH_LONG).show();
