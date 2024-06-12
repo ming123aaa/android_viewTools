@@ -9,6 +9,6 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        UiHookManager.getInstance().init(this);
+
     }
 }

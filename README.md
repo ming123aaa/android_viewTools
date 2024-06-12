@@ -6,11 +6,6 @@
 
 ### aar版本
 
-直接在项目依赖以下aar
-
-activityUIHook-app-1.0.0.aar、activityUIHook-1.0.0.aar
-还需要glide  'com.github.bumptech.glide:glide:4.14.2'
-
 或者采取jitpack仓库依赖
 
 ```groovy
@@ -20,18 +15,30 @@ activityUIHook-app-1.0.0.aar、activityUIHook-1.0.0.aar
     }
 }
 dependencies {
-    implementation 'com.gitee.a3077932030.xposed_activity-hook:activityUIHook-app:1.0.1'
+    implementation 'com.gitee.a3077932030.xposed_activity-hook:activityUIHook-app:1.0.1'  //若只想在测试环境使用 使用debugImplementation依赖
+      
 }
 ```
 
-依赖完成后在application初始化
+依赖完成后在application初始化 
 UiHookManager.getInstance().init(this);
+主进程自动进行以上的初始化操作,可通过AndroidManifest.xml添加以下代码禁用自动初始化
+```xml
+
+<application>
+        <meta-data
+            android:name="activityHook_enable"
+            android:value="false" />
+
+</application>
+```
 
 
 
 ### xposed版本
+是一个xposed模块需要配合xposed使用,可以查看任何app的ui
 
-是一个xposed模块需要配合xposed使用
+
 
 ## 项目说明
 

@@ -17,11 +17,19 @@ import java.util.Objects;
  */
 public class UiHookInitContentProvider extends ContentProvider {
 
+    static final String key = "activityHook_enable";
+
     @Override
     public boolean onCreate() {
-        Context applicationContext = Objects.requireNonNull(getContext()).getApplicationContext();
-        if (applicationContext instanceof Application){
-            UiHookManager.getInstance().init((Application) applicationContext);
+        if (getContext() != null) {
+            Boolean metaDataForApplication = MetaDataUtil.getMetaDataForApplication(getContext(), key);
+            if (metaDataForApplication) {
+                Context applicationContext = getContext().getApplicationContext();
+                if (applicationContext instanceof Application) {
+                    UiHookManager.getInstance().init((Application) applicationContext);
+                }
+            }
+
         }
         return false;
     }

@@ -40,7 +40,7 @@ public class UiHookManager {
     public synchronized void init(Application application) {
         if (this.mApplication == null && application != null) {
             mApplication = application;
-            MainConfig.packageName=application.getPackageName();
+            MainConfig.packageName = application.getPackageName();
             UiHook.init(mApplication.getResources(), new UiHook.ViewListManager() {
                 @Override
                 public List<View> getViews() {
@@ -57,7 +57,14 @@ public class UiHookManager {
         }
     }
 
+    public synchronized void unHook() {
+        if (this.mApplication != null) {
+            mApplication.unregisterActivityLifecycleCallbacks(callbacks);
+        }
+    }
+
     private static final String[] whiteView = {SmallWindowView.class.getName(), HookRootFrameLayout.class.getName()};//白名单View
+
     public boolean shouldHookView(View view) {
         if (view == null) {
             return false;
@@ -79,54 +86,55 @@ public class UiHookManager {
         //   private final ArrayList<View> mViews = new ArrayList<View>();
         List<View> mViews = (List<View>) RefInvoke.getFieldOjbect("android.view.WindowManagerGlobal", getInstance, "mViews");
 
-        List<View> data=new ArrayList<>();
+        List<View> data = new ArrayList<>();
         for (int i = 0; i < mViews.size(); i++) {
-            if (shouldHookView(mViews.get(i))){
+            if (shouldHookView(mViews.get(i))) {
                 data.add(mViews.get(i));
             }
         }
         return data;
     }
 
+    Application.ActivityLifecycleCallbacks callbacks = new Application.ActivityLifecycleCallbacks() {
+        @Override
+        public void onActivityCreated(@NonNull Activity activity, @Nullable Bundle savedInstanceState) {
+            FloatViewManager.getInstance().attach(activity);
+
+        }
+
+        @Override
+        public void onActivityStarted(@NonNull Activity activity) {
+
+        }
+
+        @Override
+        public void onActivityResumed(@NonNull Activity activity) {
+            FloatViewManager.getInstance().show(activity);
+        }
+
+        @Override
+        public void onActivityPaused(@NonNull Activity activity) {
+            FloatViewManager.getInstance().hide(activity);
+        }
+
+        @Override
+        public void onActivityStopped(@NonNull Activity activity) {
+
+        }
+
+        @Override
+        public void onActivitySaveInstanceState(@NonNull Activity activity, @NonNull Bundle outState) {
+
+        }
+
+        @Override
+        public void onActivityDestroyed(@NonNull Activity activity) {
+            FloatViewManager.getInstance().onDestroy(activity);
+        }
+    };
+
     private void registerActivityCallBack() {
-        mApplication.registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
-            @Override
-            public void onActivityCreated(@NonNull Activity activity, @Nullable Bundle savedInstanceState) {
-                FloatViewManager.getInstance().attach(activity);
-
-            }
-
-            @Override
-            public void onActivityStarted(@NonNull Activity activity) {
-
-            }
-
-            @Override
-            public void onActivityResumed(@NonNull Activity activity) {
-                FloatViewManager.getInstance().show(activity);
-            }
-
-            @Override
-            public void onActivityPaused(@NonNull Activity activity) {
-                FloatViewManager.getInstance().hide(activity);
-            }
-
-            @Override
-            public void onActivityStopped(@NonNull Activity activity) {
-
-            }
-
-            @Override
-            public void onActivitySaveInstanceState(@NonNull Activity activity, @NonNull Bundle outState) {
-
-            }
-
-            @Override
-            public void onActivityDestroyed(@NonNull Activity activity) {
-                FloatViewManager.getInstance().onDestroy(activity);
-            }
-        });
-
+        mApplication.registerActivityLifecycleCallbacks(callbacks);
     }
 
 

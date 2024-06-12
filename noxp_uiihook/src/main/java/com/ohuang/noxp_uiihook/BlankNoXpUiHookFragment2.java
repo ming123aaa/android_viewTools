@@ -1,23 +1,22 @@
 package com.ohuang.noxp_uiihook;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.fragment.app.Fragment;
+
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link BlankNoXpUiHookFragment#newInstance} factory method to
+ * Use the {@link BlankNoXpUiHookFragment2#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class BlankNoXpUiHookFragment extends Fragment {
+public class BlankNoXpUiHookFragment2 extends Fragment {
 
 
 
-    public BlankNoXpUiHookFragment() {
+    public BlankNoXpUiHookFragment2() {
         // Required empty public constructor
     }
 
@@ -25,7 +24,7 @@ public class BlankNoXpUiHookFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-         getChildFragmentManager().beginTransaction().add(R.id.fl_child, new BlankNoXpUiHookFragment2()).commit();
+
     }
 
     @Override
