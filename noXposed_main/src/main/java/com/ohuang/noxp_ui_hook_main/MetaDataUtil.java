@@ -18,7 +18,7 @@ class MetaDataUtil {
                         PackageManager.GET_META_DATA
                 );
                 if (applicationInfo.metaData != null) {
-                    data = applicationInfo.metaData.getBoolean(name);
+                    data = applicationInfo.metaData.getBoolean(name,true);
                 }
             }
         } catch (Throwable e) {

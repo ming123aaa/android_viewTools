@@ -15,7 +15,7 @@
     }
 }
 dependencies {
-    implementation 'com.gitee.a3077932030.xposed_activity-hook:activityUIHook-app:1.1.0'  //若只想在测试环境使用 使用debugImplementation依赖
+    implementation 'com.gitee.a3077932030.xposed_activity-hook:activityUIHook-app:1.1.1'  //若只想在测试环境使用 使用debugImplementation依赖
       
 }
 ```
