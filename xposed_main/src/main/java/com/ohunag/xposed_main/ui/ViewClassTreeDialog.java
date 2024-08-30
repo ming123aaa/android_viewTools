@@ -36,9 +36,8 @@ public class ViewClassTreeDialog {
         });
         list_close_xposed_class=dialog_show_view_class_tree_xposed.findViewWithTag("list_close_xposed_class");
 
-        dialog = new AlertDialog.Builder(activity, android.R.style.Theme_Translucent_NoTitleBar)
+        dialog = new AlertDialog.Builder(activity, android.R.style.Theme_Black_NoTitleBar)
                 .setView(dialog_show_view_class_tree_xposed)
-                .setCancelable(false)
                 .create();
     }
 

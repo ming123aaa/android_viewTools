@@ -48,7 +48,49 @@ public class ViewEditGroup implements IViewEditGroup {
         data.add(new OnKeyListenerEdit());
         data.add(new OnContextClickListenerEdit());
         data.add(new OnCreateContextMenuListenerEdit());
+        data.add(new AdpaterEdit());
+    }
 
+    public static class AdpaterEdit implements IViewEdit {
+        @Override
+        public String getValueName() {
+            return "Adapter";
+        }
+
+        @Override
+        public String getHint() {
+            return "getAdapter()";
+        }
+
+        private Object getAdapter(View view) {
+            try {
+               return view.getClass().getDeclaredMethod("getAdapter").invoke(view);
+            }catch (Throwable e){
+
+            }
+            return null;
+        }
+
+        @Override
+        public String getValue(View view) {
+            Object adapter=getAdapter(view);
+            if (adapter!=null){
+                return adapter.toString();
+            }
+            return null;
+        }
+
+        @Override
+        public void setValue(Activity activity, View view, String s) throws IOException {
+            Object adapter=getAdapter(view);
+            if (adapter!=null) {
+                ObjectMsgDailog objectMsgDailog = new ObjectMsgDailog(activity);
+                objectMsgDailog.setObject(adapter);
+                objectMsgDailog.show();
+            }else {
+                ToastUtil.show(activity,"adapter is null");
+            }
+        }
     }
 
     public static class WidthEdit implements IViewEdit {

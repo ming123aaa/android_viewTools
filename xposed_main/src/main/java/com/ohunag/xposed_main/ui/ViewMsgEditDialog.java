@@ -39,9 +39,8 @@ public class ViewMsgEditDialog {
             }
         });
 
-        dialog = new AlertDialog.Builder(activity, android.R.style.Theme_Translucent_NoTitleBar)
+        dialog = new AlertDialog.Builder(activity, android.R.style.Theme_Black_NoTitleBar)
                 .setView(ll_viewMsg_xposed)
-                .setCancelable(false)
                 .create();
 
     }

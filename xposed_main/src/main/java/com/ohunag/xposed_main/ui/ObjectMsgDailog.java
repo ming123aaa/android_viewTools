@@ -112,9 +112,8 @@ public class ObjectMsgDailog {
         });
         list_close_xposed_class = dialog_object_msg_xposed.findViewWithTag("list_close_xposed_class");
 
-        dialog = new AlertDialog.Builder(activity, android.R.style.Theme_Translucent_NoTitleBar)
+        dialog = new AlertDialog.Builder(activity, android.R.style.Theme_Black_NoTitleBar)
                 .setView(dialog_object_msg_xposed)
-                .setCancelable(false)
                 .create();
 
     }

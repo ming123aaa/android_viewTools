@@ -9,6 +9,7 @@ import com.ohunag.xposed_main.viewTree.ViewNode;
 import com.ohunag.xposed_main.viewTree.ViewTreeUtil;
 
 import java.util.Map;
+import java.util.Objects;
 
 public class ViewNodeValueIntercept implements ViewNode.NodeValueIntercept {
     @Override
@@ -50,7 +51,19 @@ public class ViewNodeValueIntercept implements ViewNode.NodeValueIntercept {
         if (getOnCreateContextMenuListener(view)!=null){
             map.put("OnCreateContextMenuListener",NodeValue.createNode(getOnCreateContextMenuListener(view)));
         }
+        if (getAdapter(view)!=null){
+            map.put("adapter",NodeValue.createNode(getAdapter(view).getClass().getName()));
+        }
         return false;
+    }
+
+    private Object getAdapter(View view) {
+        try {
+            return view.getClass().getDeclaredMethod("getAdapter").invoke(view);
+        }catch (Throwable e){
+
+        }
+        return null;
     }
 
     public String getLocationInScreen(View view){
