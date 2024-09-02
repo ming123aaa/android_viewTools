@@ -59,7 +59,7 @@ public class ViewNodeValueIntercept implements ViewNode.NodeValueIntercept {
 
     private Object getAdapter(View view) {
         try {
-            return view.getClass().getDeclaredMethod("getAdapter").invoke(view);
+            return view.getClass().getMethod("getAdapter").invoke(view);
         }catch (Throwable e){
 
         }

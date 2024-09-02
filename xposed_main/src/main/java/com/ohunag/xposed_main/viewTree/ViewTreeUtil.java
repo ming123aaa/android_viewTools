@@ -23,7 +23,6 @@ import androidx.fragment.app.FragmentManager;
 import com.ohunag.xposed_main.UiHook;
 import com.ohunag.xposed_main.bean.ViewRootMsg;
 import com.ohunag.xposed_main.viewTree.edit.ImageViewEditGroup;
-import com.ohunag.xposed_main.viewTree.edit.ListViewEditGroup;
 import com.ohunag.xposed_main.viewTree.edit.TextViewEditGroup;
 import com.ohunag.xposed_main.viewTree.edit.ViewEditGroup;
 import com.ohunag.xposed_main.viewTree.edit.WebViewEditGroup;
@@ -69,7 +68,7 @@ public class ViewTreeUtil {
         iViewEditGroups.add(new WebViewEditGroup());
         iViewEditGroups.add(new TextViewEditGroup());
         iViewEditGroups.add(new ViewEditGroup());
-        iViewEditGroups.add(new ListViewEditGroup());
+       ;
 
         List<IViewEdit> data = new ArrayList<>();
         for (IViewEditGroup iViewEditGroup : iViewEditGroups) {
