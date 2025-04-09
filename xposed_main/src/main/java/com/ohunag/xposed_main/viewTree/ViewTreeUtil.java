@@ -68,8 +68,6 @@ public class ViewTreeUtil {
         iViewEditGroups.add(new WebViewEditGroup());
         iViewEditGroups.add(new TextViewEditGroup());
         iViewEditGroups.add(new ViewEditGroup());
-       ;
-
         List<IViewEdit> data = new ArrayList<>();
         for (IViewEditGroup iViewEditGroup : iViewEditGroups) {
             iViewEditGroup.addToList(data, view);
@@ -118,7 +116,6 @@ public class ViewTreeUtil {
         if (view instanceof ViewGroup) {
             return "ViewGroup";
         }
-
         return "View";
     }
 

@@ -155,11 +155,43 @@ public class ViewNodeValueIntercept implements ViewNode.NodeValueIntercept {
         return "UnKnow";
     }
 
-    public String getStringId(View view) {
+    public static String getViewIdName(View view){
         StringBuilder out = new StringBuilder();
         final int id = view.getId();
         if (id != 0) {
-            out.append(" #");
+            final Resources r = view.getResources();
+            if (id > 0 && r != null) {
+                try {
+                    String pkgname;
+                    switch (id & 0xff000000) {
+                        case 0x7f000000:
+                            pkgname = "app";
+                            break;
+                        case 0x01000000:
+                            pkgname = "android";
+                            break;
+                        default:
+                            pkgname = r.getResourcePackageName(id);
+                            break;
+                    }
+                    String typename = r.getResourceTypeName(id);
+                    String entryname = r.getResourceEntryName(id);
+                    out.append(pkgname);
+                    out.append(":");
+                    out.append(typename);
+                    out.append("/");
+                    out.append(entryname);
+                } catch (Resources.NotFoundException e) {
+                }
+            }
+        }
+        return out.toString();
+    }
+    public static String getStringId(View view) {
+        StringBuilder out = new StringBuilder();
+        final int id = view.getId();
+        if (id != 0) {
+            out.append(" 0x");
             out.append(Integer.toHexString(id));
             final Resources r = view.getResources();
             if (id > 0 && r != null) {

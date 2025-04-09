@@ -29,6 +29,7 @@ import com.ohunag.xposed_main.view.HookRootFrameLayout;
 import com.ohunag.xposed_main.view.MyListView;
 import com.ohunag.xposed_main.viewTree.ViewNode;
 import com.ohunag.xposed_main.viewTree.ViewTreeUtil;
+import com.ohunag.xposed_main.viewTree.intercept.ViewNodeValueIntercept;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -532,7 +533,7 @@ public class MainWindowUI {
         View view = nodes.get(position).getView();
         tv_process_clickView_xposed.setText("进度" + position + "/" + nodes.size() + "  "
                 + ViewTreeUtil.getViewType(view) + " Visibility:" + getVisibility(view.getVisibility())
-                + " Alpha:" + view.getAlpha());
+                + " " + ViewNodeValueIntercept.getViewIdName(view));
         tv_viewName_clickView_xposed.setText(nodes.get(position).getViewClassName());
         tv_openInLayout_clickView_xposed.setOnClickListener(new View.OnClickListener() {
             @Override
