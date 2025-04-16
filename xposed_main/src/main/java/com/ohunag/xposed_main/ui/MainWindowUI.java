@@ -64,6 +64,7 @@ public class MainWindowUI {
     private TextView tv_viewName_clickView_xposed;
     private TextView tv_close_xposed_clickView;
     private TextView tv_show_clickView_xposed;
+    private TextView tv_showImg_xposed_clickView;
     private DrawRectView drv_main_view;
 
     private ViewGroup ll_getRoot_xposed;
@@ -75,6 +76,7 @@ public class MainWindowUI {
     private ListView listView_viewTree_xposed;
     private TextView tv_close_xposed_viewTree_xposed;
     private TextView tv_show_viewTree_xposed;
+    private TextView tv_showImg_viewTree_xposed;
 
 
     private ViewGroup ll_viewMsg_xposed;
@@ -229,7 +231,7 @@ public class MainWindowUI {
         listView_selectView_xposed = inflate.findViewWithTag("listView_selectView_xposed");
         tv_close_xposed_selectView = inflate.findViewWithTag("tv_close_xposed_selectView");
         tv_select_activity_selectView_xposed.setOnClickListener(v -> {
-            selectViewRoot(null,null);
+            selectViewRoot(null, null);
             setSate(0);
         });
         tv_close_xposed_selectView.setOnClickListener(v -> setSate(0));
@@ -246,6 +248,7 @@ public class MainWindowUI {
         listView_viewTree_xposed = inflate.findViewWithTag("listView_viewTree_xposed");
         tv_close_xposed_viewTree_xposed = inflate.findViewWithTag("tv_close_xposed_viewTree_xposed");
         tv_show_viewTree_xposed = inflate.findViewWithTag("tv_show_viewTree_xposed");
+        tv_showImg_viewTree_xposed = inflate.findViewWithTag("tv_showImg_viewTree_xposed");
         tv_close_xposed_viewTree_xposed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -275,12 +278,12 @@ public class MainWindowUI {
     }
 
     private void set_ll_selectView_xposed() {
-        List<ViewRootMsg> viewRootMsgs=new ArrayList<>();
-        ViewTreeUtil.getFragmentViewRootMsg(activity,viewRootMsgs);
+        List<ViewRootMsg> viewRootMsgs = new ArrayList<>();
+        ViewTreeUtil.getFragmentViewRootMsg(activity, viewRootMsgs);
         List<View> rootViews = UiHook.getRootViews();
         for (View view : rootViews) {
-            if (view!=null) {
-                viewRootMsgs.add(new ViewRootMsg(view.toString(), view,view));
+            if (view != null) {
+                viewRootMsgs.add(new ViewRootMsg(view.toString(), view, view));
             }
         }
         viewRootMsgs.addAll(UiHook.getDialogs());
@@ -290,7 +293,6 @@ public class MainWindowUI {
             @Override
             public void onShow(WeakReference<View> weakReference) {
                 if (weakReference.get() != null) {
-                    setSate(6);
                     set_ll_imgView_xposed(weakReference.get(), new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -306,7 +308,7 @@ public class MainWindowUI {
             @Override
             public void onSelect(ViewRootMsg weakReference) {
                 if (weakReference.getView() != null) {
-                    selectViewRoot(weakReference.getView(),weakReference);
+                    selectViewRoot(weakReference.getView(), weakReference);
                     setSate(0);
                 } else {
                     ToastUtil.show(activity, "当前ViewRoot不存在");
@@ -319,7 +321,7 @@ public class MainWindowUI {
     }
 
     private void set_ll_viewMsg_xposed(ViewNode viewNode, View.OnClickListener listener) {
-
+        setSate(3);
         listView_viewMsg.setAdapter(new ViewMsgAdapter(viewNode));
         tv_edit_viewMsg_xposed.setVisibility(View.VISIBLE);
         tv_show_xposed_viewMsg.setVisibility(View.VISIBLE);
@@ -332,11 +334,10 @@ public class MainWindowUI {
         tv_show_xposed_viewMsg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setSate(6);
                 set_ll_imgView_xposed(viewNode.getView(), new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        setSate(3);
+
                         set_ll_viewMsg_xposed(viewNode, listener);
                     }
                 });
@@ -353,9 +354,14 @@ public class MainWindowUI {
         viewMsgEditDialog.show();
     }
 
+    /**
+     * @param view
+     * @param listener
+     */
     private void set_ll_imgView_xposed(View view, View.OnClickListener listener) {
+        setSate(6);
         iv_show.setImageDrawable(null);
-        if (view!= null) {
+        if (view != null) {
             Bitmap bitmap = UiUtil.getDownscaledBitmapForView(view);
             if (bitmap != null) {
                 iv_show.setImageBitmap(bitmap);
@@ -392,7 +398,7 @@ public class MainWindowUI {
             setSate(0);
         } else {
             set_ll_clickView_xposed(0);
-            setSate(2);
+
         }
     }
 
@@ -413,11 +419,11 @@ public class MainWindowUI {
         tv_activityName_xposed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(viewRootMsg!=null&&viewRootMsg.getObjectWeakReference()!=null){
+                if (viewRootMsg != null && viewRootMsg.getObjectWeakReference() != null) {
                     ObjectMsgDailog objectMsgDailog = new ObjectMsgDailog(activity);
                     objectMsgDailog.setObject(viewRootMsg.getObjectWeakReference());
                     objectMsgDailog.show();
-                }else {
+                } else {
                     ObjectMsgDailog objectMsgDailog = new ObjectMsgDailog(activity);
                     objectMsgDailog.setObject(activity);
                     objectMsgDailog.show();
@@ -458,7 +464,7 @@ public class MainWindowUI {
                         setSate(0);
                     }
                 });
-                setSate(4);
+
             }
         });
         tv_close_xposed.setOnClickListener(v -> {
@@ -471,10 +477,10 @@ public class MainWindowUI {
             rootViewNode = ViewTreeUtil.getViewNode(activity);
         } else {
             if (selectView.get() != null) {
-                rootViewNode = ViewTreeUtil.getViewNode(selectView.get(),null);
+                rootViewNode = ViewTreeUtil.getViewNode(selectView.get(), null);
             } else {
                 ToastUtil.show(activity, "当前ViewRoot不存在,自动选择activity");
-                selectViewRoot(null,null);
+                selectViewRoot(null, null);
                 rootViewNode = ViewTreeUtil.getViewNode(activity);
             }
         }
@@ -482,23 +488,24 @@ public class MainWindowUI {
 
     /**
      * 设置根view
+     *
      * @param view
      * @param vr
      */
-    private void selectViewRoot(View view,ViewRootMsg vr) {
+    private void selectViewRoot(View view, ViewRootMsg vr) {
         if (view == null) {
             tv_selectView_xposed.setText("选择根View:当前activity");
             selectView = null;
-            viewRootMsg=null;
+            viewRootMsg = null;
             tv_activityName_xposed.setText(activity.getClass().getName());
         } else {
             tv_selectView_xposed.setText("选择根View:" + view.toString());
             selectView = new WeakReference<>(view);
-            if (vr!=null) {
+            if (vr != null) {
                 viewRootMsg = vr;
                 tv_activityName_xposed.setText(vr.getViewName());
-            }else {
-                viewRootMsg=null;
+            } else {
+                viewRootMsg = null;
                 tv_activityName_xposed.setText(activity.getClass().getName());
             }
         }
@@ -517,6 +524,7 @@ public class MainWindowUI {
 
         tv_close_xposed_clickView = inflate.findViewWithTag("tv_close_xposed_clickView");
         tv_show_clickView_xposed = inflate.findViewWithTag("tv_show_clickView_xposed");
+        tv_showImg_xposed_clickView = inflate.findViewWithTag("tv_showImg_xposed_clickView");
         tv_close_xposed_clickView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -527,6 +535,7 @@ public class MainWindowUI {
 
     @SuppressLint("SetTextI18n")
     private void set_ll_clickView_xposed(int position) {
+        setSate(2);
         if (position >= nodes.size() || position < 0) {
             return;
         }
@@ -539,11 +548,10 @@ public class MainWindowUI {
             @Override
             public void onClick(View v) {
                 if (nodes.get(position) != null) {
-                    setSate(4);
+
                     set_ll_goRoot(nodes.get(position), 0, new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            setSate(2);
                             set_ll_clickView_xposed(position);
                         }
                     });
@@ -575,12 +583,25 @@ public class MainWindowUI {
         tv_show_clickView_xposed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setSate(3);
+
                 set_ll_viewMsg_xposed(nodes.get(position), new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         set_ll_clickView_xposed(position);
-                        setSate(2);
+
+                    }
+                });
+            }
+        });
+        tv_showImg_xposed_clickView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                set_ll_imgView_xposed(nodes.get(position).getView(), new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        set_ll_clickView_xposed(position);
+
                     }
                 });
             }
@@ -596,31 +617,35 @@ public class MainWindowUI {
     }
 
     private void set_ll_goRoot(ViewNode viewNode, int selectId, View.OnClickListener listener) {
+        setSate(4);
         ViewTreeAdapter viewTreeAdapter = new ViewTreeAdapter(viewNode, selectId);
         listView_viewTree_xposed.setAdapter(viewTreeAdapter);
-        showViewRect(viewNode.getView());
-        List<ViewNode> viewNodesPath=new ArrayList<>();
+        ViewNode selectNode = viewTreeAdapter.getSelectNode();
+        if (selectNode != null) {
+            showViewRect(selectNode.getView());
+        }
+        List<ViewNode> viewNodesPath = new ArrayList<>();
         viewNode.getViewNodePath(viewNodesPath);
         ll_parentList_viewTree_xposed.removeAllViews();
         for (ViewNode node : viewNodesPath) {
-            TextView textView=new TextView(activity);
-            textView.setText("["+node.inParentIndex()+"]" + node.getViewClassName()+">");
+            TextView textView = new TextView(activity);
+            textView.setText("[" + node.inParentIndex() + "]" + node.getViewClassName() + ">");
             textView.setTextColor(0xffffffff);
-            textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP,18);
+            textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18);
             textView.setGravity(Gravity.CENTER_VERTICAL);
             textView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     set_ll_goRoot(node, 0, listener);
-                    setSate(4);
+
                 }
             });
-            ll_parentList_viewTree_xposed.addView(textView,new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            ll_parentList_viewTree_xposed.addView(textView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT));
         }
         ll_parentList_viewTree_xposed.post(new Runnable() {
             @Override
             public void run() {
-                hs_parentList_viewTree_xposed.scrollTo(ll_parentList_viewTree_xposed.getWidth(),0);
+                hs_parentList_viewTree_xposed.scrollTo(ll_parentList_viewTree_xposed.getWidth(), 0);
             }
         });
 
@@ -638,7 +663,7 @@ public class MainWindowUI {
             public void onClick(View v) {
                 if (viewNode.getParent() != null) {
                     set_ll_goRoot(viewNode.getParent(), viewNode.inParentIndex() + 1, listener);
-                    setSate(4);
+
                 }
             }
         });
@@ -654,12 +679,22 @@ public class MainWindowUI {
         tv_show_viewTree_xposed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setSate(3);
+
                 set_ll_viewMsg_xposed(viewTreeAdapter.getSelectNode(), new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         set_ll_goRoot(viewNode, viewTreeAdapter.getSelectId(), listener);
-                        setSate(4);
+                    }
+                });
+            }
+        });
+        tv_showImg_viewTree_xposed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                set_ll_imgView_xposed(viewTreeAdapter.getSelectNode().getView(), new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        set_ll_goRoot(viewNode, viewTreeAdapter.getSelectId(), listener);
                     }
                 });
             }

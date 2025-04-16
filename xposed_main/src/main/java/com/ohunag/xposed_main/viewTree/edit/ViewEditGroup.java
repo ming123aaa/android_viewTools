@@ -673,7 +673,7 @@ public class ViewEditGroup implements IViewEditGroup {
 
         @Override
         public String getValue(View view) {
-            return "";
+            return view.getClass().getName();
         }
 
         @Override

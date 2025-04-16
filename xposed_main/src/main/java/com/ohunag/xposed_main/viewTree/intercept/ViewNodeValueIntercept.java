@@ -2,6 +2,7 @@ package com.ohunag.xposed_main.viewTree.intercept;
 
 import android.content.res.Resources;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.ohunag.xposed_main.util.RefInvoke;
 import com.ohunag.xposed_main.viewTree.NodeValue;
@@ -13,7 +14,7 @@ import java.util.Objects;
 
 public class ViewNodeValueIntercept implements ViewNode.NodeValueIntercept {
     @Override
-    public boolean onIntercept(Map<String, NodeValue> map, View view,ViewNode viewNode) {
+    public boolean onIntercept(Map<String, NodeValue> map, View view, ViewNode viewNode) {
         if (view == null) {
             return false;
         }
@@ -25,8 +26,8 @@ public class ViewNodeValueIntercept implements ViewNode.NodeValueIntercept {
         map.put("isFocused", NodeValue.createNode(view.isFocused()));
         map.put("visibility", NodeValue.createNode(getVisibility(view.getVisibility())));
         map.put("id", NodeValue.createNode(view.getId()));
-        map.put("width-height",NodeValue.createNode(view.getWidth()+","+view.getHeight()));
-        map.put("locationOnScreen",NodeValue.createNode(getLocationInScreen(view)));
+        map.put("width-height", NodeValue.createNode(view.getWidth() + "," + view.getHeight()));
+        map.put("locationOnScreen", NodeValue.createNode(getLocationInScreen(view)));
         if (view.getContentDescription() != null) {
             map.put("ContentDescription", NodeValue.createNode(view.getContentDescription().toString()));
         }
@@ -39,37 +40,53 @@ public class ViewNodeValueIntercept implements ViewNode.NodeValueIntercept {
         if (getOnTouchListener(view) != null) {
             map.put("OnTouchListener", NodeValue.createNode(getOnTouchListener(view)));
         }
-        if (getOnLongClickListener(view)!=null){
-            map.put("OnLongClickListener",NodeValue.createNode(getOnLongClickListener(view)));
+        if (getOnLongClickListener(view) != null) {
+            map.put("OnLongClickListener", NodeValue.createNode(getOnLongClickListener(view)));
         }
-        if (getOnKeyListener(view)!=null){
-            map.put("OnKeyListener",NodeValue.createNode(getOnKeyListener(view)));
+        if (getOnKeyListener(view) != null) {
+            map.put("OnKeyListener", NodeValue.createNode(getOnKeyListener(view)));
         }
-        if (getOnContextClickListener(view)!=null){
-            map.put("OnContextClickListener",NodeValue.createNode(getOnContextClickListener(view)));
+        if (getOnContextClickListener(view) != null) {
+            map.put("OnContextClickListener", NodeValue.createNode(getOnContextClickListener(view)));
         }
-        if (getOnCreateContextMenuListener(view)!=null){
-            map.put("OnCreateContextMenuListener",NodeValue.createNode(getOnCreateContextMenuListener(view)));
+        if (getOnCreateContextMenuListener(view) != null) {
+            map.put("OnCreateContextMenuListener", NodeValue.createNode(getOnCreateContextMenuListener(view)));
         }
-        if (getAdapter(view)!=null){
-            map.put("adapter",NodeValue.createNode(getAdapter(view).getClass().getName()));
+        if (getAdapter(view) != null) {
+            map.put("adapter", NodeValue.createNode(getAdapter(view).getClass().getName()));
         }
+        if (view.getLayoutParams() != null) {
+            map.put("layoutParams-width", NodeValue.createNode(getLayoutParamsString(view.getLayoutParams().width)));
+        }
+        if (view.getLayoutParams() != null) {
+            map.put("layoutParams-height", NodeValue.createNode(getLayoutParamsString(view.getLayoutParams().height)));
+        }
+        map.put("padding-top,left,right,bottom", NodeValue.createNode(view.getPaddingTop() + "," + view.getPaddingLeft() + "," + view.getPaddingRight() + "," + view.getPaddingBottom()));
         return false;
+    }
+
+    private String getLayoutParamsString(int v) {
+        if (v == ViewGroup.LayoutParams.MATCH_PARENT) {
+            return "MATCH_PARENT";
+        } else if (v == ViewGroup.LayoutParams.WRAP_CONTENT) {
+            return "WRAP_CONTENT";
+        }
+        return "" + v;
     }
 
     private Object getAdapter(View view) {
         try {
             return view.getClass().getMethod("getAdapter").invoke(view);
-        }catch (Throwable e){
+        } catch (Throwable e) {
 
         }
         return null;
     }
 
-    public String getLocationInScreen(View view){
-        int[] ints=new int[2];
+    public String getLocationInScreen(View view) {
+        int[] ints = new int[2];
         view.getLocationInWindow(ints);
-        return "x:"+ints[0]+" y:"+ints[1];
+        return "x:" + ints[0] + " y:" + ints[1];
     }
 
     public String getOnTouchListener(View view) {
@@ -155,7 +172,7 @@ public class ViewNodeValueIntercept implements ViewNode.NodeValueIntercept {
         return "UnKnow";
     }
 
-    public static String getViewIdName(View view){
+    public static String getViewIdName(View view) {
         StringBuilder out = new StringBuilder();
         final int id = view.getId();
         if (id != 0) {
@@ -187,6 +204,7 @@ public class ViewNodeValueIntercept implements ViewNode.NodeValueIntercept {
         }
         return out.toString();
     }
+
     public static String getStringId(View view) {
         StringBuilder out = new StringBuilder();
         final int id = view.getId();

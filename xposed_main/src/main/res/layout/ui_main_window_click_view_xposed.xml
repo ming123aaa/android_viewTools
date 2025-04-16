@@ -22,9 +22,18 @@
             android:tag="tv_close_xposed_clickView"
             android:text="关闭"
             android:textColor="#fff"
-
             android:textSize="15dp" />
-
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:minHeight="30dp"
+            android:tag="tv_showImg_xposed_clickView"
+            android:text="展示"
+            android:textColor="#fff"
+            android:textSize="15dp" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -35,7 +44,6 @@
             android:tag="tv_show_clickView_xposed"
             android:text="查看"
             android:textColor="#fff"
-
             android:textSize="15dp" />
     </LinearLayout>
 
