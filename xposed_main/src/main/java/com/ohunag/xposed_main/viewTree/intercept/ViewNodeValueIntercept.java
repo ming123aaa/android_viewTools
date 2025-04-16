@@ -62,6 +62,19 @@ public class ViewNodeValueIntercept implements ViewNode.NodeValueIntercept {
             map.put("layoutParams-height", NodeValue.createNode(getLayoutParamsString(view.getLayoutParams().height)));
         }
         map.put("padding-top,left,right,bottom", NodeValue.createNode(view.getPaddingTop() + "," + view.getPaddingLeft() + "," + view.getPaddingRight() + "," + view.getPaddingBottom()));
+        if (view.getTranslationX()!=0F) {
+            map.put("TranslationX", NodeValue.createNode(view.getTranslationX()));
+        }
+        if (view.getTranslationY()!=0F) {
+            map.put("TranslationY", NodeValue.createNode(view.getTranslationY()));
+        }
+        if(view.getScrollX()!=0){
+            map.put("ScrollX", NodeValue.createNode(view.getScrollX()));
+        }
+        if(view.getScrollY()!=0){
+            map.put("ScrollY", NodeValue.createNode(view.getScrollY()));
+        }
+
         return false;
     }
 

@@ -37,7 +37,7 @@ public class ViewNode {
 
     public void init(List<NodeValueIntercept> nodeValueIntercepts){
         this.nodeValueIntercepts = nodeValueIntercepts;
-        initValueMap();
+
         for (ViewNode viewNode : childNode) {
             viewNode.init(nodeValueIntercepts);
         }
@@ -87,6 +87,7 @@ public class ViewNode {
     }
 
     public Map<String, NodeValue> getValueMap() {
+        initValueMap();
         return valueMap;
     }
 

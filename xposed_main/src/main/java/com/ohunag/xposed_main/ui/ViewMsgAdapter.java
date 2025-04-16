@@ -28,7 +28,7 @@ public class ViewMsgAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return viewNode.getValueMap().size()+1;
+        return valueMap.size()+1;
     }
 
     @Override
