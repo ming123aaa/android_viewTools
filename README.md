@@ -15,14 +15,15 @@
     }
 }
 dependencies {
-    implementation 'com.gitee.a3077932030.xposed_activity-hook:activityUIHook-app:1.1.4'  //若只想在测试环境使用 使用debugImplementation依赖
+    implementation 'com.gitee.a3077932030.xposed_activity-hook:activityUIHook-app:1.1.8'  //若只想在测试环境使用 使用debugImplementation依赖
       
 }
 ```
 
-依赖完成后在application初始化 
+依赖完成后主进程自动进行初始化操作, 如果需要在别的进程初始化在application添加以下代码
 UiHookManager.getInstance().init(this);
-主进程自动进行以上的初始化操作,可通过AndroidManifest.xml添加以下代码禁用自动初始化
+
+若需要禁用自动初始化,可通过AndroidManifest.xml添加以下代码
 ```xml
 
 <application>

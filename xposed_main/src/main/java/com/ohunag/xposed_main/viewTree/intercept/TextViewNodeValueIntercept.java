@@ -16,8 +16,9 @@ public class TextViewNodeValueIntercept implements ViewNode.NodeValueIntercept {
             TextView textView=((TextView) view);
             CharSequence text =textView.getText();
             if (text!=null) {
-                map.put("text", new NodeValue(NodeValue.Type.str, StringUtil.getString(text.toString(),100)));
+                map.put("text",  NodeValue.createNode(StringUtil.getString(text.toString(),100)));
             }
+            map.put("textSize", NodeValue.createNode(textView.getTextSize()));
         }
         return false;
     }

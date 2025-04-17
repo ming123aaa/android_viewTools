@@ -56,22 +56,32 @@ public class ViewNodeValueIntercept implements ViewNode.NodeValueIntercept {
             map.put("adapter", NodeValue.createNode(getAdapter(view).getClass().getName()));
         }
         if (view.getLayoutParams() != null) {
-            map.put("layoutParams-width", NodeValue.createNode(getLayoutParamsString(view.getLayoutParams().width)));
+            ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
+            map.put("layoutParams-width",
+                    NodeValue.createNode(
+                            getLayoutParamsString(layoutParams.width)));
+            map.put("layoutParams-height",
+                    NodeValue.createNode(
+                            getLayoutParamsString(layoutParams.height)));
+
+            if (layoutParams instanceof ViewGroup.MarginLayoutParams) {
+                ViewGroup.MarginLayoutParams marginLayoutParams = (ViewGroup.MarginLayoutParams) layoutParams;
+                map.put("layoutMargin-top,left,right,bottom", NodeValue.createNode(
+                        marginLayoutParams.topMargin + "," + marginLayoutParams.leftMargin + "," + marginLayoutParams.rightMargin + "," + marginLayoutParams.bottomMargin));
+            }
         }
-        if (view.getLayoutParams() != null) {
-            map.put("layoutParams-height", NodeValue.createNode(getLayoutParamsString(view.getLayoutParams().height)));
-        }
+
         map.put("padding-top,left,right,bottom", NodeValue.createNode(view.getPaddingTop() + "," + view.getPaddingLeft() + "," + view.getPaddingRight() + "," + view.getPaddingBottom()));
-        if (view.getTranslationX()!=0F) {
+        if (view.getTranslationX() != 0F) {
             map.put("TranslationX", NodeValue.createNode(view.getTranslationX()));
         }
-        if (view.getTranslationY()!=0F) {
+        if (view.getTranslationY() != 0F) {
             map.put("TranslationY", NodeValue.createNode(view.getTranslationY()));
         }
-        if(view.getScrollX()!=0){
+        if (view.getScrollX() != 0) {
             map.put("ScrollX", NodeValue.createNode(view.getScrollX()));
         }
-        if(view.getScrollY()!=0){
+        if (view.getScrollY() != 0) {
             map.put("ScrollY", NodeValue.createNode(view.getScrollY()));
         }
 
@@ -80,9 +90,9 @@ public class ViewNodeValueIntercept implements ViewNode.NodeValueIntercept {
 
     private String getLayoutParamsString(int v) {
         if (v == ViewGroup.LayoutParams.MATCH_PARENT) {
-            return "MATCH_PARENT";
+            return "match_parent";
         } else if (v == ViewGroup.LayoutParams.WRAP_CONTENT) {
-            return "WRAP_CONTENT";
+            return "wrap_content";
         }
         return "" + v;
     }
@@ -98,7 +108,7 @@ public class ViewNodeValueIntercept implements ViewNode.NodeValueIntercept {
 
     public String getLocationInScreen(View view) {
         int[] ints = new int[2];
-        view.getLocationInWindow(ints);
+        view.getLocationOnScreen(ints);
         return "x:" + ints[0] + " y:" + ints[1];
     }
 

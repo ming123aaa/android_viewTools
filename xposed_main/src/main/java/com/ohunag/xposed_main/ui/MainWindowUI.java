@@ -367,6 +367,20 @@ public class MainWindowUI {
                 iv_show.setImageBitmap(bitmap);
             }
         }
+        iv_show.setBackgroundColor(0x00ffffff);
+        iv_show.setSelected(false);
+        iv_show.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (iv_show.isSelected()) {
+                    iv_show.setBackgroundColor(0x00ffffff);
+                    iv_show.setSelected(false);
+                }else {
+                    iv_show.setBackgroundColor(0xffffffff);
+                    iv_show.setSelected(true);
+                }
+            }
+        });
         tv_close_xposed_imgView.setOnClickListener(listener);
     }
 

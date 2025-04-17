@@ -20,7 +20,7 @@ public class TextViewEditGroup implements IViewEditGroup {
             data.add(new TextViewEdit());
             data.add(new TextCopyViewEdit());
             data.add(new TextViewIsSelect());
-
+            data.add(new TextViewSizeEdit());
         }
     }
 
@@ -52,6 +52,37 @@ public class TextViewEditGroup implements IViewEditGroup {
             if ("ture".equalsIgnoreCase(s) || "true".equalsIgnoreCase(s)) {
                 ((TextView) view).setTextIsSelectable(true);
                 ToastUtil.show(activity, "修改成功");
+            }
+        }
+    }
+
+    public static class TextViewSizeEdit implements IViewEdit{
+
+        @Override
+        public String getValueName() {
+            return "TextSize";
+        }
+
+        @Override
+        public String getHint() {
+            return "文字大小";
+        }
+
+        @Override
+        public String getValue(View view) {
+
+            return ((TextView) view).getTextSize()+"";
+        }
+
+        @Override
+        public void setValue(Activity activity, View view, String s) throws IOException {
+
+            try {
+                float v = Float.parseFloat(s);
+                ((TextView) view).setTextSize(v);;
+                ToastUtil.show(activity,"修改成功");
+            } catch (Exception e) {
+                ToastUtil.show(activity,"修改失败");
             }
         }
     }
