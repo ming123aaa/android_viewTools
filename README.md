@@ -15,13 +15,13 @@
     }
 }
 dependencies {
-    implementation 'com.gitee.a3077932030.xposed_activity-hook:activityUIHook-app:1.1.8'  //若只想在测试环境使用 使用debugImplementation依赖
+       //若只想在测试环境使用 使用debugImplementation依赖
+    implementation 'com.gitee.a3077932030.xposed_activity-hook:activityUIHook-app:1.1.8'  
       
 }
 ```
 
-依赖完成后主进程自动进行初始化操作, 如果需要在别的进程初始化在application添加以下代码
-UiHookManager.getInstance().init(this);
+
 
 若需要禁用自动初始化,可通过AndroidManifest.xml添加以下代码
 ```xml
@@ -34,10 +34,23 @@ UiHookManager.getInstance().init(this);
 </application>
 ```
 
+依赖完成后主进程自动进行初始化操作, 如果需要手动初始化:
+UiHookManager.getInstance().init(this);
+
+
+
 
 
 ### xposed版本
-是一个xposed模块需要配合xposed使用,可以查看任何app的ui
+可生成xposed模块,配合xposed使用这样就可以查看其它app的ui
+
+### 效果展示
+点击小鸡后出现:
+![](/screenshot/Screenshot_p0.jpg)
+点击查看可见View,可通过点击屏幕方式选中View
+![](/screenshot/Screenshot_p1.jpg)
+点查看，可以查看当前View的一些信息
+![](/screenshot/Screenshot_p2.jpg)
 
 
 
