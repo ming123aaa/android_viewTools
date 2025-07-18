@@ -16,7 +16,7 @@
 }
 dependencies {
        //若只想在测试环境使用 使用debugImplementation依赖
-    implementation 'com.gitee.a3077932030.xposed_activity-hook:activityUIHook-app:1.2.0'  
+    implementation 'com.github.ming123aaa.android_viewTools:activityUIHook-app:1.2.0'  
       
 }
 ```
