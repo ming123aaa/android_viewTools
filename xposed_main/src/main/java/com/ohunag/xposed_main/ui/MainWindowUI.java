@@ -50,6 +50,8 @@ public class MainWindowUI {
     private TextView tv_close_xposed;
     private TextView tv_getRootView_xposed;
 
+    private TextView tv_getId_xposed;
+
     private WeakReference<View> selectView;//选中的View
     private ViewRootMsg viewRootMsg;//选中的View信息
 
@@ -411,7 +413,7 @@ public class MainWindowUI {
             Toast.makeText(activity, "点击的位置没有找到View", Toast.LENGTH_LONG).show();
             setSate(0);
         } else {
-            set_ll_clickView_xposed(0);
+            showSelectViewList(0);
 
         }
     }
@@ -428,6 +430,7 @@ public class MainWindowUI {
         tv_viewClick_xposed_all = rootView.findViewWithTag("tv_viewClick_xposed_all");
         tv_close_xposed = rootView.findViewWithTag("tv_close_xposed");
         tv_getRootView_xposed = rootView.findViewWithTag("tv_getRootView_xposed");
+        tv_getId_xposed = rootView.findViewWithTag("tv_getId_xposed");
         tv_activityName_xposed.setText(activity.getClass().getName());
         tv_packageName_xposed.setText("包名:" + activity.getPackageName());
         tv_activityName_xposed.setOnClickListener(new View.OnClickListener() {
@@ -472,7 +475,7 @@ public class MainWindowUI {
             @Override
             public void onClick(View v) {
                 refreshRootViewNode();
-                set_ll_goRoot(rootViewNode, 0, new View.OnClickListener() {
+                showTreeView(rootViewNode, 0, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         setSate(0);
@@ -481,9 +484,67 @@ public class MainWindowUI {
 
             }
         });
+        tv_getId_xposed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showInputIdDialog();
+            }
+        });
         tv_close_xposed.setOnClickListener(v -> {
             hide();
         });
+    }
+    InputIdTextDialog inputIdDialog=null;
+    private void showInputIdDialog(){
+        if (inputIdDialog==null){
+            inputIdDialog= new InputIdTextDialog(activity, "根据id查找", "请输入View idName", new InputIdTextDialog.OnInputTextListener() {
+                @Override
+                public void onInputText(String text,boolean isVisible) {
+                    showViewById(text,isVisible);
+                }
+            });
+        }
+        inputIdDialog.show();
+    }
+
+    private  void showViewById(String string,boolean isVisible){
+        refreshRootViewNode();
+        if (rootViewNode != null) {
+            int id=0;
+            try {
+                 id=activity.getResources().getIdentifier(string, "id", activity.getPackageName());
+            } catch (Exception e) {
+            }
+            if(id==0){
+                ToastUtil.show(activity, "id="+string+"不存在");
+                return;
+            }
+            nodes.clear();
+            int finalId = id;
+            ViewNode.ForeachCallBack call=new ViewNode.ForeachCallBack() {
+                @Override
+                public boolean onIntercept(ViewNode viewNode) {
+                    if (viewNode.getView().getId()== finalId){
+                        nodes.add(viewNode);
+                    }
+                    return false;
+                }
+            };
+            if (isVisible){
+                rootViewNode.afterTraversalVisibleView(call);
+            }else {
+                rootViewNode.afterTraversal(call);
+            }
+
+            if (nodes.isEmpty()){
+                ToastUtil.show(activity, "未找到View");
+            }else {
+                showSelectViewList(0);
+            }
+        }else {
+            ToastUtil.show(activity, "viewRoot不存在");
+        }
+
     }
 
     private void refreshRootViewNode() {
@@ -548,7 +609,7 @@ public class MainWindowUI {
     }
 
     @SuppressLint("SetTextI18n")
-    private void set_ll_clickView_xposed(int position) {
+    private void showSelectViewList(int position) {
         setSate(2);
         if (position >= nodes.size() || position < 0) {
             return;
@@ -563,10 +624,10 @@ public class MainWindowUI {
             public void onClick(View v) {
                 if (nodes.get(position) != null) {
 
-                    set_ll_goRoot(nodes.get(position), 0, new View.OnClickListener() {
+                    showTreeView(nodes.get(position), 0, new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            set_ll_clickView_xposed(position);
+                            showSelectViewList(position);
                         }
                     });
                 }
@@ -581,7 +642,7 @@ public class MainWindowUI {
                 if (p < 0) {
                     p = nodes.size() - 1;
                 }
-                set_ll_clickView_xposed(p);
+                showSelectViewList(p);
             }
         });
         tv_nextNode_clickView_xposed.setOnClickListener(new View.OnClickListener() {
@@ -591,7 +652,7 @@ public class MainWindowUI {
                 if (p >= nodes.size()) {
                     p = 0;
                 }
-                set_ll_clickView_xposed(p);
+                showSelectViewList(p);
             }
         });
         tv_show_clickView_xposed.setOnClickListener(new View.OnClickListener() {
@@ -601,7 +662,7 @@ public class MainWindowUI {
                 set_ll_viewMsg_xposed(nodes.get(position), new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        set_ll_clickView_xposed(position);
+                        showSelectViewList(position);
 
                     }
                 });
@@ -614,7 +675,7 @@ public class MainWindowUI {
                 set_ll_imgView_xposed(nodes.get(position).getView(), new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        set_ll_clickView_xposed(position);
+                        showSelectViewList(position);
 
                     }
                 });
@@ -630,9 +691,9 @@ public class MainWindowUI {
         }
     }
 
-    private void set_ll_goRoot(ViewNode viewNode, int selectId, View.OnClickListener listener) {
+    private void showTreeView(ViewNode viewNode, int selectIndex, View.OnClickListener listener) {
         setSate(4);
-        ViewTreeAdapter viewTreeAdapter = new ViewTreeAdapter(viewNode, selectId);
+        ViewTreeAdapter viewTreeAdapter = new ViewTreeAdapter(viewNode, selectIndex);
         listView_viewTree_xposed.setAdapter(viewTreeAdapter);
         ViewNode selectNode = viewTreeAdapter.getSelectNode();
         if (selectNode != null) {
@@ -650,7 +711,7 @@ public class MainWindowUI {
             textView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    set_ll_goRoot(node, 0, listener);
+                    showTreeView(node, 0, listener);
 
                 }
             });
@@ -676,7 +737,7 @@ public class MainWindowUI {
             @Override
             public void onClick(View v) {
                 if (viewNode.getParent() != null) {
-                    set_ll_goRoot(viewNode.getParent(), viewNode.inParentIndex() + 1, listener);
+                    showTreeView(viewNode.getParent(), viewNode.inParentIndex() + 1, listener);
 
                 }
             }
@@ -687,7 +748,7 @@ public class MainWindowUI {
                 if (viewTreeAdapter.getSelectNode() == null || viewTreeAdapter.getSelectNode() == viewNode) {
                     return;
                 }
-                set_ll_goRoot(viewTreeAdapter.getSelectNode(), 0, listener);
+                showTreeView(viewTreeAdapter.getSelectNode(), 0, listener);
             }
         });
         tv_show_viewTree_xposed.setOnClickListener(new View.OnClickListener() {
@@ -697,7 +758,7 @@ public class MainWindowUI {
                 set_ll_viewMsg_xposed(viewTreeAdapter.getSelectNode(), new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        set_ll_goRoot(viewNode, viewTreeAdapter.getSelectId(), listener);
+                        showTreeView(viewNode, viewTreeAdapter.getSelectId(), listener);
                     }
                 });
             }
@@ -708,7 +769,7 @@ public class MainWindowUI {
                 set_ll_imgView_xposed(viewTreeAdapter.getSelectNode().getView(), new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        set_ll_goRoot(viewNode, viewTreeAdapter.getSelectId(), listener);
+                        showTreeView(viewNode, viewTreeAdapter.getSelectId(), listener);
                     }
                 });
             }
