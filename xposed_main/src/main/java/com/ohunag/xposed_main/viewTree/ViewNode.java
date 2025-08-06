@@ -177,6 +177,9 @@ public class ViewNode {
     }
 
     public boolean frontTraversalVisibleView(ForeachCallBack foreachCallBack) {
+        if (view == null || view.getAlpha() == 0 || view.getVisibility() != View.VISIBLE) {
+            return false;
+        }
         boolean b = foreachCallBack.onIntercept(this);
         if (b) {
             return true;
