@@ -531,9 +531,9 @@ public class MainWindowUI {
                 }
             };
             if (isVisible){
-                rootViewNode.afterTraversalVisibleView(call);
+                rootViewNode.frontTraversalVisibleView(call);
             }else {
-                rootViewNode.afterTraversal(call);
+                rootViewNode.frontTraversal(call);
             }
 
             if (nodes.isEmpty()){

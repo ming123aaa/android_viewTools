@@ -29,13 +29,13 @@ public class ViewNode {
     public ViewNode() {
     }
 
-    public ViewNode(View view ) {
+    public ViewNode(View view) {
         this.view = view;
         viewClassName = view.getClass().getName();
         initChild();
     }
 
-    public void init(List<NodeValueIntercept> nodeValueIntercepts){
+    public void init(List<NodeValueIntercept> nodeValueIntercepts) {
         this.nodeValueIntercepts = nodeValueIntercepts;
 
         for (ViewNode viewNode : childNode) {
@@ -45,7 +45,7 @@ public class ViewNode {
 
     private void initValueMap() {
         for (int i = 0; i < nodeValueIntercepts.size(); i++) {
-            nodeValueIntercepts.get(i).onIntercept(valueMap, view,this);
+            nodeValueIntercepts.get(i).onIntercept(valueMap, view, this);
         }
     }
 
@@ -149,8 +149,8 @@ public class ViewNode {
         return viewNodePath + " > [" + i + "]" + viewClassName;
     }
 
-    public void getViewNodePath(List<ViewNode> viewNodes){
-        if (parent!=null){
+    public void getViewNodePath(List<ViewNode> viewNodes) {
+        if (parent != null) {
             parent.getViewNodePath(viewNodes);
         }
         viewNodes.add(this);
@@ -164,12 +164,29 @@ public class ViewNode {
      * @return
      */
     public boolean frontTraversal(ForeachCallBack foreachCallBack) {
+        boolean b = foreachCallBack.onIntercept(this);
+        if (b) {
+            return true;
+        }
         for (int i = 0; i < childNode.size(); i++) {
             if (childNode.get(i).frontTraversal(foreachCallBack)) {
                 return true;
             }
         }
-        return foreachCallBack.onIntercept(this);
+        return false;
+    }
+
+    public boolean frontTraversalVisibleView(ForeachCallBack foreachCallBack) {
+        boolean b = foreachCallBack.onIntercept(this);
+        if (b) {
+            return true;
+        }
+        for (int i = 0; i < childNode.size(); i++) {
+            if (childNode.get(i).frontTraversalVisibleView(foreachCallBack)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -192,7 +209,7 @@ public class ViewNode {
      * @return
      */
     public boolean afterTraversalVisibleView(ForeachCallBack foreachCallBack) {
-        if (view==null||view.getAlpha()==0||view.getVisibility()!=View.VISIBLE){
+        if (view == null || view.getAlpha() == 0 || view.getVisibility() != View.VISIBLE) {
             return false;
         }
         for (int i = childNode.size() - 1; i >= 0; i--) {
@@ -204,18 +221,18 @@ public class ViewNode {
         return foreachCallBack.onIntercept(this);
     }
 
-    public ViewRootMsg hasViewRootMsg(List<ViewRootMsg> viewRootMsgs){
-        if (viewRootMsgs==null){
+    public ViewRootMsg hasViewRootMsg(List<ViewRootMsg> viewRootMsgs) {
+        if (viewRootMsgs == null) {
             return null;
         }
         for (ViewRootMsg viewRootMsg : viewRootMsgs) {
-            if (viewRootMsg!=null&&viewRootMsg.getView()!=null){
-                if (viewRootMsg.getView()==view){
+            if (viewRootMsg != null && viewRootMsg.getView() != null) {
+                if (viewRootMsg.getView() == view) {
                     return viewRootMsg;
                 }
             }
         }
-        if (parent!=null){
+        if (parent != null) {
             return parent.hasViewRootMsg(viewRootMsgs);
         }
         return null;
@@ -235,6 +252,6 @@ public class ViewNode {
          * @param
          * @return ture  拦截不继续遍历
          */
-        boolean onIntercept(Map<String, NodeValue> map, View view,ViewNode viewNode);
+        boolean onIntercept(Map<String, NodeValue> map, View view, ViewNode viewNode);
     }
 }
