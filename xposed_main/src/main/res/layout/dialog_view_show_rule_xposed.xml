@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#aa000000"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:minHeight="30dp"
+        android:tag="tv_title"
+        android:text="设置view查看规则"
+        android:textColor="#fff"
+        android:textSize="18dp" />
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="#888">
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:tag="rb_all"
+            android:text="显示全部"
+            android:textColor="#fff" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:tag="rb_view"
+            android:text="仅view"
+            android:textColor="#fff" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:tag="rb_viewGroup"
+            android:text="仅viewGroup"
+            android:textColor="#fff" />
+    </RadioGroup>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="限制className:"
+        android:textColor="#fff" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:height="40dp"
+            android:gravity="center"
+            android:tag="btn_textView"
+            android:text="TextView"
+            android:textColor="#f00" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:height="40dp"
+            android:gravity="center"
+            android:tag="btn_ImageView"
+            android:text="ImageView"
+            android:textColor="#f00" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:height="40dp"
+            android:gravity="center"
+            android:tag="btn_WebView"
+            android:text="WebView"
+            android:textColor="#f00" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:height="40dp"
+            android:gravity="center"
+            android:tag="btn_noClass"
+            android:text="不限制"
+            android:textColor="#f00" />
+    </LinearLayout>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="请输入class"
+        android:tag="et_input"
+        android:textColorHint="#999"
+        android:textColor="#fff"
+        android:textSize="16dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:minHeight="30dp"
+            android:tag="tv_cancel"
+            android:text="取消"
+            android:textColor="#fff"
+            android:textSize="16dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:minHeight="30dp"
+            android:tag="tv_ok"
+            android:text="确定"
+            android:textColor="#fff"
+            android:textSize="16dp" />
+
+    </LinearLayout>
+
+</LinearLayout>

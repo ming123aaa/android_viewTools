@@ -41,10 +41,11 @@ public class UiHook {
     }
 
 
-    public static void init(Resources xpRes, ViewListManager viewListManager, Type type) {
+    public static void init(Resources xpRes, ViewListManager viewListManager, Type type,ClassLoader classLoader) {
         UiHook.xpRes = xpRes;
         UiHook.viewListManager = viewListManager;
         UiHook.type = type;
+        UiHook.classLoader = classLoader;
     }
 
     public interface ViewListManager {

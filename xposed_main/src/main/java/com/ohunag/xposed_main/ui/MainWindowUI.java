@@ -46,6 +46,7 @@ public class MainWindowUI {
     private TextView tv_activityName_xposed;
     private TextView tv_selectView_xposed;
     private TextView tv_viewClick_xposed;
+    private TextView tv_viewRule_xposed_all;
     private TextView tv_viewClick_xposed_all;
     private TextView tv_close_xposed;
     private TextView tv_getRootView_xposed;
@@ -377,7 +378,7 @@ public class MainWindowUI {
                 if (iv_show.isSelected()) {
                     iv_show.setBackgroundColor(0x00ffffff);
                     iv_show.setSelected(false);
-                }else {
+                } else {
                     iv_show.setBackgroundColor(0xffffffff);
                     iv_show.setSelected(true);
                 }
@@ -386,18 +387,23 @@ public class MainWindowUI {
         tv_close_xposed_imgView.setOnClickListener(listener);
     }
 
+    ViewShowRuleDialog.ViewShowRule viewShowRule = new ViewShowRuleDialog.ViewShowRule();
+
     private void findTouchView(float x, float y) {
         if (rootViewNode != null) {
             nodes.clear();
             ViewNode.ForeachCallBack foreachCallBack = viewNode -> {
                 if (viewNode.getView() != null) {
-                    int dt = 10;//防止点不准 设置误差距离
+                    int xdt = 20;//防止点不准 设置误差距离
+                    int ydt = 20;//防止点不准 设置误差距离
                     View view = viewNode.getView();
                     int[] location = new int[2];
                     view.getLocationOnScreen(location);
-                    if (x > location[0] - dt && y > location[1] - dt) {
-                        if (x < location[0] + view.getWidth() + dt && y < location[1] + view.getHeight() + dt) {
-                            nodes.add(viewNode);
+                    if (x > location[0] - xdt && y > location[1] - ydt) {
+                        if (x < location[0] + view.getWidth() + xdt && y < location[1] + view.getHeight() + ydt) {
+                            if (viewShowRule.isAddViewForRule(viewNode)) {
+                                nodes.add(viewNode);
+                            }
                         }
                     }
                 }
@@ -410,7 +416,7 @@ public class MainWindowUI {
             }
         }
         if (nodes.size() == 0) {
-            Toast.makeText(activity, "点击的位置没有找到View", Toast.LENGTH_LONG).show();
+            Toast.makeText(activity, "当前位置没有限定的View", Toast.LENGTH_LONG).show();
             setSate(0);
         } else {
             showSelectViewList(0);
@@ -427,6 +433,7 @@ public class MainWindowUI {
         tv_activityName_xposed = rootView.findViewWithTag("tv_activityName_xposed");
         tv_selectView_xposed = rootView.findViewWithTag("tv_selectView_xposed");
         tv_viewClick_xposed = rootView.findViewWithTag("tv_viewClick_xposed");
+        tv_viewRule_xposed_all = rootView.findViewWithTag("tv_viewRule_xposed_all");
         tv_viewClick_xposed_all = rootView.findViewWithTag("tv_viewClick_xposed_all");
         tv_close_xposed = rootView.findViewWithTag("tv_close_xposed");
         tv_getRootView_xposed = rootView.findViewWithTag("tv_getRootView_xposed");
@@ -463,6 +470,19 @@ public class MainWindowUI {
             }
         });
 
+        tv_viewRule_xposed_all.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ViewShowRuleDialog viewShowRuleDialog = new ViewShowRuleDialog(activity,viewShowRule , new ViewShowRuleDialog.OnRuleListener() {
+                    @Override
+                    public void onRule(ViewShowRuleDialog.ViewShowRule viewShowRule) {
+                        MainWindowUI.this.viewShowRule=viewShowRule;
+                    }
+                });
+                viewShowRuleDialog.show();
+            }
+        });
+
         tv_viewClick_xposed_all.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -494,54 +514,56 @@ public class MainWindowUI {
             hide();
         });
     }
-    InputIdTextDialog inputIdDialog=null;
-    private void showInputIdDialog(){
-        if (inputIdDialog==null){
-            inputIdDialog= new InputIdTextDialog(activity, "根据id查找", "请输入View idName", new InputIdTextDialog.OnInputTextListener() {
+
+    InputIdTextDialog inputIdDialog = null;
+
+    private void showInputIdDialog() {
+        if (inputIdDialog == null) {
+            inputIdDialog = new InputIdTextDialog(activity, "根据id查找", "请输入View idName", new InputIdTextDialog.OnInputTextListener() {
                 @Override
-                public void onInputText(String text,boolean isVisible) {
-                    showViewById(text,isVisible);
+                public void onInputText(String text, boolean isVisible) {
+                    showViewById(text, isVisible);
                 }
             });
         }
         inputIdDialog.show();
     }
 
-    private  void showViewById(String string,boolean isVisible){
+    private void showViewById(String string, boolean isVisible) {
         refreshRootViewNode();
         if (rootViewNode != null) {
-            int id=0;
+            int id = 0;
             try {
-                 id=activity.getResources().getIdentifier(string, "id", activity.getPackageName());
+                id = activity.getResources().getIdentifier(string, "id", activity.getPackageName());
             } catch (Exception e) {
             }
-            if(id==0){
-                ToastUtil.show(activity, "id="+string+"不存在");
+            if (id == 0) {
+                ToastUtil.show(activity, "id=" + string + "不存在");
                 return;
             }
             nodes.clear();
             int finalId = id;
-            ViewNode.ForeachCallBack call=new ViewNode.ForeachCallBack() {
+            ViewNode.ForeachCallBack call = new ViewNode.ForeachCallBack() {
                 @Override
                 public boolean onIntercept(ViewNode viewNode) {
-                    if (viewNode.getView().getId()== finalId){
+                    if (viewNode.getView().getId() == finalId) {
                         nodes.add(viewNode);
                     }
                     return false;
                 }
             };
-            if (isVisible){
+            if (isVisible) {
                 rootViewNode.frontTraversalVisibleView(call);
-            }else {
+            } else {
                 rootViewNode.frontTraversal(call);
             }
 
-            if (nodes.isEmpty()){
+            if (nodes.isEmpty()) {
                 ToastUtil.show(activity, "未找到View");
-            }else {
+            } else {
                 showSelectViewList(0);
             }
-        }else {
+        } else {
             ToastUtil.show(activity, "viewRoot不存在");
         }
 
@@ -611,6 +633,9 @@ public class MainWindowUI {
     @SuppressLint("SetTextI18n")
     private void showSelectViewList(int position) {
         setSate(2);
+        if (nodes.isEmpty()) {
+            return;
+        }
         if (position >= nodes.size() || position < 0) {
             return;
         }

@@ -6,163 +6,190 @@
 
 
     <LinearLayout
-        android:tag="ll_activity_xposed"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#80000000"
         android:orientation="vertical"
+        android:tag="ll_activity_xposed"
         android:visibility="gone"
         tools:visibility="visible">
 
         <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="#aa000000"
+            android:gravity="center"
+            android:minHeight="30dp"
             android:tag="tv_packageName_xposed"
+            android:textColor="#fff"
+            android:textIsSelectable="true"
+            android:textSize="15dp" />
+
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:background="#aa000000"
             android:gravity="center"
             android:minHeight="30dp"
-            android:textColor="#fff"
-            android:textIsSelectable="true"
-            android:textSize="15dp" />
-
-        <TextView
             android:tag="tv_activityName_xposed"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:background="#aa000000"
-            android:gravity="center"
-            android:minHeight="30dp"
             android:textColor="#fff"
             android:textIsSelectable="true"
             android:textSize="15dp" />
+
         <TextView
-            android:tag="tv_selectView_xposed"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:background="#aa000000"
             android:gravity="center"
             android:minHeight="30dp"
-            android:textColor="#fff"
+            android:tag="tv_selectView_xposed"
             android:text="选中:当前activity"
+            android:textColor="#fff"
             android:textSize="15dp" />
-       <LinearLayout
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:layout_marginTop="5dp"
-           android:orientation="horizontal">
-           <TextView
-               android:tag="tv_viewClick_xposed_all"
-               android:layout_width="match_parent"
-               android:layout_height="30dp"
-               android:layout_marginHorizontal="3dp"
-               android:background="#aa000000"
-               android:gravity="center"
-               android:layout_weight="1"
-               android:text="查看全部View"
-               android:textColor="#fff"
-               android:textSize="15dp" />
-           <TextView
-               android:tag="tv_viewClick_xposed"
-               android:layout_width="match_parent"
-               android:layout_height="30dp"
-               android:layout_marginHorizontal="3dp"
-               android:background="#aa000000"
-               android:gravity="center"
-               android:layout_weight="1"
-               android:text="查看可见View"
-               android:textColor="#fff"
-               android:textSize="15dp" />
 
-       </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:orientation="horizontal">
-        <TextView
-            android:tag="tv_getRootView_xposed"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:background="#aa000000"
-            android:layout_marginHorizontal="3dp"
-            android:gravity="center"
-            android:text="从根布局开始"
-            android:layout_weight="1"
-            android:textColor="#fff"
-            android:textSize="15dp" />
-        <TextView
-            android:tag="tv_getId_xposed"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginHorizontal="3dp"
+                android:layout_weight="1"
+                android:background="#aa000000"
+                android:gravity="center"
+                android:tag="tv_viewRule_xposed_all"
+                android:text="设置查看View规则"
+                android:textColor="#fff"
+                android:textSize="15dp" />
+
+        </LinearLayout>
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:background="#aa000000"
-            android:gravity="center"
-            android:layout_weight="1"
-            android:layout_marginHorizontal="3dp"
-            android:text="根据id查找"
-            android:textColor="#fff"
-            android:textSize="15dp" />
-    </LinearLayout>
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginHorizontal="3dp"
+                android:layout_weight="1"
+                android:background="#aa000000"
+                android:gravity="center"
+                android:tag="tv_viewClick_xposed_all"
+                android:text="查看所有View"
+                android:textColor="#fff"
+                android:textSize="15dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginHorizontal="3dp"
+                android:layout_weight="1"
+                android:background="#aa000000"
+                android:gravity="center"
+                android:tag="tv_viewClick_xposed"
+                android:text="查看可见View"
+                android:textColor="#fff"
+                android:textSize="15dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginHorizontal="3dp"
+                android:layout_weight="1"
+                android:background="#aa000000"
+                android:gravity="center"
+                android:tag="tv_getRootView_xposed"
+                android:text="从根布局开始"
+                android:textColor="#fff"
+                android:textSize="15dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginHorizontal="3dp"
+                android:layout_weight="1"
+                android:background="#aa000000"
+                android:gravity="center"
+                android:tag="tv_getId_xposed"
+                android:text="根据id查找"
+                android:textColor="#fff"
+                android:textSize="15dp" />
+        </LinearLayout>
+
         <TextView
-            android:tag="tv_close_xposed"
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:layout_marginTop="5dp"
             android:background="#aa000000"
             android:gravity="center"
+            android:tag="tv_close_xposed"
             android:text="关闭"
             android:textColor="#fff"
             android:textSize="15dp" />
     </LinearLayout>
 
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
         android:tag="ll_clickView_xposed"
+        android:visibility="gone"></LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:visibility="gone"
-        android:orientation="vertical">
-    </LinearLayout>
-    <LinearLayout
+        android:orientation="vertical"
         android:tag="ll_getRoot_xposed"
+        android:visibility="gone"></LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:visibility="gone"
-        android:orientation="vertical">
-    </LinearLayout>
-
-    <LinearLayout
+        android:orientation="vertical"
         android:tag="ll_viewMsg_xposed"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:visibility="gone"
-        android:orientation="vertical"/>
+        android:visibility="gone" />
 
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
         android:tag="ll_selectView_xposed"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:visibility="gone"
-        android:orientation="vertical"/>
+        android:visibility="gone" />
+
     <LinearLayout
-        android:tag="ll_imgView_xposed"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:visibility="gone"
-        android:orientation="vertical"/>
+        android:orientation="vertical"
+        android:tag="ll_imgView_xposed"
+        android:visibility="gone" />
 
 
     <FrameLayout
-        android:tag="fl_touch_xposed"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"
-        android:background="#80000000" />
+        android:background="#80000000"
+        android:tag="fl_touch_xposed"
+        android:visibility="gone" />
 
 </FrameLayout>

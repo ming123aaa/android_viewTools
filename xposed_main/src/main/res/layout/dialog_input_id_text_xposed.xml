@@ -26,8 +26,9 @@
 
     <EditText
         android:tag="et_input"
-        android:textColor="#fff"
         android:textSize="16dp"
+        android:textColorHint="#999"
+        android:textColor="#fff"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

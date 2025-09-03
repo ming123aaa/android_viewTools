@@ -51,7 +51,7 @@ public class UiHookManager {
                 public List<ViewRootMsg> getDialog() {
                     return null;
                 }
-            }, UiHook.Type.APP);
+            }, UiHook.Type.APP,getClass().getClassLoader());
             registerActivityCallBack();
 
         }

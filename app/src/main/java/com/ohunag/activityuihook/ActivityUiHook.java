@@ -53,7 +53,26 @@ public class ActivityUiHook implements IXposedHookLoadPackage, IXposedHookZygote
         Log.e(TAG, "handleLoadPackage: pkg=" + packageName + " processName=" + processName);
         if (!isHook) {
             isHook = true;
-            UiHook.classLoader = lpparam.classLoader;
+            UiHook.init(xpRes, new UiHook.ViewListManager() {
+                @Override
+                public List<View> getViews() {
+                    return rootViews;
+                }
+
+                @Override
+                public List<ViewRootMsg> getDialog() {
+                    List<ViewRootMsg> data=new ArrayList<>();
+                    for (int i = 0; i < dialogs.size(); i++) {
+                        Dialog dialog = dialogs.get(i);
+                        if (dialog!=null) {
+                            data.add(new ViewRootMsg(dialog.getClass().getName()+"[dialog]",dialog.getWindow().getDecorView(),dialog));
+                        }
+                    }
+                    return data;
+                }
+            }, UiHook.Type.XPOSED,lpparam.classLoader);
+            Log.d(TAG, "initZygote: " + modulePath);
+
             new Hook(Instrumentation.class.getName(), lpparam.classLoader) {
 
                 @Override
@@ -187,24 +206,6 @@ public class ActivityUiHook implements IXposedHookLoadPackage, IXposedHookZygote
     public void initZygote(StartupParam startupParam) throws Throwable {
         modulePath = startupParam.modulePath;
         xpRes = XModuleResources.createInstance(modulePath, null);
-        UiHook.init(xpRes, new UiHook.ViewListManager() {
-            @Override
-            public List<View> getViews() {
-                return rootViews;
-            }
 
-            @Override
-            public List<ViewRootMsg> getDialog() {
-                List<ViewRootMsg> data=new ArrayList<>();
-                for (int i = 0; i < dialogs.size(); i++) {
-                    Dialog dialog = dialogs.get(i);
-                    if (dialog!=null) {
-                        data.add(new ViewRootMsg(dialog.getClass().getName()+"[dialog]",dialog.getWindow().getDecorView(),dialog));
-                    }
-                }
-                return data;
-            }
-        }, UiHook.Type.XPOSED);
-        Log.d(TAG, "initZygote: " + modulePath);
     }
 }
