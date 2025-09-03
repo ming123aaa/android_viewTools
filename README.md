@@ -16,7 +16,7 @@
 }
 dependencies {
        //若只想在测试环境使用 使用debugImplementation依赖
-    implementation 'com.github.ming123aaa.android_viewTools:activityUIHook-app:1.2.0'  
+    implementation 'com.github.ming123aaa.android_viewTools:activityUIHook-app:1.2.3'  
       
 }
 ```
@@ -35,7 +35,9 @@ dependencies {
 ```
 
 依赖完成后主进程自动进行初始化操作, 如果需要手动初始化:
+```java
 UiHookManager.getInstance().init(this);
+```
 
 
 
@@ -46,11 +48,16 @@ UiHookManager.getInstance().init(this);
 
 ### 效果展示
 点击小鸡后出现:
-![](/screenshot/Screenshot_p0.jpg)
+
+<img src="screenshot/Screenshot_p0.jpg" width=300/>
+
 点击查看可见View,可通过点击屏幕方式选中View
-![](/screenshot/Screenshot_p1.jpg)
+
+<img src="screenshot/Screenshot_p1.jpg" width=300/>
+
 点查看，可以查看当前View的一些信息
-![](/screenshot/Screenshot_p2.jpg)
+
+<img src="screenshot/Screenshot_p2.jpg" width=300 />
 
 
 
