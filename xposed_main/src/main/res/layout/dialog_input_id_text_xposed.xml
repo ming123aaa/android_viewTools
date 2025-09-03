@@ -20,7 +20,7 @@
         android:text="仅查找可见View"
         android:textColor="#fff"
         android:textSize="16dp"
-
+        android:background="#888"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 

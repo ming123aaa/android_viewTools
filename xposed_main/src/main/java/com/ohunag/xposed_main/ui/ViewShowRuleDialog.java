@@ -33,7 +33,7 @@ public class ViewShowRuleDialog {
         TextView et_input = (TextView) dialog_view_show_rule_xposed.findViewWithTag("et_input");
         TextView tv_cancel = (TextView) dialog_view_show_rule_xposed.findViewWithTag("tv_cancel");
         TextView tv_ok = (TextView) dialog_view_show_rule_xposed.findViewWithTag("tv_ok");
-
+        CheckBox check_view_visibility = (CheckBox) dialog_view_show_rule_xposed.findViewWithTag("check_view_visibility");
 
         TextView btn_textView = (TextView) dialog_view_show_rule_xposed.findViewWithTag("btn_textView");
         TextView btn_ImageView = (TextView) dialog_view_show_rule_xposed.findViewWithTag("btn_ImageView");
@@ -44,6 +44,7 @@ public class ViewShowRuleDialog {
         RadioButton rb_view = (RadioButton) dialog_view_show_rule_xposed.findViewWithTag("rb_view");
         RadioButton rb_viewGroup = (RadioButton) dialog_view_show_rule_xposed.findViewWithTag("rb_viewGroup");
 
+        check_view_visibility.setChecked(viewShowRule.onlyVisibility);
         switch (viewShowRule.ruleType) {
             case ALL:
                 rb_all.setChecked(true);
@@ -107,6 +108,7 @@ public class ViewShowRuleDialog {
                     viewShowRule.viewClass = null;
                     ToastUtil.show(activity, "noFind class="+string);
                 }
+                viewShowRule.onlyVisibility = check_view_visibility.isChecked();
                 if (rb_all.isChecked()) {
                     viewShowRule.ruleType = RuleType.ALL;
                 } else if (rb_view.isChecked()) {
@@ -153,6 +155,8 @@ public class ViewShowRuleDialog {
 
     public static class ViewShowRule {
         public RuleType ruleType = RuleType.ALL;
+
+        public boolean onlyVisibility = true;
         public Class<?> viewClass;
 
         public boolean isAddViewForRule(ViewNode node) {

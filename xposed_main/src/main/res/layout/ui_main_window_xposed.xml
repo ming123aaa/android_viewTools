@@ -68,6 +68,7 @@
                 android:textColor="#fff"
                 android:textSize="15dp" />
 
+
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -82,8 +83,8 @@
                 android:layout_weight="1"
                 android:background="#aa000000"
                 android:gravity="center"
-                android:tag="tv_viewClick_xposed_all"
-                android:text="查看所有View"
+                android:tag="tv_viewRule_show_xposed"
+                android:text="查看View"
                 android:textColor="#fff"
                 android:textSize="15dp" />
 
@@ -95,7 +96,7 @@
                 android:background="#aa000000"
                 android:gravity="center"
                 android:tag="tv_viewClick_xposed"
-                android:text="查看可见View"
+                android:text="点击查看View"
                 android:textColor="#fff"
                 android:textSize="15dp" />
 

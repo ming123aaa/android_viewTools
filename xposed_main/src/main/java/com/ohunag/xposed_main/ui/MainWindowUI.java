@@ -47,7 +47,8 @@ public class MainWindowUI {
     private TextView tv_selectView_xposed;
     private TextView tv_viewClick_xposed;
     private TextView tv_viewRule_xposed_all;
-    private TextView tv_viewClick_xposed_all;
+    private TextView tv_viewRule_show_xposed;
+
     private TextView tv_close_xposed;
     private TextView tv_getRootView_xposed;
 
@@ -99,7 +100,7 @@ public class MainWindowUI {
 
     private ViewNode rootViewNode;
     private final List<ViewNode> nodes = new ArrayList<>();
-    private boolean hideViewIsShow = false;//隐藏的View是否展示
+
 
     private ViewGroup ll_imgView_xposed;
     private ImageView iv_show;
@@ -409,7 +410,7 @@ public class MainWindowUI {
                 }
                 return false;
             };
-            if (!hideViewIsShow) {
+            if (viewShowRule.onlyVisibility) {
                 rootViewNode.afterTraversalVisibleView(foreachCallBack);
             } else {
                 rootViewNode.afterTraversal(foreachCallBack);
@@ -424,6 +425,33 @@ public class MainWindowUI {
         }
     }
 
+    private void findAllView() {
+        refreshRootViewNode();
+        if (rootViewNode != null) {
+            nodes.clear();
+            ViewNode.ForeachCallBack foreachCallBack = viewNode -> {
+                if (viewNode.getView() != null) {
+                    if (viewShowRule.isAddViewForRule(viewNode)) {
+                        nodes.add(viewNode);
+                    }
+                }
+                return false;
+            };
+            if (viewShowRule.onlyVisibility){
+                rootViewNode.afterTraversalVisibleView(foreachCallBack);
+            }else {
+                rootViewNode.afterTraversal(foreachCallBack);
+            }
+
+        }
+        if (nodes.size() == 0) {
+            Toast.makeText(activity, "没有找到View", Toast.LENGTH_LONG).show();
+            setSate(0);
+        } else {
+            showSelectViewList(0);
+        }
+    }
+
     /**
      * 一开始的按钮
      */
@@ -434,7 +462,8 @@ public class MainWindowUI {
         tv_selectView_xposed = rootView.findViewWithTag("tv_selectView_xposed");
         tv_viewClick_xposed = rootView.findViewWithTag("tv_viewClick_xposed");
         tv_viewRule_xposed_all = rootView.findViewWithTag("tv_viewRule_xposed_all");
-        tv_viewClick_xposed_all = rootView.findViewWithTag("tv_viewClick_xposed_all");
+        tv_viewRule_show_xposed = rootView.findViewWithTag("tv_viewRule_show_xposed");
+
         tv_close_xposed = rootView.findViewWithTag("tv_close_xposed");
         tv_getRootView_xposed = rootView.findViewWithTag("tv_getRootView_xposed");
         tv_getId_xposed = rootView.findViewWithTag("tv_getId_xposed");
@@ -465,7 +494,6 @@ public class MainWindowUI {
             @Override
             public void onClick(View v) {
                 refreshRootViewNode();
-                hideViewIsShow = false;
                 setSate(1);
             }
         });
@@ -473,24 +501,22 @@ public class MainWindowUI {
         tv_viewRule_xposed_all.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ViewShowRuleDialog viewShowRuleDialog = new ViewShowRuleDialog(activity,viewShowRule , new ViewShowRuleDialog.OnRuleListener() {
+                ViewShowRuleDialog viewShowRuleDialog = new ViewShowRuleDialog(activity, viewShowRule, new ViewShowRuleDialog.OnRuleListener() {
                     @Override
                     public void onRule(ViewShowRuleDialog.ViewShowRule viewShowRule) {
-                        MainWindowUI.this.viewShowRule=viewShowRule;
+                        MainWindowUI.this.viewShowRule = viewShowRule;
                     }
                 });
                 viewShowRuleDialog.show();
             }
         });
-
-        tv_viewClick_xposed_all.setOnClickListener(new View.OnClickListener() {
+        tv_viewRule_show_xposed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                refreshRootViewNode();
-                hideViewIsShow = true;
-                setSate(1);
+                findAllView();//查找所有View
             }
         });
+
         tv_getRootView_xposed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -569,6 +595,9 @@ public class MainWindowUI {
 
     }
 
+    /**
+     * 刷新viewNode
+     */
     private void refreshRootViewNode() {
         if (selectView == null) {
             rootViewNode = ViewTreeUtil.getViewNode(activity);
@@ -640,7 +669,7 @@ public class MainWindowUI {
             return;
         }
         View view = nodes.get(position).getView();
-        tv_process_clickView_xposed.setText("进度" + position + "/" + nodes.size() + "  "
+        tv_process_clickView_xposed.setText("进度" + (position+1) + "/" + nodes.size() + "  "
                 + ViewTreeUtil.getViewType(view) + " Visibility:" + getVisibility(view.getVisibility())
                 + " " + ViewNodeValueIntercept.getViewIdName(view));
         tv_viewName_clickView_xposed.setText(nodes.get(position).getViewClassName());
@@ -716,6 +745,12 @@ public class MainWindowUI {
         }
     }
 
+    /**
+     *  显示View树
+     * @param viewNode
+     * @param selectIndex
+     * @param listener
+     */
     private void showTreeView(ViewNode viewNode, int selectIndex, View.OnClickListener listener) {
         setSate(4);
         ViewTreeAdapter viewTreeAdapter = new ViewTreeAdapter(viewNode, selectIndex);

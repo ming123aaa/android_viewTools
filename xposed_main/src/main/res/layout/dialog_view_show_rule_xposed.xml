@@ -32,16 +32,26 @@
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:tag="rb_view"
-            android:text="仅view"
+            android:text="仅View"
             android:textColor="#fff" />
 
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:tag="rb_viewGroup"
-            android:text="仅viewGroup"
+            android:text="仅ViewGroup"
             android:textColor="#fff" />
     </RadioGroup>
+
+    <CheckBox
+        android:tag="check_view_visibility"
+        android:checked="false"
+        android:text="仅查找可见View"
+        android:textColor="#fff"
+        android:textSize="16dp"
+        android:background="#888"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
     <TextView
         android:layout_width="match_parent"
