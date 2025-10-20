@@ -3,6 +3,7 @@ package com.ohunag.xposed_main.viewTree;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.gson.internal.LinkedTreeMap;
 import com.ohunag.xposed_main.bean.ViewRootMsg;
 import com.ohunag.xposed_main.view.HookRootFrameLayout;
 
@@ -18,7 +19,7 @@ public class ViewNode {
 
     private final List<ViewNode> childNode = new ArrayList<>();
 
-    private final Map<String, NodeValue> valueMap = new TreeMap<>();
+    private final Map<String, NodeValue> valueMap = new LinkedTreeMap<>();
 
     private View view;
 

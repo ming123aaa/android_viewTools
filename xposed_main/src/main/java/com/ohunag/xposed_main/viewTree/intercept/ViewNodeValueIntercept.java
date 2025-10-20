@@ -20,20 +20,13 @@ public class ViewNodeValueIntercept implements ViewNode.NodeValueIntercept {
         }
         map.put("viewType", NodeValue.createNode(ViewTreeUtil.getViewType(view)));
         map.put("Alpha", NodeValue.createNode(view.getAlpha()));
-        map.put("isClickable", NodeValue.createNode(view.isClickable()));
-        map.put("isEnabled", NodeValue.createNode(view.isEnabled()));
-        map.put("isFocusable", NodeValue.createNode(view.isFocusable()));
-        map.put("isFocused", NodeValue.createNode(view.isFocused()));
         map.put("visibility", NodeValue.createNode(getVisibility(view.getVisibility())));
         map.put("id", NodeValue.createNode(view.getId()));
-        map.put("width-height", NodeValue.createNode(view.getWidth() + "," + view.getHeight()));
-        map.put("locationOnScreen", NodeValue.createNode(getLocationInScreen(view)));
-        if (view.getContentDescription() != null) {
-            map.put("ContentDescription", NodeValue.createNode(view.getContentDescription().toString()));
-        }
         if (view.getId() != 0) {
             map.put("id-string", NodeValue.createNode(getStringId(view)));
         }
+        map.put("width-height", NodeValue.createNode(view.getWidth() + "," + view.getHeight()));
+        map.put("density", NodeValue.createNode(getDensity(view)));
         if (getOnClickListener(view) != null) {
             map.put("OnClickListener", NodeValue.createNode(getOnClickListener(view)));
         }
@@ -55,6 +48,12 @@ public class ViewNodeValueIntercept implements ViewNode.NodeValueIntercept {
         if (getAdapter(view) != null) {
             map.put("adapter", NodeValue.createNode(getAdapter(view).getClass().getName()));
         }
+        map.put("locationOnScreen", NodeValue.createNode(getLocationInScreen(view)));
+        map.put("locationInParent", NodeValue.createNode(getLocationInParent(view)));
+        if (view.getContentDescription() != null) {
+            map.put("ContentDescription", NodeValue.createNode(view.getContentDescription().toString()));
+        }
+        
         if (view.getLayoutParams() != null) {
             ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
             map.put("layoutParams-width",
@@ -84,8 +83,15 @@ public class ViewNodeValueIntercept implements ViewNode.NodeValueIntercept {
         if (view.getScrollY() != 0) {
             map.put("ScrollY", NodeValue.createNode(view.getScrollY()));
         }
-
+        map.put("isClickable", NodeValue.createNode(view.isClickable()));
+        map.put("isEnabled", NodeValue.createNode(view.isEnabled()));
+        map.put("isFocusable", NodeValue.createNode(view.isFocusable()));
+        map.put("isFocused", NodeValue.createNode(view.isFocused()));
         return false;
+    }
+
+    private String getDensity(View  view){
+        return ""+view.getResources().getDisplayMetrics().density;
     }
 
     private String getLayoutParamsString(int v) {
@@ -110,6 +116,9 @@ public class ViewNodeValueIntercept implements ViewNode.NodeValueIntercept {
         int[] ints = new int[2];
         view.getLocationOnScreen(ints);
         return "x:" + ints[0] + " y:" + ints[1];
+    }
+    public String getLocationInParent(View view) {
+        return "x:" +  view.getX() + " y:" +  view.getY();
     }
 
     public String getOnTouchListener(View view) {

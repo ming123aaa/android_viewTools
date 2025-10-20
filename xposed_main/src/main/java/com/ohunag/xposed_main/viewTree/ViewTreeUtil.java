@@ -2,6 +2,7 @@ package com.ohunag.xposed_main.viewTree;
 
 import android.app.Activity;
 import android.content.Context;
+import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
@@ -27,6 +28,7 @@ import com.ohunag.xposed_main.viewTree.edit.TextViewEditGroup;
 import com.ohunag.xposed_main.viewTree.edit.ViewEditGroup;
 import com.ohunag.xposed_main.viewTree.edit.WebViewEditGroup;
 import com.ohunag.xposed_main.viewTree.intercept.FragmentNodeValueIntercept;
+import com.ohunag.xposed_main.viewTree.intercept.ImageViewNodeValueIntercept;
 import com.ohunag.xposed_main.viewTree.intercept.TextViewNodeValueIntercept;
 import com.ohunag.xposed_main.viewTree.intercept.ViewNodeValueIntercept;
 import com.ohunag.xposed_main.viewTree.intercept.WebViewNodeValueIntercept;
@@ -54,9 +56,10 @@ public class ViewTreeUtil {
                 data.add(new FragmentNodeValueIntercept(viewRootMsgList));
             }
         }
-        data.add(new ViewNodeValueIntercept());
         data.add(new TextViewNodeValueIntercept());
         data.add(new WebViewNodeValueIntercept());
+        data.add(new ImageViewNodeValueIntercept());
+        data.add(new ViewNodeValueIntercept());
         ViewNode viewNode = new ViewNode(view);
         viewNode.init(data);
         return viewNode;
@@ -115,6 +118,9 @@ public class ViewTreeUtil {
         }
         if (view instanceof ViewGroup) {
             return "ViewGroup";
+        }
+        if (view instanceof SurfaceView){
+            return  "SurfaceView";
         }
         return "View";
     }
