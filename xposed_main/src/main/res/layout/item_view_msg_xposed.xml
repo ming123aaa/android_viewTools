@@ -34,6 +34,8 @@
             android:gravity="center"
             android:minHeight="30dp"
             android:text=""
+            android:maxLines="30"
+            android:ellipsize="end"
             android:textColor="#fff"
             android:textIsSelectable="true"
             android:textSize="15dp" />

@@ -38,7 +38,6 @@ public class TextViewNodeValueIntercept implements ViewNode.NodeValueIntercept {
 
 
     public void textId(Map<String, NodeValue> map,TextView textView){
-
         try {
             Integer mTextId= (Integer) RefInvoke.getFieldOjbect(TextView.class.getClassLoader(),TextView.class.getName(),textView,"mTextId");
             if (mTextId!=null&&mTextId!=0){

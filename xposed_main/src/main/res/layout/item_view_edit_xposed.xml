@@ -34,7 +34,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-
+            android:maxLines="30"
+            android:ellipsize="end"
             android:gravity="center"
             android:minHeight="30dp"
             android:tag="tv_value_view_edit_xposed"

@@ -77,9 +77,9 @@ public class ViewMsgAdapter extends BaseAdapter {
                 tv_type_view_msg_xposed.setTextColor(0xffff0000);
                 tv_type_view_msg_xposed.setTypeface(tv_value_view_msg_xposed.getTypeface(), Typeface.BOLD);
             }else  if (nodeValue.getType()==NodeValue.Type.bold){
-                tv_value_view_msg_xposed.setTextColor(0xffffffff);
+                tv_value_view_msg_xposed.setTextColor(0xffC8FFC8);
                 tv_value_view_msg_xposed.setTypeface(tv_value_view_msg_xposed.getTypeface(), Typeface.BOLD);
-                tv_type_view_msg_xposed.setTextColor(0xffffffff);
+                tv_type_view_msg_xposed.setTextColor(0xffC8FFC8);
                 tv_type_view_msg_xposed.setTypeface(tv_value_view_msg_xposed.getTypeface(), Typeface.BOLD);
             }else{
                 tv_value_view_msg_xposed.setTextColor(0xffffffff);
