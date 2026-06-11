@@ -6,8 +6,8 @@ import android.content.pm.PackageManager;
 
 class MetaDataUtil {
 
-    public static Boolean getMetaDataForApplication(Context context, String name) {
-        boolean data = true;
+    public static Boolean getMetaDataForApplication(Context context, String name,boolean defaultValue) {
+        boolean data = defaultValue;
         try {
             PackageManager packageManager = context.getPackageManager();
             if (packageManager != null) {
@@ -18,7 +18,7 @@ class MetaDataUtil {
                         PackageManager.GET_META_DATA
                 );
                 if (applicationInfo.metaData != null) {
-                    data = applicationInfo.metaData.getBoolean(name,true);
+                    data = applicationInfo.metaData.getBoolean(name,defaultValue);
                 }
             }
         } catch (Throwable e) {

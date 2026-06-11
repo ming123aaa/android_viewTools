@@ -18,15 +18,17 @@ import java.util.Objects;
 public class UiHookInitContentProvider extends ContentProvider {
 
     static final String key = "activityHook_enable";
+    static final String unseal = "activityHook_unseal";
 
     @Override
     public boolean onCreate() {
         if (getContext() != null) {
-            Boolean metaDataForApplication = MetaDataUtil.getMetaDataForApplication(getContext(), key);
+            Boolean metaDataForApplication = MetaDataUtil.getMetaDataForApplication(getContext(), key,true);
+            Boolean isUnseal = MetaDataUtil.getMetaDataForApplication(getContext(), unseal,true);
             if (metaDataForApplication) {
                 Context applicationContext = getContext().getApplicationContext();
                 if (applicationContext instanceof Application) {
-                    UiHookManager.getInstance().init((Application) applicationContext);
+                    UiHookManager.getInstance().init((Application) applicationContext,isUnseal);
                 }
             }
 

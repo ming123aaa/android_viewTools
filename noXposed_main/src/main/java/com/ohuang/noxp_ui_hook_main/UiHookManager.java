@@ -37,11 +37,11 @@ public class UiHookManager {
     private Application mApplication;
 
 
-    public synchronized void init(Application application) {
+    public synchronized void init(Application application,boolean isUnseal) {
         if (this.mApplication == null && application != null) {
             mApplication = application;
             MainConfig.packageName = application.getPackageName();
-            UiHook.init(mApplication.getResources(), new UiHook.ViewListManager() {
+            UiHook.init(mApplication,mApplication.getResources(), new UiHook.ViewListManager() {
                 @Override
                 public List<View> getViews() {
                     return getHookAllRootView();
@@ -51,7 +51,7 @@ public class UiHookManager {
                 public List<ViewRootMsg> getDialog() {
                     return null;
                 }
-            }, UiHook.Type.APP,getClass().getClassLoader());
+            }, UiHook.Type.APP,getClass().getClassLoader(),isUnseal);
             registerActivityCallBack();
 
         }

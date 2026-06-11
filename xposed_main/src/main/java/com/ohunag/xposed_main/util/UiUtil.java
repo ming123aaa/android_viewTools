@@ -1,18 +1,90 @@
 package com.ohunag.xposed_main.util;
 
 import android.app.Activity;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import android.os.Environment;
 import android.view.View;
 
-import java.io.File;
-
 public class UiUtil {
+
+
+    public static String getViewId(View view) {
+        StringBuilder out = new StringBuilder();
+        final int id = view.getId();
+        if (id != 0) {
+            out.append(" 0x");
+            out.append(Integer.toHexString(id));
+            final Resources r = view.getResources();
+            if (id > 0 && r != null) {
+                try {
+                    String pkgname;
+                    switch (id & 0xff000000) {
+                        case 0x7f000000:
+                            pkgname = "app";
+                            break;
+                        case 0x01000000:
+                            pkgname = "android";
+                            break;
+                        default:
+                            pkgname = r.getResourcePackageName(id);
+                            break;
+                    }
+                    String typename = r.getResourceTypeName(id);
+                    String entryname = r.getResourceEntryName(id);
+                    out.append(" ");
+                    out.append(pkgname);
+                    out.append(":");
+                    out.append(typename);
+                    out.append("/");
+                    out.append(entryname);
+                } catch (Resources.NotFoundException e) {
+                }
+            }
+        }
+        return out.toString();
+    }
+
+    /**
+     *
+     * @param resources
+     * @param id
+     * @return
+     */
+    public static String getResIdName(Resources resources, int id){
+        if (id==0){
+            return "";
+        }
+        Resources res = resources;
+        try {
+//                        // 获取资源类型：返回 "id"
+//                        String resourceType = res.getResourceTypeName(id);
+//
+//                        // 获取资源名称：返回 "btn_login"
+//                        String resourceName = res.getResourceEntryName(id);
+//
+//                        // 获取包名：返回 "com.example.app"
+//                        String packageName = res.getResourcePackageName(id);
+
+            // 获取完整资源名：返回 "com.example.app:id/btn_login"
+            return res.getResourceName(id);
+
+        } catch (Resources.NotFoundException e) {
+            // id 对应的资源不存在
+         return getIdString(id);
+        }
+    }
+    public static String getIdString(int id) {
+
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("0x");
+        stringBuilder.append(Integer.toHexString(id));
+        return stringBuilder.toString();
+    }
 
     /**
      * 从整个Activity开始截取

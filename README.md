@@ -16,7 +16,7 @@
 }
 dependencies {
        //若只想在测试环境使用 使用debugImplementation依赖
-    implementation 'com.github.ming123aaa.android_viewTools:activityUIHook-app:1.2.5'  
+    implementation 'com.github.ming123aaa.android_viewTools:activityUIHook-app:1.2.6'  
       
 }
 ```
@@ -34,9 +34,20 @@ dependencies {
 </application>
 ```
 
+aar版本默认启动反射隐藏api,可获取更多的数据,若需禁用可添加以下代码。该功能xposed版本默认关闭,点击包名按钮开启。
+```xml
+
+<application>
+        <meta-data
+            android:name="activityHook_unseal"
+            android:value="false" />
+
+</application>
+```
+
 依赖完成后主进程自动进行初始化操作, 如果需要手动初始化:
 ```java
-UiHookManager.getInstance().init(this);
+UiHookManager.getInstance().init(appliction);
 ```
 
 
@@ -51,7 +62,7 @@ UiHookManager.getInstance().init(this);
 
 <img src="screenshot/Screenshot_p0.jpg" width=300/>
 
-点击查看可见View,可通过点击屏幕方式选中View
+点击查看可见View,可通过点击屏幕方式选中View。点击包名按钮,可开启反射隐藏api,并显示Application信息。
 
 <img src="screenshot/Screenshot_p1.jpg" width=300/>
 

@@ -5,12 +5,15 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.PixelFormat;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
@@ -106,6 +109,10 @@ public class MainWindowUI {
     private ImageView iv_show;
     private TextView tv_close_xposed_imgView;
 
+
+    private int currentSate = 0;
+
+
     public MainWindowUI(Activity activity) {
         this.activity = activity;
     }
@@ -118,6 +125,30 @@ public class MainWindowUI {
         if (!isShow) {
             isShow = true;
             getWindowManager(activity).addView(rootView, layoutParams);
+            rootView.post(new Runnable() {
+                @Override
+                public void run() {
+                    rootView.setFocusable(true);
+                    rootView.requestFocus();
+                    rootView.setOnKeyListener(new View.OnKeyListener() {
+                        @Override
+                        public boolean onKey(View v, int keyCode, KeyEvent event) {
+                            Log.e("setOnKeyListener","KeyEvent.KEYCODE_BACK "+(keyCode == KeyEvent.KEYCODE_BACK));
+                            if (keyCode == KeyEvent.KEYCODE_BACK) {
+                                if (currentSate == 0) {
+                                    hide();
+                                }else if (currentSate ==1){
+                                    setSate(0);
+                                }
+                                // 处理逻辑
+                                return true;
+                            }
+                            return false;
+                        }
+                    });
+                }
+            });
+
 //            mainDialog.show();
             setSate(0);
         }
@@ -139,7 +170,7 @@ public class MainWindowUI {
      * @param sate
      */
     private void setSate(int sate) {
-
+        currentSate = sate;
         ll_activity_xposed.setVisibility(View.GONE);
         ll_clickView_xposed.setVisibility(View.GONE);
         fl_touch_xposed.setVisibility(View.GONE);
@@ -170,15 +201,15 @@ public class MainWindowUI {
 
 
     private void init() {
-
         rootView = new HookRootFrameLayout(activity);
 //        mainDialog=new AlertDialog.Builder(activity)
 //                .setCancelable(false)
 //                .setView(rootView)
 //                .create();
+
         layoutParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT,
                 WindowManager.LayoutParams.TYPE_APPLICATION,
-                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, PixelFormat.TRANSLUCENT);
+                0, PixelFormat.TRANSLUCENT);
         layoutParams.softInputMode = WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE;
         if (UiHook.xpRes == null) {
             return;
@@ -363,6 +394,7 @@ public class MainWindowUI {
      * @param listener
      */
     private void set_ll_imgView_xposed(View view, View.OnClickListener listener) {
+
         setSate(6);
         iv_show.setImageDrawable(null);
         if (view != null) {
@@ -437,9 +469,9 @@ public class MainWindowUI {
                 }
                 return false;
             };
-            if (viewShowRule.onlyVisibility){
+            if (viewShowRule.onlyVisibility) {
                 rootViewNode.afterTraversalVisibleView(foreachCallBack);
-            }else {
+            } else {
                 rootViewNode.afterTraversal(foreachCallBack);
             }
 
@@ -469,6 +501,16 @@ public class MainWindowUI {
         tv_getId_xposed = rootView.findViewWithTag("tv_getId_xposed");
         tv_activityName_xposed.setText(activity.getClass().getName());
         tv_packageName_xposed.setText("包名:" + activity.getPackageName());
+
+        tv_packageName_xposed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UiHook.setApplication(activity.getApplication());
+                ObjectMsgDailog objectMsgDailog = new ObjectMsgDailog(activity);
+                objectMsgDailog.setObject(activity.getApplication());
+                objectMsgDailog.show();
+            }
+        });
         tv_activityName_xposed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -669,7 +711,7 @@ public class MainWindowUI {
             return;
         }
         View view = nodes.get(position).getView();
-        tv_process_clickView_xposed.setText("进度" + (position+1) + "/" + nodes.size() + "  "
+        tv_process_clickView_xposed.setText("进度" + (position + 1) + "/" + nodes.size() + "  "
                 + ViewTreeUtil.getViewType(view) + " Visibility:" + getVisibility(view.getVisibility())
                 + " " + ViewNodeValueIntercept.getViewIdName(view));
         tv_viewName_clickView_xposed.setText(nodes.get(position).getViewClassName());
@@ -746,7 +788,8 @@ public class MainWindowUI {
     }
 
     /**
-     *  显示View树
+     * 显示View树
+     *
      * @param viewNode
      * @param selectIndex
      * @param listener

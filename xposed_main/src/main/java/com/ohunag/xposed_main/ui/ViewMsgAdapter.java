@@ -1,6 +1,7 @@
 package com.ohunag.xposed_main.ui;
 
 import android.annotation.SuppressLint;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,9 +64,30 @@ public class ViewMsgAdapter extends BaseAdapter {
         if (position == 0) {
             tv_type_view_msg_xposed.setText("class");
             tv_value_view_msg_xposed.setText(viewNode.getViewClassName());
+            tv_value_view_msg_xposed.setTextColor(0xffff0000);
+            tv_value_view_msg_xposed.setTypeface(tv_value_view_msg_xposed.getTypeface(), Typeface.BOLD);
+            tv_type_view_msg_xposed.setTextColor(0xffff0000);
+            tv_type_view_msg_xposed.setTypeface(tv_value_view_msg_xposed.getTypeface(), Typeface.BOLD);
         } else {
             tv_type_view_msg_xposed.setText(String.valueOf(getItem(position)));
-            Object object = valueMap.get(getItem(position)).getObject();
+            NodeValue nodeValue = valueMap.get(getItem(position));
+            if (nodeValue.getType()== NodeValue.Type.highlight){
+                tv_value_view_msg_xposed.setTextColor(0xffff0000);
+                tv_value_view_msg_xposed.setTypeface(tv_value_view_msg_xposed.getTypeface(), Typeface.BOLD);
+                tv_type_view_msg_xposed.setTextColor(0xffff0000);
+                tv_type_view_msg_xposed.setTypeface(tv_value_view_msg_xposed.getTypeface(), Typeface.BOLD);
+            }else  if (nodeValue.getType()==NodeValue.Type.bold){
+                tv_value_view_msg_xposed.setTextColor(0xffffffff);
+                tv_value_view_msg_xposed.setTypeface(tv_value_view_msg_xposed.getTypeface(), Typeface.BOLD);
+                tv_type_view_msg_xposed.setTextColor(0xffffffff);
+                tv_type_view_msg_xposed.setTypeface(tv_value_view_msg_xposed.getTypeface(), Typeface.BOLD);
+            }else{
+                tv_value_view_msg_xposed.setTextColor(0xffffffff);
+                tv_value_view_msg_xposed.setTypeface(tv_value_view_msg_xposed.getTypeface(), Typeface.NORMAL);
+                tv_type_view_msg_xposed.setTextColor(0xffffffff);
+                tv_type_view_msg_xposed.setTypeface(tv_value_view_msg_xposed.getTypeface(), Typeface.NORMAL);
+            }
+            Object object = nodeValue.getObject();
             tv_value_view_msg_xposed.setText(String.valueOf(object));
         }
         tv_type_view_msg_xposed.setOnClickListener(new View.OnClickListener() {

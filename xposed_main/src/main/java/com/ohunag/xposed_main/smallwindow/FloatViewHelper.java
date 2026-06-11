@@ -1,6 +1,7 @@
 package com.ohunag.xposed_main.smallwindow;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.PixelFormat;
 
@@ -13,15 +14,16 @@ import com.ohunag.xposed_main.UiHook;
 
 
 public class FloatViewHelper {
-    Context activity;
+    Activity activity;
     SmallWindowView smallWindowView;
     ImageView imageView;
     WindowManager.LayoutParams layoutParams;
     boolean isShow = false;
+    boolean isAddView = false;
     boolean isInit = false;
     View.OnClickListener listener;
 
-    public FloatViewHelper(Context activity) {
+    public FloatViewHelper(Activity activity) {
         this.activity = activity;
     }
 
@@ -76,6 +78,27 @@ public class FloatViewHelper {
         }
     }
 
+
+
+    Runnable runnable=new Runnable() {
+        @Override
+        public void run() {
+            if (isShow){
+                hide();
+                isShow = true;
+                addView();
+            }
+        }
+    };
+
+    private void addView(){
+        if (!isAddView){
+            getWindowManager(activity).addView(smallWindowView, layoutParams);
+            isAddView=true;
+        }
+    }
+
+
     public void show() {
         if (!isInit) {
             init();
@@ -83,7 +106,7 @@ public class FloatViewHelper {
         }
         if (!isShow) {
             isShow = true;
-            getWindowManager(activity).addView(smallWindowView, layoutParams);
+            activity.getWindow().getDecorView().postDelayed(runnable,1000);
         }
     }
 
@@ -97,7 +120,11 @@ public class FloatViewHelper {
         }
         if (isShow) {
             isShow = false;
-            getWindowManager(activity).removeView(smallWindowView);
+            smallWindowView.removeCallbacks(runnable);
+            if (isAddView) {
+                getWindowManager(activity).removeView(smallWindowView);
+                isAddView=false;
+            }
         }
     }
 

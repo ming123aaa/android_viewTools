@@ -2,6 +2,8 @@ package com.ohunag.xposed_main.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
@@ -26,4 +28,7 @@ public class HookRootFrameLayout extends FrameLayout {
     public HookRootFrameLayout(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
+
+
+
 }

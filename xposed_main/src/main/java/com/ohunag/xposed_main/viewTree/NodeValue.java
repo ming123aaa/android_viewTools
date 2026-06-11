@@ -1,7 +1,7 @@
 package com.ohunag.xposed_main.viewTree;
 
 public class NodeValue {
-    public NodeValue(Type type, Object object) {
+    private NodeValue(Type type, Object object) {
         this.type = type;
         this.object = object;
     }
@@ -25,28 +25,19 @@ public class NodeValue {
         this.object = object;
     }
 
-    public static NodeValue createNode(String value) {
-        return new NodeValue(Type.str, value);
-    }
-    public static NodeValue createNode(boolean value) {
-        return new NodeValue(Type.bool, value);
+    public static NodeValue createNode(Object value) {
+        return new NodeValue(Type.normal, value);
     }
 
-    public static NodeValue createNode(int value) {
-        return new NodeValue(Type.number_int, value);
+
+    public static NodeValue createNodeBold(Object value) {
+        return new NodeValue(Type.bold, value);
     }
 
-    public static NodeValue createNode(float value) {
-        return new NodeValue(Type.number_float, value);
+    public static NodeValue createNodeHighlight(Object value) {
+        return new NodeValue(Type.highlight, value);
     }
 
-    public static NodeValue createNode(double value) {
-        return new NodeValue(Type.number_double, value);
-    }
-
-    public static NodeValue createNode(long value) {
-        return new NodeValue(Type.number_long, value);
-    }
 
     @Override
     public String toString() {
@@ -57,6 +48,6 @@ public class NodeValue {
     }
 
     public enum Type {
-        str, bool, number_int, number_long, number_double, number_float
+        normal, bold, highlight
     }
 }

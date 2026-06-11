@@ -14,7 +14,7 @@ public class WebViewNodeValueIntercept implements ViewNode.NodeValueIntercept {
         if (view instanceof WebView){
             String url = ((WebView) view).getUrl();
             if (url!=null){
-                map.put("url",NodeValue.createNode(url));
+                map.put("url",NodeValue.createNodeBold(url));
             }
         }
         return false;
