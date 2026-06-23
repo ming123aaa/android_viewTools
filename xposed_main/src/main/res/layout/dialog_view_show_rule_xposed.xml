@@ -56,14 +56,22 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="限制className:"
+        android:text="指定ClassName:"
         android:textColor="#fff" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:height="40dp"
+            android:gravity="center"
+            android:tag="btn_noClass"
+            android:text="不指定"
+            android:textColor="#f00" />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -101,6 +109,15 @@
             android:tag="btn_WebView"
             android:text="WebView"
             android:textColor="#f00" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:height="40dp"
+            android:gravity="center"
+            android:tag="btn_TextureView"
+            android:text="TextureView"
+            android:textColor="#f00" />
 
         <TextView
             android:layout_width="match_parent"
@@ -108,9 +125,11 @@
             android:layout_weight="1"
             android:height="40dp"
             android:gravity="center"
-            android:tag="btn_noClass"
-            android:text="不限制"
+            android:tag="btn_SurfaceView"
+            android:text="SurfaceView"
             android:textColor="#f00" />
+
+
     </LinearLayout>
 
     <EditText

@@ -213,7 +213,7 @@ public class ViewNode {
      * @return
      */
     public boolean afterTraversalVisibleView(ForeachCallBack foreachCallBack) {
-        if (view == null || view.getAlpha() <= 0 || view.getVisibility() != View.VISIBLE) {
+        if (view == null || view.getAlpha() <= 0 || view.getVisibility() != View.VISIBLE || view.getWidth() <= 0 || view.getHeight() <= 0) {
             return false;
         }
         for (int i = childNode.size() - 1; i >= 0; i--) {

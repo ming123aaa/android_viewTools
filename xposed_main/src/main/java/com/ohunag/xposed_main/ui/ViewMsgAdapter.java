@@ -16,6 +16,7 @@ import com.ohunag.xposed_main.viewTree.NodeValue;
 import com.ohunag.xposed_main.viewTree.ViewNode;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -28,6 +29,16 @@ public class ViewMsgAdapter extends BaseAdapter {
         this.viewNode = viewNode;
         valueMap = viewNode.getValueMap();
         keys.addAll(valueMap.keySet());
+        // 按 Type 排序: highlight(0) > bold(1) > normal(2)，同类型保持原序
+        Collections.sort(keys, (a, b) -> Integer.compare(
+                getPriority(valueMap.get(a).getType()),
+                getPriority(valueMap.get(b).getType())));
+    }
+
+    private static int getPriority(NodeValue.Type type) {
+        if (type == NodeValue.Type.highlight) return 0;
+        if (type == NodeValue.Type.bold) return 1;
+        return 2;
     }
 
     @Override

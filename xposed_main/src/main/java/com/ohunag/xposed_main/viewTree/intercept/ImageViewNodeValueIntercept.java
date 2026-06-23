@@ -1,6 +1,7 @@
 package com.ohunag.xposed_main.viewTree.intercept;
 
 import android.content.res.ColorStateList;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.view.View;
 import android.widget.ImageView;
@@ -21,9 +22,17 @@ public class ImageViewNodeValueIntercept implements ViewNode.NodeValueIntercept 
             map.put("imageScaleType", NodeValue.createNodeBold(getScaleType((ImageView) view)));
             map.put("adjustViewBounds", NodeValue.createNodeBold(((ImageView) view).getAdjustViewBounds()));
             getImageTint(map, (ImageView) view);
+            imageDrawable(map, (ImageView) view);
             imageResourceId(map, (ImageView) view);
         }
         return false;
+    }
+
+    public void imageDrawable(Map<String, NodeValue> map, ImageView imageView){
+        Drawable drawable = imageView.getDrawable();
+        if (drawable!=null){
+            DrawableInfoUtil.drawableInfo(map, drawable, "image-");
+        }
     }
 
     public void imageResourceId(Map<String, NodeValue> map, ImageView imageView) {

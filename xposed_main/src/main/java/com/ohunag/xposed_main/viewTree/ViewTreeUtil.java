@@ -129,11 +129,11 @@ public class ViewTreeUtil {
         if (viewRootMsgs == null || activity == null) {
             return;
         }
-        if (UiHook.type == UiHook.Type.APP) {
+        if (UiHook.type == UiHook.Type.APP) {  // app依赖 直接获取
             if (activity instanceof FragmentActivity) {
                 traversalFragment(((FragmentActivity) activity).getSupportFragmentManager(), viewRootMsgs);
             }
-        } else if (UiHook.type == UiHook.Type.XPOSED) {
+        } else if (UiHook.type == UiHook.Type.XPOSED) {  //xposed 用反射实现
             if (RefInvoke.matchClass(activity.getClass(), "androidx.fragment.app.FragmentActivity", UiHook.classLoader)) {
                 xposedTraversalFragment(RefInvoke.invokeMethod(UiHook.classLoader, "androidx.fragment.app.FragmentActivity"
                         , "getSupportFragmentManager", activity, new Class[]{}, new Object[]{}), viewRootMsgs);
@@ -185,6 +185,9 @@ public class ViewTreeUtil {
             return false;
         }
         if (view.getVisibility() == View.VISIBLE) {
+            if (view.getAlpha()<=0f||view.getWidth()<=0||view.getHeight()<=0){
+                return false;
+            }
             if (view.getParent() instanceof View) {
                 return viewVisibility((View) view.getParent());
             }

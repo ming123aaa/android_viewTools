@@ -5,6 +5,8 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.SurfaceView;
+import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
@@ -39,6 +41,8 @@ public class ViewShowRuleDialog {
         TextView btn_ImageView = (TextView) dialog_view_show_rule_xposed.findViewWithTag("btn_ImageView");
         TextView btn_WebView = (TextView) dialog_view_show_rule_xposed.findViewWithTag("btn_WebView");
         TextView btn_noClass = (TextView) dialog_view_show_rule_xposed.findViewWithTag("btn_noClass");
+        TextView btn_TextureView = (TextView) dialog_view_show_rule_xposed.findViewWithTag("btn_TextureView");
+        TextView btn_SurfaceView = (TextView) dialog_view_show_rule_xposed.findViewWithTag("btn_SurfaceView");
 
         RadioButton rb_all = (RadioButton) dialog_view_show_rule_xposed.findViewWithTag("rb_all");
         RadioButton rb_view = (RadioButton) dialog_view_show_rule_xposed.findViewWithTag("rb_view");
@@ -88,6 +92,19 @@ public class ViewShowRuleDialog {
             }
         });
 
+        btn_TextureView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                et_input.setText(TextureView.class.getName());
+            }
+        });
+        btn_SurfaceView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                et_input.setText(SurfaceView.class.getName());
+            }
+        });
+
         tv_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -99,14 +116,14 @@ public class ViewShowRuleDialog {
             public void onClick(View v) {
                 String string = et_input.getText().toString();
                 try {
-                    if (TextUtils.isEmpty(string)){
+                    if (TextUtils.isEmpty(string)) {
                         viewShowRule.viewClass = null;
-                    }else {
+                    } else {
                         viewShowRule.viewClass = UiHook.classLoader.loadClass(string);
                     }
                 } catch (Throwable e) {
                     viewShowRule.viewClass = null;
-                    ToastUtil.show(activity, "noFind class="+string);
+                    ToastUtil.show(activity, "noFind class=" + string);
                 }
                 viewShowRule.onlyVisibility = check_view_visibility.isChecked();
                 if (rb_all.isChecked()) {
@@ -147,7 +164,7 @@ public class ViewShowRuleDialog {
         void onRule(ViewShowRule viewShowRule);
     }
 
-    public  enum RuleType {
+    public enum RuleType {
         ALL,
         OnlyView,
         OnlyViewGroup

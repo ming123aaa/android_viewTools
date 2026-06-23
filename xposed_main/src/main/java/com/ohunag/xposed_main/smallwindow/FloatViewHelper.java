@@ -73,7 +73,7 @@ public class FloatViewHelper {
     public void setXY(int[] xy) {
         layoutParams.x = xy[0];
         layoutParams.y = xy[1];
-        if (isShow) {
+        if (isAddView) {
             getWindowManager(activity).updateViewLayout(smallWindowView, layoutParams);
         }
     }

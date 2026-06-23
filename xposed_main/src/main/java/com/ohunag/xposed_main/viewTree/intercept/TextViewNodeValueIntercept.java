@@ -3,6 +3,7 @@ package com.ohunag.xposed_main.viewTree.intercept;
 import static android.graphics.Typeface.BOLD_ITALIC;
 
 import android.content.res.ColorStateList;
+import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.TextView;
 
@@ -32,8 +33,26 @@ public class TextViewNodeValueIntercept implements ViewNode.NodeValueIntercept {
             map.put("textStyle", NodeValue.createNodeBold(getTextStyle((TextView) view)));
             map.put("textColor",NodeValue.createNodeBold(getTextColor((TextView) view)));
             map.put("textColorHint",NodeValue.createNodeBold(getTextHintColor((TextView) view)));
+            textDrawable(map,textView);
         }
         return false;
+    }
+
+
+    public void textDrawable(Map<String, NodeValue> map, TextView textView) {
+        // compoundDrawable (left, top, right, bottom)
+        Drawable[] drawables = textView.getCompoundDrawables();
+        String[] names = {"DrawableLeft", "DrawableTop", "DrawableRight", "DrawableBottom"};
+        for (int i = 0; i < 4; i++) {
+            if (drawables[i] != null) {
+                DrawableInfoUtil.drawableInfo(map, drawables[i], "text" + names[i]);
+            }
+        }
+        // compoundDrawablePadding
+        int padding = textView.getCompoundDrawablePadding();
+        if (padding > 0) {
+            map.put("CompoundDrawablePadding", NodeValue.createNodeBold(String.valueOf(padding)));
+        }
     }
 
 
