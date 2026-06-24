@@ -256,7 +256,7 @@ public class DrawableInfoUtil {
         Bitmap bitmap = drawable.getBitmap();
         if (bitmap != null) {
             map.put(startName + "BitmapSize", NodeValue.createNode(DrawableInfoUtil.nodeType,
-                    SizeUtil.px2dpString(res, bitmap.getWidth()) + "x" + SizeUtil.px2dpString(res, bitmap.getHeight())));
+                    SizeUtil.px2dpString(res, bitmap.getWidth()) + "," + SizeUtil.px2dpString(res, bitmap.getHeight())));
             Bitmap.Config config = bitmap.getConfig();
             if (config != null) {
                 map.put(startName + "BitmapConfig", NodeValue.createNode(DrawableInfoUtil.nodeType,config.name()));
