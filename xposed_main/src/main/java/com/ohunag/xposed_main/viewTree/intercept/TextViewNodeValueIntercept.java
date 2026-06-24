@@ -45,14 +45,19 @@ public class TextViewNodeValueIntercept implements ViewNode.NodeValueIntercept {
         String[] names = {"DrawableLeft", "DrawableTop", "DrawableRight", "DrawableBottom"};
         for (int i = 0; i < 4; i++) {
             if (drawables[i] != null) {
-                DrawableInfoUtil.drawableInfo(map, drawables[i], "text" + names[i]);
+                DrawableInfoUtil.drawableInfo(map, drawables[i], "text" + names[i], NodeValue.Type.bold);
             }
         }
         // compoundDrawablePadding
-        int padding = textView.getCompoundDrawablePadding();
-        if (padding > 0) {
-            map.put("CompoundDrawablePadding", NodeValue.createNodeBold(String.valueOf(padding)));
+        try {
+            int padding = textView.getCompoundDrawablePadding();
+            if (padding > 0) {
+                map.put("CompoundDrawablePadding", NodeValue.createNodeBold(String.valueOf(padding)));
+            }
+        } catch (Exception e) {
+
         }
+
     }
 
 
@@ -80,6 +85,9 @@ public class TextViewNodeValueIntercept implements ViewNode.NodeValueIntercept {
 
 
     public String getTextStyle(TextView textView){
+        if (textView.getTypeface()==null){
+            return "正常字体/Normal";
+        }
         if (textView.getTypeface().isBold()){
             return "加粗字体/Bold";
         }else if (textView.getTypeface().isItalic()){

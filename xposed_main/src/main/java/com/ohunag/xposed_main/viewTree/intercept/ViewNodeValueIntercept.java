@@ -121,7 +121,7 @@ public class ViewNodeValueIntercept implements ViewNode.NodeValueIntercept {
 
         if (background != null) {
             try {
-                DrawableInfoUtil.drawableInfo(map, background, "background");
+                DrawableInfoUtil.drawableInfo(map, background, "background", NodeValue.Type.bold);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -142,7 +142,7 @@ public class ViewNodeValueIntercept implements ViewNode.NodeValueIntercept {
 
             if (foreground != null) {
                 try {
-                    DrawableInfoUtil.drawableInfo(map, foreground, "foreground");
+                    DrawableInfoUtil.drawableInfo(map, foreground, "foreground", NodeValue.Type.bold);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

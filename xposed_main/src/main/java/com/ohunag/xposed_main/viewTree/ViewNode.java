@@ -46,7 +46,12 @@ public class ViewNode {
 
     private void initValueMap() {
         for (int i = 0; i < nodeValueIntercepts.size(); i++) {
-            nodeValueIntercepts.get(i).onIntercept(valueMap, view, this);
+            try {
+
+                nodeValueIntercepts.get(i).onIntercept(valueMap, view, this);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

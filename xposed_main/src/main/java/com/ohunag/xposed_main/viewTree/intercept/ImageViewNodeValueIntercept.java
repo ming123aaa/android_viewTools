@@ -31,7 +31,7 @@ public class ImageViewNodeValueIntercept implements ViewNode.NodeValueIntercept 
     public void imageDrawable(Map<String, NodeValue> map, ImageView imageView){
         Drawable drawable = imageView.getDrawable();
         if (drawable!=null){
-            DrawableInfoUtil.drawableInfo(map, drawable, "image-");
+            DrawableInfoUtil.drawableInfo(map, drawable, "image-", NodeValue.Type.bold);
         }
     }
 

@@ -29,6 +29,10 @@ public class NodeValue {
         return new NodeValue(Type.normal, value);
     }
 
+    public static NodeValue createNode(Type type,Object value) {
+        return new NodeValue(type, value);
+    }
+
 
     public static NodeValue createNodeBold(Object value) {
         return new NodeValue(Type.bold, value);
