@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.ohunag.xposed_main.util.RefInvoke;
+import com.ohunag.xposed_main.util.SizeUtil;
 import com.ohunag.xposed_main.util.StringUtil;
 import com.ohunag.xposed_main.util.UiUtil;
 import com.ohunag.xposed_main.viewTree.NodeValue;
@@ -29,7 +30,9 @@ public class TextViewNodeValueIntercept implements ViewNode.NodeValueIntercept {
                 map.put("hint",  NodeValue.createNodeBold(StringUtil.getString(text.toString(),100)));
             }
             textId(map,textView);
-            map.put("textSize", NodeValue.createNodeBold(textView.getTextSize()));
+            map.put("textSize", NodeValue.createNodeBold(SizeUtil.px2spString(view.getContext(),textView.getTextSize())
+            +"/"+SizeUtil.px2dpString(view.getContext(),textView.getTextSize())
+            ));
             map.put("textStyle", NodeValue.createNodeBold(getTextStyle((TextView) view)));
             map.put("textColor",NodeValue.createNodeBold(getTextColor((TextView) view)));
             map.put("textColorHint",NodeValue.createNodeBold(getTextHintColor((TextView) view)));
@@ -45,14 +48,14 @@ public class TextViewNodeValueIntercept implements ViewNode.NodeValueIntercept {
         String[] names = {"DrawableLeft", "DrawableTop", "DrawableRight", "DrawableBottom"};
         for (int i = 0; i < 4; i++) {
             if (drawables[i] != null) {
-                DrawableInfoUtil.drawableInfo(map, drawables[i], "text" + names[i], NodeValue.Type.bold);
+                DrawableInfoUtil.drawableInfo(map, drawables[i], "text" + names[i], NodeValue.Type.bold, textView.getResources());
             }
         }
         // compoundDrawablePadding
         try {
             int padding = textView.getCompoundDrawablePadding();
             if (padding > 0) {
-                map.put("CompoundDrawablePadding", NodeValue.createNodeBold(String.valueOf(padding)));
+                map.put("CompoundDrawablePadding", NodeValue.createNodeBold(SizeUtil.px2dpString(textView.getContext(), padding)));
             }
         } catch (Exception e) {
 

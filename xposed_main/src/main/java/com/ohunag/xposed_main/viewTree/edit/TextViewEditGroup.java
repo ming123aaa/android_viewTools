@@ -33,7 +33,7 @@ public class TextViewEditGroup implements IViewEditGroup {
 
         @Override
         public String getHint() {
-            return "文本是否可选中 false ture";
+            return "文本是否可选中 0 1";
         }
 
         @Override
@@ -43,13 +43,14 @@ public class TextViewEditGroup implements IViewEditGroup {
         }
 
         @Override
-        public void setValue(Activity activity, View view, String s) throws IOException {
+        public void setValue(Activity activity, View view, String str) throws IOException {
 
-            if ("flase".equalsIgnoreCase(s) || "false".equalsIgnoreCase(s)) {
+            String s=str.trim();
+            if ("flase".equalsIgnoreCase(s) || "false".equalsIgnoreCase(s)||"0".equalsIgnoreCase(s)) {
                 ((TextView) view).setTextIsSelectable(false);
                 ToastUtil.show(activity, "修改成功");
             }
-            if ("ture".equalsIgnoreCase(s) || "true".equalsIgnoreCase(s)) {
+            if ("ture".equalsIgnoreCase(s) || "true".equalsIgnoreCase(s)||"1".equalsIgnoreCase(s)) {
                 ((TextView) view).setTextIsSelectable(true);
                 ToastUtil.show(activity, "修改成功");
             }

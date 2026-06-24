@@ -1,5 +1,6 @@
 package com.ohunag.xposed_main.viewTree.intercept;
 
+import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 
 import com.ohunag.xposed_main.UiHook;
 import com.ohunag.xposed_main.util.RefInvoke;
+import com.ohunag.xposed_main.util.SizeUtil;
 import com.ohunag.xposed_main.util.UiUtil;
 import com.ohunag.xposed_main.viewTree.NodeValue;
 import com.ohunag.xposed_main.viewTree.ViewNode;
@@ -32,20 +34,21 @@ public class ViewNodeValueIntercept implements ViewNode.NodeValueIntercept {
         map.put("ViewType", NodeValue.createNodeBold(ViewTreeUtil.getViewType(view)));
         map.put("Alpha", NodeValue.createNodeBold(view.getAlpha()));
         map.put("visibility", NodeValue.createNodeBold(getVisibility(view.getVisibility())));
-        map.put("width-height", NodeValue.createNodeHighlight(view.getWidth() + "," + view.getHeight()));
+        map.put("width-height", NodeValue.createNodeHighlight(SizeUtil.px2dpString(view.getContext(), view.getWidth()) + ","
+                + SizeUtil.px2dpString(view.getContext(), view.getHeight())));
         if (view.getLayoutParams() != null) {
             ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
             map.put("layoutParams-width,height",
                     NodeValue.createNodeHighlight(
-                            getLayoutParamsString(layoutParams.width)+",\n"+getLayoutParamsString(layoutParams.height)));
+                            getLayoutParamsString(view.getContext(),layoutParams.width) + "," + getLayoutParamsString(view.getContext(),layoutParams.height)));
 
             if (layoutParams instanceof ViewGroup.MarginLayoutParams) {
                 ViewGroup.MarginLayoutParams marginLayoutParams = (ViewGroup.MarginLayoutParams) layoutParams;
                 map.put("layoutMargin", NodeValue.createNodeBold(
-                        "top=" + marginLayoutParams.topMargin +
-                                ",\nleft=" + marginLayoutParams.leftMargin +
-                                ",\nright=" + marginLayoutParams.rightMargin +
-                                ",\nbottom=" + marginLayoutParams.bottomMargin));
+                        "top=" + SizeUtil.px2dpString(view.getContext(), marginLayoutParams.topMargin) +
+                                ",\nleft=" + SizeUtil.px2dpString(view.getContext(), marginLayoutParams.leftMargin) +
+                                ",\nright=" + SizeUtil.px2dpString(view.getContext(), marginLayoutParams.rightMargin) +
+                                ",\nbottom=" + SizeUtil.px2dpString(view.getContext(), marginLayoutParams.bottomMargin)));
             }
         }
 
@@ -73,12 +76,11 @@ public class ViewNodeValueIntercept implements ViewNode.NodeValueIntercept {
         }
 
 
-
         map.put("padding", NodeValue.createNodeBold(
-                "top=" + view.getPaddingTop() +
-                        ",\nleft=" + view.getPaddingLeft() +
-                        ",\nright=" + view.getPaddingRight() +
-                        ",\nbottom=" + view.getPaddingBottom()));
+                "top=" + SizeUtil.px2dpString(view.getContext(), view.getPaddingTop()) +
+                        ",\nleft=" + SizeUtil.px2dpString(view.getContext(), view.getPaddingLeft()) +
+                        ",\nright=" + SizeUtil.px2dpString(view.getContext(), view.getPaddingRight()) +
+                        ",\nbottom=" + SizeUtil.px2dpString(view.getContext(), view.getPaddingBottom())));
 
         try {
             background(map, view);
@@ -87,25 +89,27 @@ public class ViewNodeValueIntercept implements ViewNode.NodeValueIntercept {
         }
 
 
-        map.put("locationOnScreen", NodeValue.createNode(getLocationInScreen(view)));
-        map.put("locationInWindow", NodeValue.createNode(getLocationInWindow(view)));
-        map.put("locationInParent", NodeValue.createNode(getLocationInParent(view)));
+        map.put("locationOnScreen", NodeValue.createNode(getLocationInScreen(view, view.getContext())));
+        map.put("locationInWindow", NodeValue.createNode(getLocationInWindow(view, view.getContext())));
+        map.put("locationInParent", NodeValue.createNode(getLocationInParent(view, view.getContext())));
         if (view.getContentDescription() != null) {
             map.put("ContentDescription", NodeValue.createNode(view.getContentDescription().toString()));
         }
 
         map.put("density", NodeValue.createNode(getDensity(view)));
 
-        if (view.getTranslationX() != 0F||view.getTranslationY() != 0F) {
-            map.put("translation-x,y", NodeValue.createNode(view.getTranslationX()+","+view.getTranslationY()));
+        if (view.getTranslationX() != 0F || view.getTranslationY() != 0F) {
+            map.put("translation-x,y", NodeValue.createNode(
+                    SizeUtil.px2dpString(view.getContext(), view.getTranslationX()) + "," + SizeUtil.px2dpString(view.getContext(), view.getTranslationY())));
         }
 
-        if (view.getScrollX() != 0||view.getScrollY() != 0) {
-            map.put("scroll-x,y", NodeValue.createNode(view.getScrollX()+","+view.getScrollY()));
+        if (view.getScrollX() != 0 || view.getScrollY() != 0) {
+            map.put("scroll-x,y", NodeValue.createNode(
+                    SizeUtil.px2dpString(view.getContext(), view.getScrollX()) + "," + SizeUtil.px2dpString(view.getContext(), view.getScrollY())));
         }
 
-        if (view.getScaleX()!=1f||view.getScaleY()!=1f){
-            map.put("scale-x,y", NodeValue.createNode(view.getScaleX()+","+view.getScaleY()));
+        if (view.getScaleX() != 1f || view.getScaleY() != 1f) {
+            map.put("scale-x,y", NodeValue.createNode(view.getScaleX() + "," + view.getScaleY()));
         }
 
         map.put("isClickable", NodeValue.createNode(view.isClickable()));
@@ -121,7 +125,7 @@ public class ViewNodeValueIntercept implements ViewNode.NodeValueIntercept {
 
         if (background != null) {
             try {
-                DrawableInfoUtil.drawableInfo(map, background, "background", NodeValue.Type.bold);
+                DrawableInfoUtil.drawableInfo(map, background, "background", NodeValue.Type.bold, view.getResources());
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -142,7 +146,7 @@ public class ViewNodeValueIntercept implements ViewNode.NodeValueIntercept {
 
             if (foreground != null) {
                 try {
-                    DrawableInfoUtil.drawableInfo(map, foreground, "foreground", NodeValue.Type.bold);
+                    DrawableInfoUtil.drawableInfo(map, foreground, "foreground", NodeValue.Type.bold, view.getResources());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -156,13 +160,13 @@ public class ViewNodeValueIntercept implements ViewNode.NodeValueIntercept {
         return "" + view.getResources().getDisplayMetrics().density;
     }
 
-    private String getLayoutParamsString(int v) {
+    private String getLayoutParamsString(Context context, int v) {
         if (v == ViewGroup.LayoutParams.MATCH_PARENT) {
             return "match_parent";
         } else if (v == ViewGroup.LayoutParams.WRAP_CONTENT) {
             return "wrap_content";
         }
-        return "" + v;
+        return  SizeUtil.px2dpString(context,v);
     }
 
     private Object getAdapter(View view) {
@@ -174,20 +178,20 @@ public class ViewNodeValueIntercept implements ViewNode.NodeValueIntercept {
         return null;
     }
 
-    public String getLocationInScreen(View view) {
+    public String getLocationInScreen(View view, Context context) {
         int[] ints = new int[2];
         view.getLocationOnScreen(ints);
-        return "x:" + ints[0] + " y:" + ints[1];
+        return "x:" + SizeUtil.px2dpString(context, ints[0]) + " y:" + SizeUtil.px2dpString(context, ints[1]);
     }
 
-    public String getLocationInWindow(View view) {
+    public String getLocationInWindow(View view, Context context) {
         int[] ints = new int[2];
         view.getLocationInWindow(ints);
-        return "x:" + ints[0] + " y:" + ints[1];
+        return "x:" + SizeUtil.px2dpString(context, ints[0]) + " y:" + SizeUtil.px2dpString(context, ints[1]);
     }
 
-    public String getLocationInParent(View view) {
-        return "x:" + view.getX() + " y:" + view.getY();
+    public String getLocationInParent(View view, Context context) {
+        return "x:" + SizeUtil.px2dpString(context, view.getX()) + " y:" + SizeUtil.px2dpString(context, view.getY());
     }
 
     public String getOnTouchListener(View view) {

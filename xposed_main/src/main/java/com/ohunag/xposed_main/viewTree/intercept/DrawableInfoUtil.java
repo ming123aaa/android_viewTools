@@ -21,6 +21,7 @@ import android.text.TextUtils;
 import androidx.annotation.NonNull;
 
 import com.ohunag.xposed_main.util.RefInvoke;
+import com.ohunag.xposed_main.util.SizeUtil;
 import com.ohunag.xposed_main.viewTree.NodeValue;
 
 import java.util.Arrays;
@@ -29,10 +30,10 @@ import java.util.Map;
 public class DrawableInfoUtil {
     
     private static NodeValue.Type nodeType= NodeValue.Type.bold;
-    private static void drawableInfo(Map<String, NodeValue> map, Drawable mBackground, String startName){
-        drawableInfo(map,mBackground,startName, NodeValue.Type.normal);
+    private static void drawableInfo(Map<String, NodeValue> map, Drawable mBackground, String startName, android.content.res.Resources res){
+        drawableInfo(map,mBackground,startName, NodeValue.Type.normal, res);
     }
-    public static void drawableInfo(Map<String, NodeValue> map, Drawable mBackground, String startName,NodeValue.Type type) {
+    public static void drawableInfo(Map<String, NodeValue> map, Drawable mBackground, String startName,NodeValue.Type type, android.content.res.Resources res) {
         if (mBackground == null) {
             return;
         }
@@ -47,25 +48,25 @@ public class DrawableInfoUtil {
             }
             map.put(startName + "Drawable", NodeValue.createNode(DrawableInfoUtil.nodeType,background.getClass().getName()));
             if (background instanceof GradientDrawable) {
-                handleGradientDrawable(map, (GradientDrawable) background, startName);
+                handleGradientDrawable(map, (GradientDrawable) background, startName, res);
             } else if (background instanceof RippleDrawable && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                handleRippleDrawable(map, (RippleDrawable) background, startName);
+                handleRippleDrawable(map, (RippleDrawable) background, startName, res);
             } else if (background instanceof ColorDrawable) {
                 handleColorDrawable(map, (ColorDrawable) background, startName);
             } else if (background instanceof BitmapDrawable) {
-                handleBitmapDrawable(map, (BitmapDrawable) background, startName);
+                handleBitmapDrawable(map, (BitmapDrawable) background, startName, res);
             } else if (background instanceof ShapeDrawable) {
                 handleShapeDrawable(map, (ShapeDrawable) background, startName);
             } else if (background instanceof InsetDrawable) {
-                handleInsetDrawable(map, background, startName);
+                handleInsetDrawable(map, background, startName, res);
             } else if (background instanceof LayerDrawable) {
-                handleLayerDrawable(map, (LayerDrawable) background, startName);
+                handleLayerDrawable(map, (LayerDrawable) background, startName, res);
             } else if (background instanceof VectorDrawable && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                handleVectorDrawable(map, background, startName);
+                handleVectorDrawable(map, background, startName, res);
             } else if (background instanceof StateListDrawable) {
-                handleStateListDrawable(map, (StateListDrawable) background, startName);
+                handleStateListDrawable(map, (StateListDrawable) background, startName, res);
             } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && background instanceof AdaptiveIconDrawable) {
-                handleAdaptiveIconDrawable(map, (AdaptiveIconDrawable) background, startName);
+                handleAdaptiveIconDrawable(map, (AdaptiveIconDrawable) background, startName, res);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -76,7 +77,7 @@ public class DrawableInfoUtil {
 
     }
 
-    private static void handleGradientDrawable(Map<String, NodeValue> map, GradientDrawable drawable, String startName) {
+    private static void handleGradientDrawable(Map<String, NodeValue> map, GradientDrawable drawable, String startName, android.content.res.Resources res) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
             return;
         }
@@ -96,7 +97,7 @@ public class DrawableInfoUtil {
         }
 
         // 圆角
-        String radiusStr = getRadiusStr(drawable);
+        String radiusStr = getRadiusStr(drawable, res);
         if (!TextUtils.isEmpty(colorStr)) {
             map.put(startName + "Color", NodeValue.createNode(DrawableInfoUtil.nodeType,colorStr));
         }
@@ -113,7 +114,7 @@ public class DrawableInfoUtil {
                 int strokeWidth = (int) RefInvoke.getFieldOjbect(stateClassName, gradientState, "mStrokeWidth");
                 ColorStateList strokeColor = (ColorStateList) RefInvoke.getFieldOjbect(stateClassName, gradientState, "mStrokeColors");
                 if (strokeWidth > 0) {
-                    map.put(startName + "StrokeWidth", NodeValue.createNode(DrawableInfoUtil.nodeType,String.valueOf(strokeWidth)));
+                    map.put(startName + "StrokeWidth", NodeValue.createNode(DrawableInfoUtil.nodeType,SizeUtil.px2dpString(res, strokeWidth)));
                 }
                 if (strokeColor != null) {
                     map.put(startName + "StrokeColor", NodeValue.createNode(DrawableInfoUtil.nodeType,colorIntToString(strokeColor.getDefaultColor())));
@@ -153,7 +154,7 @@ public class DrawableInfoUtil {
             // 径向渐变半径
             if (gradientType == GradientDrawable.RADIAL_GRADIENT) {
                 float gradientRadius = drawable.getGradientRadius();
-                map.put(startName + "GradientRadius", NodeValue.createNode(DrawableInfoUtil.nodeType,String.valueOf(gradientRadius)));
+                map.put(startName + "GradientRadius", NodeValue.createNode(DrawableInfoUtil.nodeType,SizeUtil.px2dpString(res, gradientRadius)));
             }
         } catch (Throwable e) {
             // ignore
@@ -194,7 +195,8 @@ public class DrawableInfoUtil {
                 int width = (int) RefInvoke.getFieldOjbect(stateClassName, gradientState, "mWidth");
                 int height = (int) RefInvoke.getFieldOjbect(stateClassName, gradientState, "mHeight");
                 if (width > 0 && height > 0) {
-                    map.put(startName + "Size", NodeValue.createNode(DrawableInfoUtil.nodeType,width + "x" + height));
+                    map.put(startName + "Size", NodeValue.createNode(DrawableInfoUtil.nodeType,
+                            SizeUtil.px2dpString(res, width) + "," + SizeUtil.px2dpString(res, height)));
                 }
             }
         } catch (Throwable e) {
@@ -212,7 +214,7 @@ public class DrawableInfoUtil {
         }
     }
 
-    private static void handleRippleDrawable(Map<String, NodeValue> map, RippleDrawable drawable, String startName) {
+    private static void handleRippleDrawable(Map<String, NodeValue> map, RippleDrawable drawable, String startName, android.content.res.Resources res) {
         // 水波纹颜色 (mState.mColor)
         try {
             Object rippleState = RefInvoke.getFieldOjbect(
@@ -236,7 +238,7 @@ public class DrawableInfoUtil {
                 for (int i = 0; i < layerCount; i++) {
                     Drawable drawable1 = drawable.getDrawable(i);
                     if (drawable1 != null&&drawable!=drawable1) {
-                        DrawableInfoUtil.drawableInfo(map, drawable1, startName + "ChildLayer" + i+"-");
+                        DrawableInfoUtil.drawableInfo(map, drawable1, startName + "ChildLayer" + i+"-", res);
                     }
                 }
             }
@@ -250,10 +252,11 @@ public class DrawableInfoUtil {
         map.put(startName + "Color", NodeValue.createNode(DrawableInfoUtil.nodeType,colorIntToString(color)));
     }
 
-    private static void handleBitmapDrawable(Map<String, NodeValue> map, BitmapDrawable drawable, String startName) {
+    private static void handleBitmapDrawable(Map<String, NodeValue> map, BitmapDrawable drawable, String startName, android.content.res.Resources res) {
         Bitmap bitmap = drawable.getBitmap();
         if (bitmap != null) {
-            map.put(startName + "BitmapSize", NodeValue.createNode(DrawableInfoUtil.nodeType,bitmap.getWidth() + "x" + bitmap.getHeight()));
+            map.put(startName + "BitmapSize", NodeValue.createNode(DrawableInfoUtil.nodeType,
+                    SizeUtil.px2dpString(res, bitmap.getWidth()) + "x" + SizeUtil.px2dpString(res, bitmap.getHeight())));
             Bitmap.Config config = bitmap.getConfig();
             if (config != null) {
                 map.put(startName + "BitmapConfig", NodeValue.createNode(DrawableInfoUtil.nodeType,config.name()));
@@ -273,13 +276,13 @@ public class DrawableInfoUtil {
         }
     }
 
-    private static void handleInsetDrawable(Map<String, NodeValue> map, Drawable drawable, String startName) {
+    private static void handleInsetDrawable(Map<String, NodeValue> map, Drawable drawable, String startName, android.content.res.Resources res) {
         // 内嵌间距
         Rect rect = new Rect();
         if (drawable.getPadding(rect)) {
             map.put(startName + "Inset", NodeValue.createNode(DrawableInfoUtil.nodeType,
-                    "left=" + rect.left + ", top=" + rect.top +
-                            ", right=" + rect.right + ", bottom=" + rect.bottom));
+                    "left=" + SizeUtil.px2dpString(res, rect.left) + ", top=" + SizeUtil.px2dpString(res, rect.top) +
+                            ", right=" + SizeUtil.px2dpString(res, rect.right) + ", bottom=" + SizeUtil.px2dpString(res, rect.bottom)));
         }
         // 内部 Drawable
         try {
@@ -292,7 +295,7 @@ public class DrawableInfoUtil {
         }
     }
 
-    private static void handleLayerDrawable(Map<String, NodeValue> map, LayerDrawable drawable, String startName) {
+    private static void handleLayerDrawable(Map<String, NodeValue> map, LayerDrawable drawable, String startName, android.content.res.Resources res) {
         // 图层数量
         try {
             int layerCount = drawable.getNumberOfLayers();
@@ -302,7 +305,7 @@ public class DrawableInfoUtil {
                 for (int i = 0; i < layerCount; i++) {
                     Drawable drawable1 = drawable.getDrawable(i);
                     if (drawable1 != null&&drawable!=drawable1) {
-                        DrawableInfoUtil.drawableInfo(map, drawable1, startName + "ChildLayer" + i+"-");
+                        DrawableInfoUtil.drawableInfo(map, drawable1, startName + "ChildLayer" + i+"-", res);
                     }
                 }
             }
@@ -311,53 +314,54 @@ public class DrawableInfoUtil {
         }
     }
 
-    private static void handleVectorDrawable(Map<String, NodeValue> map, Drawable drawable, String startName) {
+    private static void handleVectorDrawable(Map<String, NodeValue> map, Drawable drawable, String startName, android.content.res.Resources res) {
         // 矢量图固有尺寸
         int width = drawable.getIntrinsicWidth();
         int height = drawable.getIntrinsicHeight();
         if (width > 0 && height > 0) {
-            map.put(startName + "Size", NodeValue.createNode(DrawableInfoUtil.nodeType,width + "x" + height));
+            map.put(startName + "Size", NodeValue.createNode(DrawableInfoUtil.nodeType,
+                    SizeUtil.px2dpString(res, width) + "," + SizeUtil.px2dpString(res, height)));
         }
     }
 
-    private static void handleStateListDrawable(Map<String, NodeValue> map, StateListDrawable drawable, String startName) {
+    private static void handleStateListDrawable(Map<String, NodeValue> map, StateListDrawable drawable, String startName, android.content.res.Resources res) {
         // 状态数量
         int stateCount = drawable.getStateCount();
         map.put(startName + "StateCount", NodeValue.createNode(DrawableInfoUtil.nodeType,String.valueOf(stateCount)));
         Drawable current = drawable.getCurrent();
         if (current!=null&&!startName.contains("StateDrawable")&&drawable!=current){
-            DrawableInfoUtil.drawableInfo(map,current,startName+"StateDrawable"+"-");
+            DrawableInfoUtil.drawableInfo(map,current,startName+"StateDrawable"+"-", res);
         }
         if (!startName.contains("ChildState")) {
             for (int i = 0; i < stateCount; i++) {
                 Drawable drawable1 = drawable.getStateDrawable(i);
                 if (drawable1 != null&&drawable!=drawable1) {
-                    DrawableInfoUtil.drawableInfo(map, drawable1, startName + "ChildState" + i+"-");
+                    DrawableInfoUtil.drawableInfo(map, drawable1, startName + "ChildState" + i+"-", res);
                 }
             }
         }
     }
 
-    private static void handleAdaptiveIconDrawable(Map<String, NodeValue> map, AdaptiveIconDrawable drawable, String startName) {
+    private static void handleAdaptiveIconDrawable(Map<String, NodeValue> map, AdaptiveIconDrawable drawable, String startName, android.content.res.Resources res) {
         // 前景/背景图层类型
         Drawable foreground = drawable.getForeground();
         Drawable bg = drawable.getBackground();
         if (foreground != null) {
             map.put(startName + "Foreground", NodeValue.createNode(DrawableInfoUtil.nodeType,foreground.getClass().getSimpleName()));
             if (!startName.contains("Foreground")&&drawable!=foreground){
-                DrawableInfoUtil.drawableInfo(map, foreground, startName + "Foreground"+"-" );
+                DrawableInfoUtil.drawableInfo(map, foreground, startName + "Foreground"+"-", res);
             }
         }
         if (bg != null) {
             map.put(startName + "AdaptiveBg", NodeValue.createNode(DrawableInfoUtil.nodeType,bg.getClass().getSimpleName()));
             if (!startName.contains("AdaptiveBg")&&drawable!=bg){
-                DrawableInfoUtil.drawableInfo(map, bg, startName + "AdaptiveBg"+"-");
+                DrawableInfoUtil.drawableInfo(map, bg, startName + "AdaptiveBg"+"-", res);
             }
         }
     }
 
     @NonNull
-    private static String getRadiusStr(GradientDrawable background) {
+    private static String getRadiusStr(GradientDrawable background, android.content.res.Resources res) {
         String radiusStr = "";
         float[] radii = null;
         try {
@@ -376,36 +380,36 @@ public class DrawableInfoUtil {
             float topLeftX = radii[0];     // 左上角 X 轴半径
             float topLeftY = radii[1];     // 左上角 Y 轴半径
             if (topLeftX == topLeftY) {
-                radiusStr += ("topLeft=" + topLeftX);
+                radiusStr += ("topLeft=" + SizeUtil.px2dpString(res, topLeftX));
             } else {
-                radiusStr += ("topLeftXY=" + topLeftX + "," + topLeftY);
+                radiusStr += ("topLeftXY=" + SizeUtil.px2dpString(res, topLeftX) + "," + SizeUtil.px2dpString(res, topLeftY));
             }
 
 
             float topRightX = radii[2];    // 右上角 X 轴半径
             float topRightY = radii[3];    // 右上角 Y 轴半径
             if (topRightX == topRightY) {
-                radiusStr += ("\ntopRight=" + topRightX);
+                radiusStr += ("\ntopRight=" + SizeUtil.px2dpString(res, topRightX));
             } else {
-                radiusStr += ("\ntopRightXY=" + topRightX + "," + topRightY);
+                radiusStr += ("\ntopRightXY=" + SizeUtil.px2dpString(res, topRightX) + "," + SizeUtil.px2dpString(res, topRightY));
             }
 
 
             float bottomRightX = radii[4]; // 右下角 X 轴半径
             float bottomRightY = radii[5]; // 右下角 Y 轴半径
             if (bottomRightX == bottomRightY) {
-                radiusStr += ("\nbottomRight=" + bottomRightX);
+                radiusStr += ("\nbottomRight=" + SizeUtil.px2dpString(res, bottomRightX));
             } else {
-                radiusStr += ("\nbottomRightXY=" + bottomRightX + "," + bottomRightY);
+                radiusStr += ("\nbottomRightXY=" + SizeUtil.px2dpString(res, bottomRightX) + "," + SizeUtil.px2dpString(res, bottomRightY));
             }
 
 
             float bottomLeftX = radii[6];  // 左下角 X 轴半径
             float bottomLeftY = radii[7];  // 左下角 Y 轴半径
             if (bottomLeftX == bottomLeftY) {
-                radiusStr += ("\nbottomLeft=" + bottomLeftX);
+                radiusStr += ("\nbottomLeft=" + SizeUtil.px2dpString(res, bottomLeftX));
             } else {
-                radiusStr += ("\nbottomLeftXY=" + bottomLeftX + "," + bottomLeftY);
+                radiusStr += ("\nbottomLeftXY=" + SizeUtil.px2dpString(res, bottomLeftX) + "," + SizeUtil.px2dpString(res, bottomLeftY));
             }
 
         } else {
@@ -414,7 +418,7 @@ public class DrawableInfoUtil {
                 radius = background.getCornerRadius();
             }
             if (radius != 0f) {
-                radiusStr = radius + "";
+                radiusStr = SizeUtil.px2dpString(res, radius);
             }
         }
         return radiusStr;
