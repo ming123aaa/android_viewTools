@@ -25,4 +25,23 @@ public class GsonUtil {
 
         return json;
     }
+    public static Object toObject(String json ,Class<?> clazz) {
+        Object object = null;
+//        try {
+//            Class<?> aClass = classLoader.loadClass(Gson.class.getName());
+//            Object o1 = aClass.newInstance();
+//            Method toJson = aClass.getDeclaredMethod("toJson", Object.class);
+//            json = (String) toJson.invoke(o1, o);
+//        } catch (Exception e) {
+//               json=e.toString();
+//        }
+        try {
+            Gson gson = new Gson();
+            object =  gson.fromJson(json,clazz);
+        }catch (Exception e){
+
+        }
+
+        return object;
+    }
 }

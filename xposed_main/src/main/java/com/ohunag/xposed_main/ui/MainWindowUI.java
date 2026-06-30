@@ -2,6 +2,7 @@ package com.ohunag.xposed_main.ui;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.PixelFormat;
@@ -507,7 +508,7 @@ public class MainWindowUI {
             public void onClick(View v) {
                 UiHook.setApplication(activity.getApplication());
                 ObjectMsgDailog objectMsgDailog = new ObjectMsgDailog(activity);
-                objectMsgDailog.setObject(activity.getApplication());
+                objectMsgDailog.setObject(activity.getApplication(), Application.class.getName());
                 objectMsgDailog.show();
             }
         });
@@ -516,11 +517,11 @@ public class MainWindowUI {
             public void onClick(View v) {
                 if (viewRootMsg != null && viewRootMsg.getObjectWeakReference() != null) {
                     ObjectMsgDailog objectMsgDailog = new ObjectMsgDailog(activity);
-                    objectMsgDailog.setObject(viewRootMsg.getObjectWeakReference());
+                    objectMsgDailog.setObject(viewRootMsg.getObjectWeakReference(),View.class.getName());
                     objectMsgDailog.show();
                 } else {
                     ObjectMsgDailog objectMsgDailog = new ObjectMsgDailog(activity);
-                    objectMsgDailog.setObject(activity);
+                    objectMsgDailog.setObject(activity,Activity.class.getName());
                     objectMsgDailog.show();
                 }
             }

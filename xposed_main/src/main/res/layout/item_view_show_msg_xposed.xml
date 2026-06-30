@@ -56,6 +56,21 @@
             android:background="#00000000"
             android:gravity="center"
             android:minHeight="30dp"
+            android:visibility="gone"
+            android:tag="tv_changeValue_xposed"
+            android:text="改值"
+            android:textColor="#f00"
+            android:textSize="15dp" />
+
+        <TextView
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:background="#00000000"
+            android:gravity="center"
+            android:minHeight="30dp"
             android:tag="tv_save_view_edit_xposed"
             android:text="修改"
             android:textColor="#fff"
